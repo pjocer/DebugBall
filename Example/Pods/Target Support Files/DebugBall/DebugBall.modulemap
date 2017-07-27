@@ -1,0 +1,6 @@
+framework module DebugBall {
+  umbrella header "DebugBall-umbrella.h"
+
+  export *
+  module * { export * }
+}
