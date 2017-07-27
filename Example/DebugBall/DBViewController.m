@@ -7,6 +7,7 @@
 //
 
 #import "DBViewController.h"
+#import "DebugView.h"
 
 @interface DBViewController ()
 
@@ -18,12 +19,24 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    self.view.backgroundColor = [UIColor redColor];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [DebugView showWithClickAction:^{
+            NSLog(@"Clicked Action");
+        }];
+    });
+    
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (IBAction)pushAction:(UIButton *)sender {
+    DBViewController *vc = [DBViewController new];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end
