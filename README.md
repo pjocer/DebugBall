@@ -22,7 +22,7 @@ pod "DebugBall"
 
 ## Author
 
-pjocer, ghji@i9i8.com
+pjocer, pjocer@outlook.com
 
 ## License
 
