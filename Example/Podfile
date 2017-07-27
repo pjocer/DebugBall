@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'DebugBall_Example' do
+  pod 'DebugBall', :path => '../'
+
+  target 'DebugBall_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
