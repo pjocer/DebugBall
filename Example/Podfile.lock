@@ -1,5 +1,5 @@
 PODS:
-  - DebugBall (0.1.0)
+  - DebugBall (0.0.1)
 
 DEPENDENCIES:
   - DebugBall (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  DebugBall: a30c2cfb858bcc760e8e097b74ccb3133c953c24
+  DebugBall: 309c5f609ebb2afc4e81433fda20faec76ae4bed
 
 PODFILE CHECKSUM: 25ed56b81247912417b6a50cdc9030938f75acda
 
