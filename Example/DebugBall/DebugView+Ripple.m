@@ -16,11 +16,6 @@
 @dynamic ripple,rippleDL,fpsDL,fpsLabel;
 
 - (void)generalRippleConfiguration {
-    self.amplitude = 1.f;
-    self.phase = 0;
-    self.speed = 0.05f;
-    self.angularVelocity = 10.f;
-    self.waterDepth = 0.5;
     [self.layer addSublayer:self.ripple];
     [self addSubview:self.fpsLabel];
     [self.rippleDL addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
@@ -67,20 +62,20 @@
     double percent = available/(available+used);
     UIColor *color = [UIColor colorWithRed:1-percent green:percent blue:0 alpha:1];
     self.ripple.backgroundColor = color.CGColor;
-    self.waterDepth = 1-percent;
-    self.phase += self.speed;
+    self.phase([[self valueForKey:@"_phase"] floatValue]+[[self valueForKey:@"_speed"] floatValue]);
+    self.waterDepth(1-percent);
     [self createPath];
 }
 
 - (void)createPath {
     UIBezierPath * path = [[UIBezierPath alloc] init];
-    CGFloat  waterDepthY = (1 - (self.waterDepth > 1.f? 1.f : self.waterDepth)) * self.frame.size.height;
+    
+    CGFloat  waterDepthY = (1 - ([[self valueForKey:@"_waterDepth"] floatValue] > 1.f? 1.f : [[self valueForKey:@"_waterDepth"] floatValue])) * self.frame.size.height;
     CGFloat y = waterDepthY;
     [path moveToPoint:CGPointMake(0, y)];
     path.lineWidth = 1;
-    
     for (double x = 0; x <= self.frame.size.width; x++) {
-        y = self.amplitude * sin(x / 180 * M_PI * self.angularVelocity + self.phase / M_PI * 4) + waterDepthY;
+        y = [[self valueForKey:@"_amplitude"] floatValue] * sin(x / 180 * M_PI * [[self valueForKey:@"_angularVelocity"] floatValue] + [[self valueForKey:@"_phase"] floatValue] / M_PI * 4) + waterDepthY;
         [path addLineToPoint:CGPointMake(x, y)];
     }
     [path addLineToPoint:CGPointMake(self.frame.size.width, y)];

@@ -16,11 +16,6 @@
 @dynamic ripple,rippleDL,fpsDL,fpsLabel;
 
 - (void)generalRippleConfiguration {
-    self.amplitude = 1.f;
-    self.phase = 0;
-    self.speed = 0.05f;
-    self.angularVelocity = 10.f;
-    self.waterDepth = 0.5;
     [self.layer addSublayer:self.ripple];
     [self addSubview:self.fpsLabel];
     [self.rippleDL addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];

@@ -22,9 +22,9 @@
     self.view.backgroundColor = [UIColor redColor];
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        [DebugView showWithClickAction:^{
-            NSLog(@"Clicked Action");
-        }];
+        DebugView *view = [DebugView debugView];
+        view.autoHidden(NO).waterDepth(0.5).speed(0.05f).angularVelocity(10.f).phase(0).amplitude(1.f);
+        [view show];
     });
     
 }

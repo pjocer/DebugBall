@@ -28,7 +28,9 @@ static CGPoint origin;
     [self addGestureRecognizer:tap];
     origin = self.center;
     [self changeStatus];
-    [self performSelector:@selector(changeStatus) withObject:nil afterDelay:statusChangeDuration];
+    if ([[self valueForKey:@"_autoHidden"] boolValue]) {
+        [self performSelector:@selector(changeStatus) withObject:nil afterDelay:statusChangeDuration];
+    }
 }
 
 - (void)tapViewAction:(UITapGestureRecognizer *)tap {
@@ -36,7 +38,7 @@ static CGPoint origin;
     if (self.hidden) {
         if (self.tapAction) self.tapAction();
     } else {
-        [self performSelector:@selector(changeStatus) withObject:nil afterDelay:statusChangeDuration];
+        [[self valueForKey:@"_autoHidden"] boolValue]?[self performSelector:@selector(changeStatus) withObject:nil afterDelay:statusChangeDuration]:nil;
     }
     [self changeStatus];
 }
@@ -72,7 +74,7 @@ static CGPoint origin;
     }
     else if(p.state == UIGestureRecognizerStateEnded)
     {
-        [self performSelector:@selector(changeStatus) withObject:nil afterDelay:statusChangeDuration];
+        [[self valueForKey:@"_autoHidden"] boolValue]?[self performSelector:@selector(changeStatus) withObject:nil afterDelay:statusChangeDuration]:nil;
         if(panPoint.x <= kScreenWidth/2)
         {
             if(panPoint.y <= 40+HEIGHT/2 && panPoint.x >= 20+WIDTH/2)
