@@ -13,23 +13,27 @@
  */
 
 @interface DebugView : UIView
+
+@property (nonatomic, copy) dispatch_block_t tapAction;
+/** 自动隐藏, 默认开启 */
+- (DebugView* (^)(BOOL))autoHidden;
 /** 水深占比，0 to 1; */
-@property(nonatomic, assign)CGFloat waterDepth;
-
+- (DebugView* (^)(CGFloat))waterDepth;
 /** 波浪速度，默认 0.05f */
-@property (nonatomic, assign) CGFloat speed;
-
+- (DebugView* (^)(CGFloat))speed;
 /** 波浪幅度，默认1 */
-@property (nonatomic, assign) CGFloat amplitude;
-
+- (DebugView* (^)(CGFloat))amplitude;
 /** 波浪紧凑程度（角速度），默认 6.0 */
-@property (nonatomic, assign) CGFloat angularVelocity;
-
+- (DebugView* (^)(CGFloat))angularVelocity;
 /** 相位，默认0 */
-@property (nonatomic, assign) CGFloat phase;
-
-@property (nonatomic, copy, readonly) dispatch_block_t tapAction;
+- (DebugView* (^)(CGFloat))phase;
 
 + (instancetype)showWithClickAction:(dispatch_block_t)action;
+
++ (instancetype)debugView;
+
+- (void)show;
+
+- (void)dismiss;
 
 @end
