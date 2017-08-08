@@ -7,7 +7,7 @@
 //
 
 #import "DBViewController.h"
-#import "DebugView.h"
+#import <DebugBall/DebugView.h>
 
 @interface DBViewController ()
 

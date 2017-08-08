@@ -10,6 +10,7 @@
 #endif
 #endif
 
+#import "Common.h"
 #import "DebugView+PanGesturer.h"
 #import "DebugView+Ripple.h"
 #import "DebugView.h"

@@ -102,16 +102,9 @@ Action * const kDebugViewTapActionDisplayBorder = @"kDebugViewTapActionDisplayBo
     };
 }
 
-+ (instancetype)showWithClickAction:(dispatch_block_t)action {
-    DebugView *view = [DebugView debugView];
-    view.tapAction = action;
-    view.autoHidden(YES).waterDepth(0.5).speed(0.05f).angularVelocity(10.f).phase(0).amplitude(1.f);
-    [view generalConfiguration:action];
-    [view show];
-    return view;
-}
-
 - (void)generalConfiguration:(dispatch_block_t)action {
+    self.autoHidden(YES).waterDepth(0.5).speed(0.05f).angularVelocity(10.f).phase(0).amplitude(1.f);
+    self.tapAction = action;
     self.layer.cornerRadius = self.frame.size.width/2.f;
     self.layer.masksToBounds = YES;
     self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8];
