@@ -71,6 +71,7 @@
 		A324AC122FA8B4E2AE19BACB /* Pods-DebugBall_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DebugBall_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DebugBall_Tests/Pods-DebugBall_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		A801B92FEA3EFA59BFEF30C7 /* Pods_DebugBall_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DebugBall_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0756E96967A05AA7E1CB151 /* Pods-DebugBall_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DebugBall_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-DebugBall_Example/Pods-DebugBall_Example.release.xcconfig"; sourceTree = "<group>"; };
+		D3927DFC1F38A48A00F02096 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		D3FDA6751F29E44D0073B301 /* DebugView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugView.h; sourceTree = "<group>"; };
 		D3FDA6761F29E44D0073B301 /* DebugView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebugView.m; sourceTree = "<group>"; };
 		D3FDA6771F29E44D0073B301 /* DebugView+PanGesturer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DebugView+PanGesturer.h"; sourceTree = "<group>"; };
@@ -222,6 +223,7 @@
 				D3FDA67B1F29E44D0073B301 /* DebugViewMacros.h */,
 				D3FDA67C1F29E44D0073B301 /* UIDevice+Hardware.h */,
 				D3FDA67D1F29E44D0073B301 /* UIDevice+Hardware.m */,
+				D3927DFC1F38A48A00F02096 /* Common.h */,
 			);
 			name = DebugView;
 			sourceTree = "<group>";

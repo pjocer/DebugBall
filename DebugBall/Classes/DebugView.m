@@ -10,6 +10,9 @@
 #import "DebugViewMacros.h"
 #import "DebugView+PanGesturer.h"
 #import "DebugView+Ripple.h"
+#import "Common.h"
+
+Action * const kDebugViewTapActionDisplayBorder = @"kDebugViewTapActionDisplayBorder";
 
 @interface DebugView ()
 
@@ -25,14 +28,34 @@
 
 @property (nonatomic, assign) CGFloat _phase;
 
+@property (nonatomic, assign) BOOL _showDebugViewOnTapAction;
+
+@property (nonatomic, strong) NSMutableDictionary *_tapActionDic;
+
 @end
 
 @implementation DebugView
 
+- (instancetype)_initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    return self;
+}
 
+- (NSMutableDictionary *)_tapActionDic {
+    if (!__tapActionDic) {
+        dispatch_block_t displayBorderAction = ^{
+            static BOOL show = YES;
+            displayAllSubviewsBorder(getCurrentController().view, show);
+            show = !show;
+        };
+        __tapActionDic = [NSMutableDictionary dictionary];
+        [__tapActionDic setValue:[displayBorderAction copy] forKey:kDebugViewTapActionDisplayBorder];
+    }
+    return __tapActionDic;
+}
 
 + (instancetype)debugView {
-    DebugView *view = [[DebugView alloc] initWithFrame:CGRectMake(kScreenWidth-40, 150, 30, 30)];
+    DebugView *view = [[DebugView alloc] _initWithFrame:CGRectMake(kScreenWidth-40, 150, 30, 30)];
     [view generalConfiguration:nil];
     return view;
 }
@@ -108,6 +131,17 @@
     } completion:^(BOOL finished) {
         if (finished) [self removeFromSuperview];
     }];
+}
+
+@end
+
+@implementation DebugView (TapAction)
+
+- (DebugView *(^)(Action *))commitTapAction {
+    return ^(Action *action) {
+        self.tapAction = self._tapActionDic[action];
+        return self;
+    };
 }
 
 @end

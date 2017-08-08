@@ -23,17 +23,23 @@
 - (DebugView* (^)(CGFloat))speed;
 /** 波浪幅度，默认1 */
 - (DebugView* (^)(CGFloat))amplitude;
-/** 波浪紧凑程度（角速度），默认 6.0 */
+/** 波浪紧凑程度（角速度），默认 10.0 */
 - (DebugView* (^)(CGFloat))angularVelocity;
 /** 相位，默认0 */
 - (DebugView* (^)(CGFloat))phase;
 
-+ (instancetype)showWithClickAction:(dispatch_block_t)action;
-
 + (instancetype)debugView;
-
+- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;
 - (void)show;
-
 - (void)dismiss;
+@end
+
+typedef NSString Action;
+FOUNDATION_EXTERN Action * const kDebugViewTapActionDisplayBorder;
+
+@interface DebugView (TapAction)
+
+- (DebugView * (^)(Action *action))commitTapAction;
 
 @end
