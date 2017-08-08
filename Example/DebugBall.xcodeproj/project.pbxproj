@@ -24,6 +24,10 @@
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		CB785B358A8ADC6BEE36CEA9 /* Pods_DebugBall_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A077A37B6ADE59EFC056CBB7 /* Pods_DebugBall_Example.framework */; };
+		D3927E0D1F399DF800F02096 /* DebugView+PanGesturer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3927E041F399DF800F02096 /* DebugView+PanGesturer.m */; };
+		D3927E0E1F399DF800F02096 /* DebugView+Ripple.m in Sources */ = {isa = PBXBuildFile; fileRef = D3927E061F399DF800F02096 /* DebugView+Ripple.m */; };
+		D3927E0F1F399DF800F02096 /* DebugView.m in Sources */ = {isa = PBXBuildFile; fileRef = D3927E081F399DF800F02096 /* DebugView.m */; };
+		D3927E101F399DF800F02096 /* UIDevice+Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = D3927E0B1F399DF800F02096 /* UIDevice+Hardware.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +71,16 @@
 		A324AC122FA8B4E2AE19BACB /* Pods-DebugBall_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DebugBall_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DebugBall_Tests/Pods-DebugBall_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		A801B92FEA3EFA59BFEF30C7 /* Pods_DebugBall_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DebugBall_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0756E96967A05AA7E1CB151 /* Pods-DebugBall_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DebugBall_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-DebugBall_Example/Pods-DebugBall_Example.release.xcconfig"; sourceTree = "<group>"; };
+		D3927E021F399DF800F02096 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		D3927E031F399DF800F02096 /* DebugView+PanGesturer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DebugView+PanGesturer.h"; sourceTree = "<group>"; };
+		D3927E041F399DF800F02096 /* DebugView+PanGesturer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DebugView+PanGesturer.m"; sourceTree = "<group>"; };
+		D3927E051F399DF800F02096 /* DebugView+Ripple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DebugView+Ripple.h"; sourceTree = "<group>"; };
+		D3927E061F399DF800F02096 /* DebugView+Ripple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DebugView+Ripple.m"; sourceTree = "<group>"; };
+		D3927E071F399DF800F02096 /* DebugView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugView.h; sourceTree = "<group>"; };
+		D3927E081F399DF800F02096 /* DebugView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebugView.m; sourceTree = "<group>"; };
+		D3927E091F399DF800F02096 /* DebugViewMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugViewMacros.h; sourceTree = "<group>"; };
+		D3927E0A1F399DF800F02096 /* UIDevice+Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Hardware.h"; sourceTree = "<group>"; };
+		D3927E0B1F399DF800F02096 /* UIDevice+Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Hardware.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +146,7 @@
 		6003F593195388D20070C39A /* Example for DebugBall */ = {
 			isa = PBXGroup;
 			children = (
+				D3927E001F399DF800F02096 /* Classes */,
 				6003F59C195388D20070C39A /* DBAppDelegate.h */,
 				6003F59D195388D20070C39A /* DBAppDelegate.m */,
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
@@ -194,6 +209,23 @@
 				3978ED63764180240C730656 /* Pods-DebugBall_Tests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		D3927E001F399DF800F02096 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				D3927E071F399DF800F02096 /* DebugView.h */,
+				D3927E081F399DF800F02096 /* DebugView.m */,
+				D3927E031F399DF800F02096 /* DebugView+PanGesturer.h */,
+				D3927E041F399DF800F02096 /* DebugView+PanGesturer.m */,
+				D3927E051F399DF800F02096 /* DebugView+Ripple.h */,
+				D3927E061F399DF800F02096 /* DebugView+Ripple.m */,
+				D3927E091F399DF800F02096 /* DebugViewMacros.h */,
+				D3927E0A1F399DF800F02096 /* UIDevice+Hardware.h */,
+				D3927E0B1F399DF800F02096 /* UIDevice+Hardware.m */,
+				D3927E021F399DF800F02096 /* Common.h */,
+			);
+			path = Classes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -403,9 +435,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3927E101F399DF800F02096 /* UIDevice+Hardware.m in Sources */,
 				6003F59E195388D20070C39A /* DBAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* DBViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
+				D3927E0D1F399DF800F02096 /* DebugView+PanGesturer.m in Sources */,
+				D3927E0F1F399DF800F02096 /* DebugView.m in Sources */,
+				D3927E0E1F399DF800F02096 /* DebugView+Ripple.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

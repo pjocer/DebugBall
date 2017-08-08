@@ -7,7 +7,7 @@
 //
 
 #import "DBViewController.h"
-
+#import "DebugView.h"
 @interface DBViewController ()
 
 @end
@@ -17,16 +17,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-//    self.view.backgroundColor = [UIColor redColor];
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-//        DebugView *view = [DebugView debugView];
-//        view.autoHidden(NO).waterDepth(0.5).speed(0.05f).angularVelocity(10.f).phase(0).amplitude(1.f).commitTapAction(kDebugViewTapActionDisplayBorder);
-//        [view show];
-//        [DebugView debugView];
-        
-//        DebugView.debugView.autoHidden(NO).waterDepth(0.5).speed(0.05f).angularVelocity(10.f).phase(0).amplitude(1.f).commitTapAction(kDebugViewTapActionDisplayBorder).show();
+        DebugView.debugView.autoHidden(NO).commitTapAction(kDebugViewTapActionDisplayBorder).show();
     });
     
 }

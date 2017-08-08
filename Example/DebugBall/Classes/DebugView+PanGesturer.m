@@ -38,14 +38,13 @@ static CGPoint origin;
     if (self.hidden) {
         if (self.tapAction) {
             self.tapAction();
-        } else if ([[self valueForKey:@"_autoHidden"] boolValue]) {
-            [self changeStatus];
         }
     } else {
         [self changeStatus];
+    }
+    if ([[self valueForKey:@"_autoHidden"] boolValue]) {
         [self performSelector:@selector(changeStatus) withObject:nil afterDelay:statusChangeDuration];
     }
-    
 }
 
 - (void)changeStatus {
