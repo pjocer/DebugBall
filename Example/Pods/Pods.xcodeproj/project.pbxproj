@@ -43,12 +43,12 @@
 		10F7B4CD3B8D7F8042180B9BDB5C0092 /* Pods-DebugBall_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-DebugBall_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
 		2189962236D9DC50509765D57102E02C /* DebugView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DebugView.h; path = DebugBall/Classes/DebugView.h; sourceTree = "<group>"; };
 		2ABC370EDAB8292E948CF38BBCA4A2F3 /* Pods-DebugBall_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-DebugBall_Tests-resources.sh"; sourceTree = "<group>"; };
-		2E58170DD69A6FC369AE20E9C3F1D4C7 /* DebugBall.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = DebugBall.modulemap; sourceTree = "<group>"; };
+		2E58170DD69A6FC369AE20E9C3F1D4C7 /* DebugBall.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = DebugBall.modulemap; sourceTree = "<group>"; };
 		3451AE177B19E272837A5703C2427C2B /* Pods-DebugBall_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-DebugBall_Tests-umbrella.h"; sourceTree = "<group>"; };
 		37F77D21429E8F916367D2747C83FE79 /* DebugView+Ripple.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "DebugView+Ripple.h"; path = "DebugBall/Classes/DebugView+Ripple.h"; sourceTree = "<group>"; };
 		3FC41634FB82F4E11AA2619F754BB6A8 /* Pods-DebugBall_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-DebugBall_Example-resources.sh"; sourceTree = "<group>"; };
 		40ED46115F08D513240DA5DD1ED3A7E8 /* DebugView+PanGesturer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "DebugView+PanGesturer.m"; path = "DebugBall/Classes/DebugView+PanGesturer.m"; sourceTree = "<group>"; };
-		49065D41689AF963CF8D1873A1773EC4 /* Pods_DebugBall_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DebugBall_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		49065D41689AF963CF8D1873A1773EC4 /* Pods_DebugBall_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_DebugBall_Example.framework; path = "Pods-DebugBall_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BA07ECF95518145FDC370C8597A3168 /* Pods-DebugBall_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-DebugBall_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		56D52A619519C2E96DDB923CE17FF405 /* DebugView+PanGesturer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "DebugView+PanGesturer.h"; path = "DebugBall/Classes/DebugView+PanGesturer.h"; sourceTree = "<group>"; };
 		65252F622E165264D2DFE8CA7973F245 /* DebugViewMacros.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DebugViewMacros.h; path = DebugBall/Classes/DebugViewMacros.h; sourceTree = "<group>"; };
@@ -56,18 +56,18 @@
 		6ADC01EEB50C7EA8FF5253206489141B /* Pods-DebugBall_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DebugBall_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		7DA8FF0AA74C637752257D3A09D976CD /* DebugBall-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "DebugBall-dummy.m"; sourceTree = "<group>"; };
 		92D1DBDF4A52D70E66D6098E0E02532A /* DebugView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DebugView.m; path = DebugBall/Classes/DebugView.m; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		93AC913C5BC0013789C5EA48286F411F /* Pods-DebugBall_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DebugBall_Example.release.xcconfig"; sourceTree = "<group>"; };
-		95FD4BE3710FA655E0F35C2FB97167E6 /* Pods-DebugBall_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-DebugBall_Tests.modulemap"; sourceTree = "<group>"; };
+		95FD4BE3710FA655E0F35C2FB97167E6 /* Pods-DebugBall_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-DebugBall_Tests.modulemap"; sourceTree = "<group>"; };
 		963EB95861FF293053A8BCC24D027D21 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9FB2CA1C8F1ECA9479FAD2E76C78D2E0 /* DebugBall.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DebugBall.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9FB2CA1C8F1ECA9479FAD2E76C78D2E0 /* DebugBall.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = DebugBall.framework; path = DebugBall.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4A232D3D5BF515F23EE514723C0CC3B /* DebugBall-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "DebugBall-umbrella.h"; sourceTree = "<group>"; };
 		AF8F8C88C70AA6D0150FED31C79D6FC0 /* DebugView+Ripple.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "DebugView+Ripple.m"; path = "DebugBall/Classes/DebugView+Ripple.m"; sourceTree = "<group>"; };
 		B18656BC651C471D35645ECF02778B11 /* DebugBall.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = DebugBall.xcconfig; sourceTree = "<group>"; };
 		B8773A9E5DE0AD792EC5888B45EC531C /* Pods-DebugBall_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DebugBall_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		BB9F30656AF968C56EB8993FE547FEF1 /* UIDevice+Hardware.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIDevice+Hardware.h"; path = "DebugBall/Classes/UIDevice+Hardware.h"; sourceTree = "<group>"; };
 		BBEF5FB54C313CAAE43F517BA651218A /* DebugBall-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "DebugBall-prefix.pch"; sourceTree = "<group>"; };
-		BC2FA006815D4D2C7407D57F64FA75D6 /* Pods_DebugBall_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DebugBall_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC2FA006815D4D2C7407D57F64FA75D6 /* Pods_DebugBall_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_DebugBall_Tests.framework; path = "Pods-DebugBall_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDD1B85B5DF91F9492C5244DF2022DC3 /* Pods-DebugBall_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-DebugBall_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		BFF91CB4FD73B60036A0A92EC10306A9 /* Pods-DebugBall_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-DebugBall_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		C742C39BF6A949C9E14578BEAB1C4F41 /* UIDevice+Hardware.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIDevice+Hardware.m"; path = "DebugBall/Classes/UIDevice+Hardware.m"; sourceTree = "<group>"; };
@@ -79,7 +79,7 @@
 		ECD462F2F542C30B8B005F5A9A819138 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F83C2C6D91CAB07C6F512E06F16573E8 /* Pods-DebugBall_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-DebugBall_Tests-dummy.m"; sourceTree = "<group>"; };
 		FABA944957E2F5043A806B2BC3617CEC /* Pods-DebugBall_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DebugBall_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		FCF7C7A0AC7CA37CA70856F35E92CF90 /* Pods-DebugBall_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-DebugBall_Example.modulemap"; sourceTree = "<group>"; };
+		FCF7C7A0AC7CA37CA70856F35E92CF90 /* Pods-DebugBall_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-DebugBall_Example.modulemap"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +145,7 @@
 		26775850FD9B4536BE38AB7E02EFB53B /* DebugBall */ = {
 			isa = PBXGroup;
 			children = (
+				DD5DCCF727F8448B2610AA515FA64208 /* Common.h */,
 				2189962236D9DC50509765D57102E02C /* DebugView.h */,
 				92D1DBDF4A52D70E66D6098E0E02532A /* DebugView.m */,
 				56D52A619519C2E96DDB923CE17FF405 /* DebugView+PanGesturer.h */,
@@ -154,7 +155,6 @@
 				65252F622E165264D2DFE8CA7973F245 /* DebugViewMacros.h */,
 				BB9F30656AF968C56EB8993FE547FEF1 /* UIDevice+Hardware.h */,
 				C742C39BF6A949C9E14578BEAB1C4F41 /* UIDevice+Hardware.m */,
-				DD5DCCF727F8448B2610AA515FA64208 /* Common.h */,
 				16D128B702AA39ABF106344E44784B8C /* Support Files */,
 			);
 			name = DebugBall;
