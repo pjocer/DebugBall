@@ -24,9 +24,7 @@ pod "DebugBall"
 
 ```objc
 #ifdef DEBUG
-DebugView *view = [DebugView debugView];
-view.autoHidden(NO).waterDepth(0.5).speed(0.05f).angularVelocity(10.f).phase(0).amplitude(1.f).commitTapAction(kDebugViewTapActionDisplayBorder);
-[view show];
+DebugView.debugView.commitTapAction(kDebugViewTapActionDisplayBorder).show();
 #endif
 ```
 
