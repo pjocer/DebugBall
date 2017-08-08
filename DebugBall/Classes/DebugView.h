@@ -31,8 +31,8 @@
 + (instancetype)debugView;
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;
-- (void)show;
-- (void)dismiss;
+- (DebugView* (^)())show;
+- (DebugView* (^)())dismiss;
 @end
 
 typedef NSString Action;

@@ -110,20 +110,26 @@ Action * const kDebugViewTapActionDisplayBorder = @"kDebugViewTapActionDisplayBo
     self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8];
 }
 
-- (void)show {
-    [self gestureRecognizersConfig];
-    [self generalRippleConfiguration];
-    UIWindow *window = [UIApplication sharedApplication].keyWindow;
-    NSAssert(window, @"Application's key window can not be nil before showing debug view");
-    [window addSubview:self];
+- (DebugView *(^)())show {
+    return ^{
+        [self gestureRecognizersConfig];
+        [self generalRippleConfiguration];
+        UIWindow *window = [UIApplication sharedApplication].keyWindow;
+        NSAssert(window, @"Application's key window can not be nil before showing debug view");
+        [window addSubview:self];
+        return self;
+    };
 }
 
-- (void)dismiss {
-    [UIView animateWithDuration:animateDuration animations:^{
-        self.alpha = 0;
-    } completion:^(BOOL finished) {
-        if (finished) [self removeFromSuperview];
-    }];
+- (DebugView *(^)())dismiss {
+    return ^{
+        [UIView animateWithDuration:animateDuration animations:^{
+            self.alpha = 0;
+        } completion:^(BOOL finished) {
+            if (finished) [self removeFromSuperview];
+        }];
+        return self;
+    };
 }
 
 @end

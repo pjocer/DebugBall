@@ -36,14 +36,13 @@ static CGPoint origin;
 - (void)tapViewAction:(UITapGestureRecognizer *)tap {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(changeStatus) object:nil];
     if (self.hidden) {
-        if ([[self valueForKey:@"_autoHidden"] boolValue]) {
-            [self changeStatus];
-        }
         if (self.tapAction) self.tapAction();
     } else {
-        [[self valueForKey:@"_autoHidden"] boolValue]?[self performSelector:@selector(changeStatus) withObject:nil afterDelay:statusChangeDuration]:nil;
+        [self performSelector:@selector(changeStatus) withObject:nil afterDelay:statusChangeDuration];
     }
-    
+    if ([[self valueForKey:@"_autoHidden"] boolValue]) {
+        [self changeStatus];
+    }
 }
 
 - (void)changeStatus {

@@ -7,7 +7,7 @@
 //
 
 #import "DBViewController.h"
-#import <DebugBall/DebugView.h>
+
 
 @interface DBViewController ()
 
@@ -22,9 +22,12 @@
 //    self.view.backgroundColor = [UIColor redColor];
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        DebugView *view = [DebugView debugView];
-        view.autoHidden(NO).waterDepth(0.5).speed(0.05f).angularVelocity(10.f).phase(0).amplitude(1.f).commitTapAction(kDebugViewTapActionDisplayBorder);
-        [view show];
+//        DebugView *view = [DebugView debugView];
+//        view.autoHidden(NO).waterDepth(0.5).speed(0.05f).angularVelocity(10.f).phase(0).amplitude(1.f).commitTapAction(kDebugViewTapActionDisplayBorder);
+//        [view show];
+//        [DebugView debugView];
+        
+//        DebugView.debugView.autoHidden(NO).waterDepth(0.5).speed(0.05f).angularVelocity(10.f).phase(0).amplitude(1.f).commitTapAction(kDebugViewTapActionDisplayBorder).show();
     });
     
 }
