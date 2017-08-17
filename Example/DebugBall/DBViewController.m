@@ -7,7 +7,8 @@
 //
 
 #import "DBViewController.h"
-#import "DebugView.h"
+#import <DebugBall/DebugView.h>
+
 @interface DBViewController ()
 
 @end
@@ -19,7 +20,7 @@
     [super viewDidLoad];
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        DebugView.debugView.autoHidden(NO).commitTapAction(kDebugViewTapActionDisplayBorder).show();
+        DebugView.debugView.autoHidden(NO).commitTapAction(kDebugViewTapActionDisplayActionMenu).show();
     });
     
 }

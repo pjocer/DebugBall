@@ -11,34 +11,32 @@
 #import "DebugView+PanGesturer.h"
 #import "DebugView+Ripple.h"
 #import "Common.h"
+#import "DebugTableView.h"
 
 Action * const kDebugViewTapActionDisplayBorder = @"kDebugViewTapActionDisplayBorder";
+Action * const kDebugViewTapActionDisplayActionMenu = @"kDebugViewTapActionDisplayActionMenu";
 
 @interface DebugView ()
-
 @property (nonatomic, assign) BOOL _autoHidden;
-
 @property(nonatomic, assign)CGFloat _waterDepth;
-
 @property (nonatomic, assign) CGFloat _speed;
-
 @property (nonatomic, assign) CGFloat _amplitude;
-
 @property (nonatomic, assign) CGFloat _angularVelocity;
-
 @property (nonatomic, assign) CGFloat _phase;
-
 @property (nonatomic, assign) BOOL _showDebugViewOnTapAction;
-
 @property (nonatomic, strong) NSMutableDictionary *_tapActionDic;
-
 @end
 
 @implementation DebugView
 
 - (instancetype)_initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
+    [self commitSubviews];
     return self;
+}
+
+- (void)commitSubviews {
+    
 }
 
 - (NSMutableDictionary *)_tapActionDic {
@@ -48,15 +46,25 @@ Action * const kDebugViewTapActionDisplayBorder = @"kDebugViewTapActionDisplayBo
             displayAllSubviewsBorder(getCurrentController().view, show);
             show = !show;
         };
+        dispatch_block_t displayActionMenu = ^{
+            static BOOL show = YES;
+            show?[[DebugTableView sharedInstance] show]:[[DebugTableView sharedInstance] dismiss];
+            show = !show;
+        };
         __tapActionDic = [NSMutableDictionary dictionary];
         [__tapActionDic setValue:[displayBorderAction copy] forKey:kDebugViewTapActionDisplayBorder];
+        [__tapActionDic setValue:[displayActionMenu copy] forKey:kDebugViewTapActionDisplayActionMenu];
     }
     return __tapActionDic;
 }
 
 + (instancetype)debugView {
-    DebugView *view = [[DebugView alloc] _initWithFrame:CGRectMake(kScreenWidth-40, 150, 30, 30)];
-    [view generalConfiguration:nil];
+    static dispatch_once_t onceToken;
+    static DebugView *view = nil;
+    dispatch_once(&onceToken, ^{
+        view = [[DebugView alloc] _initWithFrame:CGRectMake(kScreenWidth-40, 150, 30, 30)];
+        [view generalConfiguration:nil];
+    });
     return view;
 }
 
@@ -114,7 +122,7 @@ Action * const kDebugViewTapActionDisplayBorder = @"kDebugViewTapActionDisplayBo
     return ^{
         [self gestureRecognizersConfig];
         [self generalRippleConfiguration];
-        UIWindow *window = [UIApplication sharedApplication].keyWindow;
+        UIWindow *window = getLevelNormalWindow();
         NSAssert(window, @"Application's key window can not be nil before showing debug view");
         [window addSubview:self];
         return self;

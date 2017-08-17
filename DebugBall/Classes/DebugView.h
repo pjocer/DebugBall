@@ -27,7 +27,7 @@
 - (DebugView* (^)(CGFloat))angularVelocity;
 /** 相位，默认0 */
 - (DebugView* (^)(CGFloat))phase;
-
+/** returns a global instance of DebugView configured to default */
 + (instancetype)debugView;
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;
@@ -36,7 +36,10 @@
 @end
 
 typedef NSString Action;
+/* Will add an action about displaying border with all subviews of visible controller */
 FOUNDATION_EXTERN Action * const kDebugViewTapActionDisplayBorder;
+/* Will add an action about displaying action menu view */
+FOUNDATION_EXTERN Action * const kDebugViewTapActionDisplayActionMenu;
 
 @interface DebugView (TapAction)
 

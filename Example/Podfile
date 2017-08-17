@@ -1,11 +1,19 @@
-use_frameworks!
 
-target 'DebugBall_Example' do
-  pod 'DebugBall', :path => '../'
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, "8.0"
+inhibit_all_warnings!
 
-  target 'DebugBall_Tests' do
+def pod_install
+    pod 'DebugBall', :path => '../'
+    pod 'QMUIKit'
+end
+
+
+target 'DebugBall_Tests' do
     inherit! :search_paths
-
-    
-  end
+    pod_install
+end
+target 'DebugBall_Example' do
+    inherit! :search_paths
+    pod_install
 end

@@ -9,6 +9,9 @@
 #ifndef DebugViewMacros_h
 #define DebugViewMacros_h
 
+#define WEAK_SELF __weak typeof(self)wSelf = self;
+#define STRONG_SELF __strong typeof(wSelf)self = wSelf;
+
 #define WIDTH self.frame.size.width
 #define HEIGHT self.frame.size.height
 #define kScreenWidth [UIScreen mainScreen].bounds.size.width

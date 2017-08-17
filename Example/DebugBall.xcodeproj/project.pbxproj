@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0A8810C529108B5BE318C10D /* Pods_DebugBall_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A801B92FEA3EFA59BFEF30C7 /* Pods_DebugBall_Tests.framework */; };
+		3C429F52C7A3FA09831ECA79 /* libPods-DebugBall_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE6378110CA20538F33351B6 /* libPods-DebugBall_Tests.a */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -23,11 +23,7 @@
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
-		CB785B358A8ADC6BEE36CEA9 /* Pods_DebugBall_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A077A37B6ADE59EFC056CBB7 /* Pods_DebugBall_Example.framework */; };
-		D3927E0D1F399DF800F02096 /* DebugView+PanGesturer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3927E041F399DF800F02096 /* DebugView+PanGesturer.m */; };
-		D3927E0E1F399DF800F02096 /* DebugView+Ripple.m in Sources */ = {isa = PBXBuildFile; fileRef = D3927E061F399DF800F02096 /* DebugView+Ripple.m */; };
-		D3927E0F1F399DF800F02096 /* DebugView.m in Sources */ = {isa = PBXBuildFile; fileRef = D3927E081F399DF800F02096 /* DebugView.m */; };
-		D3927E101F399DF800F02096 /* UIDevice+Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = D3927E0B1F399DF800F02096 /* UIDevice+Hardware.m */; };
+		C167B707D73331A5460C893C /* libPods-DebugBall_Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8015C6A7358C000C6318A3B1 /* libPods-DebugBall_Example.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,22 +61,15 @@
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8015C6A7358C000C6318A3B1 /* libPods-DebugBall_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DebugBall_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8B2E5E675783E122F74AE0A4 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		A077A37B6ADE59EFC056CBB7 /* Pods_DebugBall_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DebugBall_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A324AC122FA8B4E2AE19BACB /* Pods-DebugBall_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DebugBall_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DebugBall_Tests/Pods-DebugBall_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		A801B92FEA3EFA59BFEF30C7 /* Pods_DebugBall_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DebugBall_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0756E96967A05AA7E1CB151 /* Pods-DebugBall_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DebugBall_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-DebugBall_Example/Pods-DebugBall_Example.release.xcconfig"; sourceTree = "<group>"; };
-		D3927E021F399DF800F02096 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
-		D3927E031F399DF800F02096 /* DebugView+PanGesturer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DebugView+PanGesturer.h"; sourceTree = "<group>"; };
-		D3927E041F399DF800F02096 /* DebugView+PanGesturer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DebugView+PanGesturer.m"; sourceTree = "<group>"; };
-		D3927E051F399DF800F02096 /* DebugView+Ripple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DebugView+Ripple.h"; sourceTree = "<group>"; };
-		D3927E061F399DF800F02096 /* DebugView+Ripple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DebugView+Ripple.m"; sourceTree = "<group>"; };
-		D3927E071F399DF800F02096 /* DebugView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugView.h; sourceTree = "<group>"; };
-		D3927E081F399DF800F02096 /* DebugView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebugView.m; sourceTree = "<group>"; };
-		D3927E091F399DF800F02096 /* DebugViewMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugViewMacros.h; sourceTree = "<group>"; };
-		D3927E0A1F399DF800F02096 /* UIDevice+Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Hardware.h"; sourceTree = "<group>"; };
-		D3927E0B1F399DF800F02096 /* UIDevice+Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Hardware.m"; sourceTree = "<group>"; };
+		D34E68C01F45868100CF419F /* DebugBall.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DebugBall.framework; path = "../../../../Library/Developer/Xcode/DerivedData/DebugBall-cbkssbvochnfdibpczvdqqclpufc/Build/Products/Debug-iphonesimulator/DebugBall/DebugBall.framework"; sourceTree = "<group>"; };
+		D34E68C21F45868A00CF419F /* Pods_DebugBall_Tests.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods_DebugBall_Tests.framework; path = "Pods/../build/Debug-iphoneos/Pods_DebugBall_Tests.framework"; sourceTree = "<group>"; };
+		D34E68C41F45869300CF419F /* QMUIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QMUIKit.framework; path = "Pods/../build/Debug-iphoneos/QMUIKit/QMUIKit.framework"; sourceTree = "<group>"; };
+		FE6378110CA20538F33351B6 /* libPods-DebugBall_Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DebugBall_Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,7 +80,7 @@
 				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
 				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
-				CB785B358A8ADC6BEE36CEA9 /* Pods_DebugBall_Example.framework in Frameworks */,
+				C167B707D73331A5460C893C /* libPods-DebugBall_Example.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,7 +91,7 @@
 				6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */,
 				6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */,
-				0A8810C529108B5BE318C10D /* Pods_DebugBall_Tests.framework in Frameworks */,
+				3C429F52C7A3FA09831ECA79 /* libPods-DebugBall_Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,12 +122,15 @@
 		6003F58C195388D20070C39A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D34E68C41F45869300CF419F /* QMUIKit.framework */,
+				D34E68C21F45868A00CF419F /* Pods_DebugBall_Tests.framework */,
+				D34E68C01F45868100CF419F /* DebugBall.framework */,
 				6003F58D195388D20070C39A /* Foundation.framework */,
 				6003F58F195388D20070C39A /* CoreGraphics.framework */,
 				6003F591195388D20070C39A /* UIKit.framework */,
 				6003F5AF195388D20070C39A /* XCTest.framework */,
-				A077A37B6ADE59EFC056CBB7 /* Pods_DebugBall_Example.framework */,
-				A801B92FEA3EFA59BFEF30C7 /* Pods_DebugBall_Tests.framework */,
+				8015C6A7358C000C6318A3B1 /* libPods-DebugBall_Example.a */,
+				FE6378110CA20538F33351B6 /* libPods-DebugBall_Tests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -146,7 +138,6 @@
 		6003F593195388D20070C39A /* Example for DebugBall */ = {
 			isa = PBXGroup;
 			children = (
-				D3927E001F399DF800F02096 /* Classes */,
 				6003F59C195388D20070C39A /* DBAppDelegate.h */,
 				6003F59D195388D20070C39A /* DBAppDelegate.m */,
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
@@ -209,23 +200,6 @@
 				3978ED63764180240C730656 /* Pods-DebugBall_Tests.release.xcconfig */,
 			);
 			name = Pods;
-			sourceTree = "<group>";
-		};
-		D3927E001F399DF800F02096 /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				D3927E071F399DF800F02096 /* DebugView.h */,
-				D3927E081F399DF800F02096 /* DebugView.m */,
-				D3927E031F399DF800F02096 /* DebugView+PanGesturer.h */,
-				D3927E041F399DF800F02096 /* DebugView+PanGesturer.m */,
-				D3927E051F399DF800F02096 /* DebugView+Ripple.h */,
-				D3927E061F399DF800F02096 /* DebugView+Ripple.m */,
-				D3927E091F399DF800F02096 /* DebugViewMacros.h */,
-				D3927E0A1F399DF800F02096 /* UIDevice+Hardware.h */,
-				D3927E0B1F399DF800F02096 /* UIDevice+Hardware.m */,
-				D3927E021F399DF800F02096 /* Common.h */,
-			);
-			path = Classes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -335,9 +309,13 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-DebugBall_Tests/Pods-DebugBall_Tests-resources.sh",
+				"${PODS_ROOT}/QMUIKit/QMUIKit/UIResources/QMUIResources.bundle",
+				"${PODS_ROOT}/QMUIKit/QMUIKit/UIResources/QMUI_QQEmotion.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -370,10 +348,12 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-DebugBall_Example/Pods-DebugBall_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/DebugBall/DebugBall.framework",
+				"${BUILT_PRODUCTS_DIR}/QMUIKit/QMUIKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DebugBall.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/QMUIKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -419,9 +399,13 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-DebugBall_Example/Pods-DebugBall_Example-resources.sh",
+				"${PODS_ROOT}/QMUIKit/QMUIKit/UIResources/QMUIResources.bundle",
+				"${PODS_ROOT}/QMUIKit/QMUIKit/UIResources/QMUI_QQEmotion.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -435,13 +419,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3927E101F399DF800F02096 /* UIDevice+Hardware.m in Sources */,
 				6003F59E195388D20070C39A /* DBAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* DBViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
-				D3927E0D1F399DF800F02096 /* DebugView+PanGesturer.m in Sources */,
-				D3927E0F1F399DF800F02096 /* DebugView.m in Sources */,
-				D3927E0E1F399DF800F02096 /* DebugView+Ripple.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -569,6 +549,11 @@
 			baseConfigurationReference = 12342F8E7161796D0508865F /* Pods-DebugBall_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+					"$(PROJECT_DIR)/build/Debug-iphoneos/QMUIKit",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DebugBall/DebugBall-Prefix.pch";
 				INFOPLIST_FILE = "DebugBall/DebugBall-Info.plist";
@@ -584,6 +569,11 @@
 			baseConfigurationReference = C0756E96967A05AA7E1CB151 /* Pods-DebugBall_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+					"$(PROJECT_DIR)/build/Debug-iphoneos/QMUIKit",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DebugBall/DebugBall-Prefix.pch";
 				INFOPLIST_FILE = "DebugBall/DebugBall-Info.plist";
