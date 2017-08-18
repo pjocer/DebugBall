@@ -8,14 +8,19 @@
 
 #import "DBCommonTableViewController.h"
 #import "QDThemeManager.h"
+#import "Common.h"
 
 @implementation DBCommonTableViewController
 
 - (void)didInitialized {
     [super didInitialized];
+    self.navigationItem.leftBarButtonItem = [QMUINavigationButton closeBarButtonItemWithTarget:self action:@selector(handleCloseButtonEvent:)];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleThemeChangedNotification:) name:QDThemeChangedNotification object:nil];
 }
 
+- (void)handleCloseButtonEvent:(UIBarButtonItem *)item {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 - (void)handleThemeChangedNotification:(NSNotification *)notification {
     NSObject<QDThemeProtocol> *themeBeforeChanged = notification.userInfo[QDThemeBeforeChangedName];
     themeBeforeChanged = [themeBeforeChanged isKindOfClass:[NSNull class]] ? nil : themeBeforeChanged;
