@@ -11,6 +11,20 @@
 
 #import <UIKit/UIKit.h>
 
+static inline NSBundle *DebugBallBundle(void) {
+    NSBundle *bundle = [NSBundle bundleForClass:NSClassFromString(@"DebugView")];
+    NSURL *bundleURL = [bundle URLForResource:@"DebugBall" withExtension:@"bundle"];
+    return [NSBundle bundleWithURL:bundleURL];
+}
+
+static inline NSString * DebugBallPathForResource(NSString *name, NSString *ext) {
+    return [DebugBallBundle() pathForResource:name ofType:ext];
+}
+
+static inline UIImage * DebugBallImageWithNamed(NSString *name){
+    return [UIImage imageNamed:name inBundle:DebugBallBundle() compatibleWithTraitCollection:nil];
+}
+
 static inline UIWindow * getLevelNormalWindow() {
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     if (window.windowLevel != UIWindowLevelNormal)

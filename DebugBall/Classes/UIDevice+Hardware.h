@@ -124,7 +124,7 @@
  *
  *  @return device token
  */
--(NSString *)getDeviceToken;
+-(NSString *)getAPNSToken;
 
 /**
  *  判断设备是否越狱
@@ -134,6 +134,12 @@
 -(NSString *)deviceIsRoot;
 
 
+/**
+ *  获取设备广告标识符
+ *
+ *  @return IDFA
+ */
+-(NSString *)getIDFV;
 
 /**
  *  获取设备广告标识符

@@ -11,7 +11,7 @@
 #import "DebugView+PanGesturer.h"
 #import "DebugView+Ripple.h"
 #import "Common.h"
-#import "DebugTableView.h"
+#import "DebugManager.h"
 
 Action * const kDebugViewTapActionDisplayBorder = @"kDebugViewTapActionDisplayBorder";
 Action * const kDebugViewTapActionDisplayActionMenu = @"kDebugViewTapActionDisplayActionMenu";
@@ -48,7 +48,7 @@ Action * const kDebugViewTapActionDisplayActionMenu = @"kDebugViewTapActionDispl
         };
         dispatch_block_t displayActionMenu = ^{
             static BOOL show = YES;
-            show?[[DebugTableView sharedInstance] show]:[[DebugTableView sharedInstance] dismiss];
+            show?[DebugManager presentDebugActionMenuController]:nil;
             show = !show;
         };
         __tapActionDic = [NSMutableDictionary dictionary];

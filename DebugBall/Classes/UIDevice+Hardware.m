@@ -193,8 +193,7 @@
 
 - (NSString *)getSystemTimeZone{
     NSTimeZone *timeZone = [NSTimeZone systemTimeZone];
-    NSString *systemTimeZone = (NSString *)timeZone;
-    return systemTimeZone;
+    return timeZone.description;
 }
 
 - (NSString *)getNetworkType{
@@ -248,7 +247,7 @@
     return macIp;
 }
 
-- (NSString *)getDeviceToken{
+- (NSString *)getAPNSToken{
     //需要获取推送的权限才能获取
     //DeviceToken: {<cbad285b 632ce36b fba3c3ee 61cef046 18ef676e c345bb1b f87c15a4 af08f03b>}
     return @"需要权限";
@@ -266,6 +265,10 @@
     }
 }
 
+- (NSString *)getIDFV {
+    NSString *IDFA =[[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    return IDFA;
+}
 
 - (NSString *)getIDFA{
     NSString *IDFA =[[[UIDevice currentDevice] identifierForVendor] UUIDString];
