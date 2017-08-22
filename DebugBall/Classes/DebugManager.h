@@ -12,4 +12,6 @@
 
 + (void)presentDebugActionMenuController;
 
++ (void)dismissDebugActionMenuController;
+
 @end

@@ -10,88 +10,92 @@
 #import "UIDevice+Hardware.h"
 
 @interface DBActionMenuController ()
-
+@property (nonatomic, strong) NSMutableArray *dataSource;
 @end
 
 @implementation DBActionMenuController
 
 - (void)initDataSource {
-    self.dataSource = [@[[@{kSectionTitleKey:@"API Configuration",kSectionSourceKey:@[
-                               [@{kSectionTextKey:@"API Domain",kSectionDetailKey:@"Current API Domain"} mutableCopy],
-                               [@{kSectionTextKey:@"H5-API Domain",kSectionDetailKey:@"Current API Domain"} mutableCopy]]} mutableCopy],
-                        [@{kSectionTitleKey:@"Device Hardware",kSectionSourceKey:@[
-                               [@{kSectionTextKey:@"Operation System",kSectionDetailKey:[[UIDevice currentDevice] getOperationSystem]} mutableCopy],
-                               [@{kSectionTextKey:@"App Version",kSectionDetailKey:[[UIDevice currentDevice] getAppVersion]} mutableCopy],
-                               [@{kSectionTextKey:@"Mac Address",kSectionDetailKey:[[UIDevice currentDevice] getMacAddress]} mutableCopy],
-                               [@{kSectionTextKey:@"IP Address",kSectionDetailKey:[[UIDevice currentDevice] getIPAddress]} mutableCopy],
-                               [@{kSectionTextKey:@"IMEI",kSectionDetailKey:[[UIDevice currentDevice] getIMEI]} mutableCopy],
-                               [@{kSectionTextKey:@"Device Type",kSectionDetailKey:[[UIDevice currentDevice] getDeviceType]} mutableCopy],
-                               [@{kSectionTextKey:@"Device OS Version",kSectionDetailKey:[[UIDevice currentDevice] getDeviceOSVersion]} mutableCopy],
-                               [@{kSectionTextKey:@"System Language",kSectionDetailKey:[[UIDevice currentDevice] getSystemLanguage]} mutableCopy],
-                               [@{kSectionTextKey:@"System Area",kSectionDetailKey:[[UIDevice currentDevice] getSystemArea]} mutableCopy],
-                               [@{kSectionTextKey:@"System Time Zone",kSectionDetailKey:[[UIDevice currentDevice] getSystemTimeZone]} mutableCopy],
-                               [@{kSectionTextKey:@"Network Type",kSectionDetailKey:[[UIDevice currentDevice] getNetworkType]} mutableCopy],
-                               [@{kSectionTextKey:@"Wifi Mac Address",kSectionDetailKey:[[UIDevice currentDevice] getWifiMacAddress]} mutableCopy],
-                               [@{kSectionTextKey:@"APNS Token",kSectionDetailKey:[[UIDevice currentDevice] getAPNSToken]} mutableCopy],
-                               [@{kSectionTextKey:@"Root Status",kSectionDetailKey:[[UIDevice currentDevice] deviceIsRoot]} mutableCopy],
-                               [@{kSectionTextKey:@"IDFV",kSectionDetailKey:[[UIDevice currentDevice] getIDFV]} mutableCopy],
-                               [@{kSectionTextKey:@"IDFA",kSectionDetailKey:[[UIDevice currentDevice] getIDFA]} mutableCopy],
-                               [@{kSectionTextKey:@"Location",kSectionDetailKey:[[UIDevice currentDevice] getLocation]} mutableCopy]]} mutableCopy],
-                        [@{kSectionTitleKey:@"Small Tools",kSectionSourceKey:@[
-                               [@{kSectionTextKey:@"Display border with color red ",kSectionDetailKey:@""} mutableCopy]]} mutableCopy],
-                        [@{kSectionTitleKey:@"API Configuration",kSectionSourceKey:@[
-                               @{kSectionTextKey:@"Current API Domain",kSectionDetailKey:@"Current API Domain"},
-                               @{kSectionTextKey:@"Current API Domain",kSectionDetailKey:@"Current API Domain"},
-                               @{kSectionTextKey:@"Current API Domain",kSectionDetailKey:@"Current API Domain"},
-                               @{kSectionTextKey:@"Current API Domain",kSectionDetailKey:@"Current API Domain"}]} mutableCopy],
-                        [@{kSectionTitleKey:@"API Configuration",kSectionSourceKey:@[
-                               @{kSectionTextKey:@"Current API Domain",kSectionDetailKey:@"Current API Domain"},
-                               @{kSectionTextKey:@"Current API Domain",kSectionDetailKey:@"Current API Domain"},
-                               @{kSectionTextKey:@"Current API Domain",kSectionDetailKey:@"Current API Domain"},
-                               @{kSectionTextKey:@"Current API Domain",kSectionDetailKey:@"Current API Domain"}]} mutableCopy]] mutableCopy];
+    QMUIStaticTableViewCellDataSource *dataSource = [[QMUIStaticTableViewCellDataSource alloc] initWithCellDataSections:@[@[({
+        QMUIStaticTableViewCellData *d = [[QMUIStaticTableViewCellData alloc] init];
+        d.identifier = 1;
+        d.style = UITableViewCellStyleSubtitle;
+        d.accessoryType = QMUIStaticTableViewCellAccessoryTypeDetailButton;
+        d.didSelectTarget = self;
+        d.didSelectAction = @selector(displayAPIDomainList);
+        d.accessoryTarget = self;
+        d.accessoryAction = @selector(displayAddAPIDomainDialog);
+        d.height = TableViewCellNormalHeight + 6;
+        d.text = @"API Domain";
+        d.detailText = @"Not Set";
+        d;
+    }),
+                                                                                                                              ({
+        QMUIStaticTableViewCellData *d = [[QMUIStaticTableViewCellData alloc] init];
+        d.identifier = 2;
+        d.style = UITableViewCellStyleSubtitle;
+        d.accessoryType = QMUIStaticTableViewCellAccessoryTypeDetailButton;
+        d.didSelectTarget = self;
+        d.didSelectAction = @selector(displayH5APIDomainList);
+        d.accessoryTarget = self;
+        d.accessoryAction = @selector(displayH5AddAPIDomainDialog);
+        d.height = TableViewCellNormalHeight + 6;
+        d.text = @"H5-API Domain";
+        d.detailText = @"Not Set";
+        d;
+    })],
+                                                                                                                          @[
+                                                                                                                              ({
+        QMUIStaticTableViewCellData *d = [[QMUIStaticTableViewCellData alloc] init];
+        d.identifier = 3;
+        d.style = UITableViewCellStyleSubtitle;
+        d.accessoryType = QMUIStaticTableViewCellAccessoryTypeDisclosureIndicator;
+        d.didSelectTarget = self;
+        d.didSelectAction = @selector(displayDeviceHardwareDetailsDialog);
+        d.height = TableViewCellNormalHeight + 6;
+        d.text = @"Device Hardware";
+        d.detailText = @"Click to view details";
+        d;
+    })],
+                                                                                                                          @[
+                                                                                                                              ({
+        QMUIStaticTableViewCellData *d = [[QMUIStaticTableViewCellData alloc] init];
+        d.identifier = 4;
+        d.style = UITableViewCellStyleDefault;
+        d.accessoryType = QMUIStaticTableViewCellAccessoryTypeNone;
+        d.didSelectTarget = self;
+        d.didSelectAction = @selector(displayBorderForAllVisibleViews);
+        d.height = TableViewCellNormalHeight + 6;
+        d.text = @"Display border for all visible views";
+        d;
+    })]
+                                                                                                                          ]];
+    self.tableView.qmui_staticCellDataSource = dataSource;
+    self.sectionTitles = @[@"API Configuration", @"Device Hardware", @"Tools"];
 }
 
-- (void)didSelectCellWithTitle:(NSString *)title {
-    if ([title isEqualToString:@"API Domain"]) {
-        [self handleCurrentAPIDomain];
-    } else if ([title isEqualToString:@"H5-API Domain"]) {
-        [self handleCurrentH5APIDomain];
-    }
-//    } else if ([title isEqualToString:@"animationStyle"]) {
-//        [self handleAnimationStyle];
-//    } else if ([title isEqualToString:@"dimmingView"]) {
-//        [self handleCustomDimmingView];
-//    } else if ([title isEqualToString:@"layoutBlock"]) {
-//        [self handleLayoutBlockAndAnimation];
-//    } else if ([title isEqualToString:@"keyboard"]) {
-//        [self handleKeyboard];
-//    } else if ([title isEqualToString:@"showWithAnimated"]) {
-//        [self handleWindowShowing];
-//    } else if ([title isEqualToString:@"presentViewController"]) {
-//        [self handlePresentShowing];
-//    } else if ([title isEqualToString:@"showInView"]) {
-//        [self handleShowInView];
-//    }
-}
-
-- (void)handleCurrentAPIDomain {
+- (void)displayAPIDomainList {
     
 }
 
-- (void)handleCurrentH5APIDomain {
+- (void)displayAddAPIDomainDialog {
     
 }
 
-- (NSString *)titleForSection:(NSInteger)section {
-    return self.dataSource[section][kSectionTitleKey];
+- (void)displayH5APIDomainList {
+    
 }
 
-- (NSString *)detailTextAtIndexPath:(NSIndexPath *)indexPath {
-    return [(NSMutableArray *)self.dataSource[indexPath.section][kSectionSourceKey] objectAtIndex:indexPath.row][kSectionDetailKey];
+- (void)displayH5AddAPIDomainDialog {
+    
 }
 
-- (NSString *)keyNameAtIndexPath:(NSIndexPath *)indexPath {
-    return [(NSMutableArray *)self.dataSource[indexPath.section][kSectionSourceKey] objectAtIndex:indexPath.row][kSectionTextKey];
+- (void)displayDeviceHardwareDetailsDialog {
+    
+}
+
+- (void)displayBorderForAllVisibleViews {
+    
 }
 
 @end

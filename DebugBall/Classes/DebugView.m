@@ -47,9 +47,7 @@ Action * const kDebugViewTapActionDisplayActionMenu = @"kDebugViewTapActionDispl
             show = !show;
         };
         dispatch_block_t displayActionMenu = ^{
-            static BOOL show = YES;
-            show?[DebugManager presentDebugActionMenuController]:nil;
-            show = !show;
+            [DebugManager presentDebugActionMenuController];
         };
         __tapActionDic = [NSMutableDictionary dictionary];
         [__tapActionDic setValue:[displayBorderAction copy] forKey:kDebugViewTapActionDisplayBorder];
@@ -62,7 +60,7 @@ Action * const kDebugViewTapActionDisplayActionMenu = @"kDebugViewTapActionDispl
     static dispatch_once_t onceToken;
     static DebugView *view = nil;
     dispatch_once(&onceToken, ^{
-        view = [[DebugView alloc] _initWithFrame:CGRectMake(kScreenWidth-40, 150, 30, 30)];
+        view = [[DebugView alloc] _initWithFrame:CGRectMake(SCREEN_WIDTH-40, 150, 30, 30)];
         [view generalConfiguration:nil];
     });
     return view;

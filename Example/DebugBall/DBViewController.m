@@ -10,7 +10,7 @@
 #import <DebugBall/DebugView.h>
 
 @interface DBViewController ()
-
+@property (nonatomic, strong) UITableView *tableView;
 @end
 
 @implementation DBViewController

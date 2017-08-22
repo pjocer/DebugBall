@@ -7,22 +7,20 @@
 //
 
 #import <QMUIKit/QMUIKit.h>
-#import "QDThemeProtocol.h"
 
-static NSString *const kSectionTitleKey = @"kSectionTitleKey";
-static NSString *const kSectionSourceKey = @"kSectionSourceKey";
-static NSString *const kSectionTextKey = @"kSectionTextKey";
-static NSString *const kSectionDetailKey = @"kSectionDetailKey";
+FOUNDATION_EXTERN NSString *const kSectionTitleKey;
+FOUNDATION_EXTERN NSString *const kSectionSourceKey;
+FOUNDATION_EXTERN NSString *const kSectionTextKey;
+FOUNDATION_EXTERN NSString *const kSectionDetailKey;
 
-@interface DBCommonTableViewController : QMUICommonTableViewController <QDChangingThemeDelegate>
-@property(nonatomic, strong) NSMutableArray *dataSource;
+@interface DBCommonTableViewController : UIViewController
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) NSArray <NSString *>*sectionTitles;
+- (instancetype)initWithStyle:(UITableViewStyle)style NS_DESIGNATED_INITIALIZER;
 - (NSString *)titleForSection:(NSInteger)section;
-- (NSString *)detailTextAtIndexPath:(NSIndexPath *)indexPath;
-- (NSString *)keyNameAtIndexPath:(NSIndexPath *)indexPath;
 @end
 
 @interface DBCommonTableViewController (UISubclassingHooks)
 - (void)initDataSource;
-- (void)didSelectCellWithTitle:(NSString *)title;
 @end
 

@@ -52,9 +52,9 @@ static CGPoint origin;
         self.alpha = self.hidden?sleepAlpha:1;
     }];
     [UIView animateWithDuration:animateDuration animations:^{
-        CGFloat x = self.center.x < 20+WIDTH/2 ? 0 :  self.center.x > kScreenWidth - 20 -WIDTH/2 ? kScreenWidth : self.center.x;
-        CGFloat y = self.center.y < 40 + HEIGHT/2 ? 0 : self.center.y > kScreenHeight - 40 - HEIGHT/2 ? kScreenHeight : self.center.y;
-        if((x == 0 && y ==0) || (x == kScreenWidth && y == 0) || (x == 0 && y == kScreenHeight) || (x == kScreenWidth && y == kScreenHeight)){
+        CGFloat x = self.center.x < 20+WIDTH/2 ? 0 :  self.center.x > SCREEN_WIDTH - 20 -WIDTH/2 ? SCREEN_WIDTH : self.center.x;
+        CGFloat y = self.center.y < 40 + HEIGHT/2 ? 0 : self.center.y > SCREEN_HEIGHT - 40 - HEIGHT/2 ? SCREEN_HEIGHT : self.center.y;
+        if((x == 0 && y ==0) || (x == SCREEN_WIDTH && y == 0) || (x == 0 && y == SCREEN_HEIGHT) || (x == SCREEN_WIDTH && y == SCREEN_HEIGHT)){
             y = self.center.y;
         }
         CGPoint hd = CGPointMake(x, y);
@@ -79,7 +79,7 @@ static CGPoint origin;
     else if(p.state == UIGestureRecognizerStateEnded)
     {
         [[self valueForKey:@"_autoHidden"] boolValue]?[self performSelector:@selector(changeStatus) withObject:nil afterDelay:statusChangeDuration]:nil;
-        if(panPoint.x <= kScreenWidth/2)
+        if(panPoint.x <= SCREEN_WIDTH/2)
         {
             if(panPoint.y <= 40+HEIGHT/2 && panPoint.x >= 20+WIDTH/2)
             {
@@ -87,16 +87,16 @@ static CGPoint origin;
                     self.center = CGPointMake(panPoint.x, HEIGHT/2+gap);
                 }];
             }
-            else if(panPoint.y >= kScreenHeight-HEIGHT/2-40 && panPoint.x >= 20+WIDTH/2)
+            else if(panPoint.y >= SCREEN_HEIGHT-HEIGHT/2-40 && panPoint.x >= 20+WIDTH/2)
             {
                 [UIView animateWithDuration:animateDuration animations:^{
-                    self.center = CGPointMake(panPoint.x, kScreenHeight-HEIGHT/2-gap);
+                    self.center = CGPointMake(panPoint.x, SCREEN_HEIGHT-HEIGHT/2-gap);
                 }];
             }
-            else if (panPoint.x < WIDTH/2+20 && panPoint.y > kScreenHeight-HEIGHT/2)
+            else if (panPoint.x < WIDTH/2+20 && panPoint.y > SCREEN_HEIGHT-HEIGHT/2)
             {
                 [UIView animateWithDuration:animateDuration animations:^{
-                    self.center = CGPointMake(WIDTH/2+gap, kScreenHeight-HEIGHT/2-gap);
+                    self.center = CGPointMake(WIDTH/2+gap, SCREEN_HEIGHT-HEIGHT/2-gap);
                 }];
             }
             else
@@ -107,31 +107,31 @@ static CGPoint origin;
                 }];
             }
         }
-        else if(panPoint.x > kScreenWidth/2)
+        else if(panPoint.x > SCREEN_WIDTH/2)
         {
-            if(panPoint.y <= 40+HEIGHT/2 && panPoint.x < kScreenWidth-WIDTH/2-20 )
+            if(panPoint.y <= 40+HEIGHT/2 && panPoint.x < SCREEN_WIDTH-WIDTH/2-20 )
             {
                 [UIView animateWithDuration:animateDuration animations:^{
                     self.center = CGPointMake(panPoint.x, HEIGHT/2+gap);
                 }];
             }
-            else if(panPoint.y >= kScreenHeight-40-HEIGHT/2 && panPoint.x < kScreenWidth-WIDTH/2-20)
+            else if(panPoint.y >= SCREEN_HEIGHT-40-HEIGHT/2 && panPoint.x < SCREEN_WIDTH-WIDTH/2-20)
             {
                 [UIView animateWithDuration:animateDuration animations:^{
-                    self.center = CGPointMake(panPoint.x, kScreenHeight-HEIGHT/2-gap);
+                    self.center = CGPointMake(panPoint.x, SCREEN_HEIGHT-HEIGHT/2-gap);
                 }];
             }
-            else if (panPoint.x > kScreenWidth-WIDTH/2-20 && panPoint.y < HEIGHT/2)
+            else if (panPoint.x > SCREEN_WIDTH-WIDTH/2-20 && panPoint.y < HEIGHT/2)
             {
                 [UIView animateWithDuration:animateDuration animations:^{
-                    self.center = CGPointMake(kScreenWidth-WIDTH/2-gap, HEIGHT/2+gap);
+                    self.center = CGPointMake(SCREEN_WIDTH-WIDTH/2-gap, HEIGHT/2+gap);
                 }];
             }
             else
             {
-                CGFloat pointy = panPoint.y > kScreenHeight-HEIGHT/2 ? kScreenHeight-HEIGHT/2-gap :panPoint.y;
+                CGFloat pointy = panPoint.y > SCREEN_HEIGHT-HEIGHT/2 ? SCREEN_HEIGHT-HEIGHT/2-gap :panPoint.y;
                 [UIView animateWithDuration:animateDuration animations:^{
-                    self.center = CGPointMake(kScreenWidth-WIDTH/2-gap, pointy);
+                    self.center = CGPointMake(SCREEN_WIDTH-WIDTH/2-gap, pointy);
                 }];
             }
         }
