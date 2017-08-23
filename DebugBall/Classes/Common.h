@@ -73,7 +73,7 @@ static inline void displayAllSubviewsBorder (UIView *view, BOOL display) {
         view.layer.borderColor = display?[UIColor redColor].CGColor:[UIColor clearColor].CGColor;
         view.layer.borderWidth = display?1/[UIScreen mainScreen].scale:0;
     }
-    if (view.subviews.count > 0) {
+    if (view.subviews.count > 0 && ![view isKindOfClass:[UISwitch class]]) {
         [view.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             displayAllSubviewsBorder(obj, display);
         }];

@@ -28,7 +28,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="pushAction:" destination="whP-gf-Uak" eventType="touchUpInside" id="ZWl-GA-PFv"/>
+                                    <segue destination="7Il-HI-A4W" kind="push" id="egb-5e-2dc"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rVt-YD-OAB">
@@ -55,6 +55,31 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tc2-Qw-aMS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1132" y="371.96401799100454"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="Ec7-IH-XkD">
+            <objects>
+                <viewController id="7Il-HI-A4W" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="5bv-7i-syU"/>
+                        <viewControllerLayoutGuide type="bottom" id="H0g-i6-7pY"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="O6e-Lx-feU">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="i8I-lI-CT6">
+                                <rect key="frame" x="54" y="116" width="94" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </stepper>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="W1S-vk-Pez"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="e9S-Wr-Vbs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2207" y="372"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="iCs-DB-Rdm">

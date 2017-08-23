@@ -202,11 +202,12 @@ NSNotificationName const kDisplayBorderEnabled = @"kDisplayBorderEnabled";
 }
 
 - (void)swizzled_didMoveToSuperview {
-    [self swizzled_didMoveToSuperview];
     if (![DebugManager.__cachedClasses.allKeys containsObject:NSStringFromClass(self.class)]) {
         __weak UIView *view = self;
         DebugManager.__cachedClasses[NSStringFromClass(self.class)] = view;
+        displayAllSubviewsBorder(self, DebugManager.isDisplayBorderEnabled);
     }
+    [self swizzled_didMoveToSuperview];
 }
 
 @end

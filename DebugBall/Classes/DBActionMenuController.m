@@ -189,7 +189,7 @@
 }
 
 - (void)displayBorderForAllVisibleViews {
-    BOOL enabled = @(![(NSNumber *)self.tableView.qmui_staticCellDataSource.cellDataSections[2][0].accessoryValueObject boolValue]);
+    BOOL enabled = ![(NSNumber *)self.tableView.qmui_staticCellDataSource.cellDataSections[2][0].accessoryValueObject boolValue];
     self.tableView.qmui_staticCellDataSource.cellDataSections[2][0].accessoryValueObject = @(enabled);
     [self reloadIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:2]]];
     [DebugManager saveDisplayBorderEnabled:enabled];

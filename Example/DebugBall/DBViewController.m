@@ -33,9 +33,5 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-- (IBAction)pushAction:(UIButton *)sender {
-    DBViewController *vc = [DBViewController new];
-    [self.navigationController pushViewController:vc animated:YES];
-}
 
 @end
