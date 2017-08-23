@@ -8,16 +8,10 @@
 
 #import <QMUIKit/QMUIKit.h>
 
-FOUNDATION_EXTERN NSString *const kSectionTitleKey;
-FOUNDATION_EXTERN NSString *const kSectionSourceKey;
-FOUNDATION_EXTERN NSString *const kSectionTextKey;
-FOUNDATION_EXTERN NSString *const kSectionDetailKey;
-
-@interface DBCommonTableViewController : UIViewController
-@property (nonatomic, strong) UITableView *tableView;
+@interface DBCommonTableViewController : UIViewController <QMUITableViewDataSource, QMUITableViewDelegate>
+@property (nonatomic, strong) QMUITableView *tableView;
 @property (nonatomic, strong) NSArray <NSString *>*sectionTitles;
 - (instancetype)initWithStyle:(UITableViewStyle)style NS_DESIGNATED_INITIALIZER;
-- (NSString *)titleForSection:(NSInteger)section;
 @end
 
 @interface DBCommonTableViewController (UISubclassingHooks)

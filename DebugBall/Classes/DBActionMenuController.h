@@ -7,6 +7,9 @@
 //
 
 #import "DBCommonTableViewController.h"
+#import "UIDevice+Hardware.h"
+#import "DebugManager.h"
+#import "DebugViewMacros.h"
 
 @interface DBActionMenuController : DBCommonTableViewController
 

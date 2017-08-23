@@ -18,8 +18,11 @@
 #define HEIGHT self.frame.size.height
 
 #define kAPIHostDidChangedNotification @"kAPIHostDidChangedNotification"
-#define kH5HostDidChangedNotification @"kH5HostDidChangedNotification"
-#define kHitTestActionNotification @"kHitTestActionNotification"
+#define kAPIHostDidChangedNewValue @"kAPIHostDidChangedNewValue"
+#define kAPIHostDidChangedOldValue @"kAPIHostDidChangedOldValue"
+#define kH5APIHostDidChangedNotification @"kH5HostDidChangedNotification"
+#define kH5APIHostDidChangedNewValue @"kH5APIHostDidChangedNewValue"
+#define kH5APIHostDidChangedOldValue @"kH5APIHostDidChangedOldValue"
 
 #define animateDuration 0.3
 #define statusChangeDuration  5.0

@@ -8,6 +8,7 @@
 
 #import "DBViewController.h"
 #import <DebugBall/DebugView.h>
+#import <DebugBall/DebugViewMacros.h>
 
 @interface DBViewController ()
 @property (nonatomic, strong) UITableView *tableView;
@@ -22,7 +23,12 @@
     dispatch_once(&onceToken, ^{
         DebugView.debugView.autoHidden(NO).commitTapAction(kDebugViewTapActionDisplayActionMenu).show();
     });
-    
+    [[NSNotificationCenter defaultCenter] addObserverForName:kAPIHostDidChangedNotification object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        NSLog(@"%@",note.userInfo);
+    }];
+    [[NSNotificationCenter defaultCenter] addObserverForName:kH5APIHostDidChangedNotification object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        NSLog(@"%@",note.userInfo);
+    }];
 }
 
 - (void)didReceiveMemoryWarning
