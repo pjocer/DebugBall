@@ -45,4 +45,6 @@ FOUNDATION_EXTERN Action * const kDebugViewTapActionDisplayActionMenu;
 
 - (DebugView * (^)(Action *action))commitTapAction;
 
+- (DebugView * (^)(Action *action))commitCallBackAction;
+
 @end

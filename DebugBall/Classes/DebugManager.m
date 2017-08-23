@@ -12,14 +12,22 @@
 #import "DBActionMenuController.h"
 #import <QMUIKit/QMUIKit.h>
 
+NSNotificationName const kAPIHostDidChangedNotification = @"kAPIHostDidChangedNotification";
+NSNotificationName const kH5APIHostDidChangedNotification = @"kH5APIHostDidChangedNotification";
+
+NSString * const kAPIHostDidChangedNewValue = @"kAPIHostDidChangedNewValue";
+NSString * const kAPIHostDidChangedOldValue = @"kAPIHostDidChangedOldValue";
+
 static NSString * kDomainListKey = @"kDomainListKey";
 static NSString * kH5DomainListKey = @"kH5DomainListKey";
 static NSString *kCurrentDomainKey = @"kCurrentDomainKey";
 static NSString *kCurrentH5DomainKey = @"kCurrentH5DomainKey";
 
+
 @interface DebugManager ()
 @property (class, nonatomic, strong) DBActionMenuController *__menu;
 @property (class, nonatomic, strong) UINavigationController *__nav;
+@property (class, nonatomic, strong) NSMutableDictionary *__cachedClasses;
 @end
 
 @implementation DebugManager
@@ -85,6 +93,15 @@ static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *
     return menu;
 }
 
++ (NSMutableDictionary *)__cachedClasses {
+    static dispatch_once_t onceToken;
+    static NSMutableDictionary *instance = nil;
+    dispatch_once(&onceToken, ^{
+        instance = [NSMutableDictionary dictionary];
+    });
+    return instance;
+}
+
 + (BOOL)addNewDomain:(Domain *)domain domainType:(APIDomainType)type{
     NSArray *domainList = [self domainListWithType:type];
     if (domainList.count==0) {
@@ -122,6 +139,73 @@ static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *
         [__data setValue:data[data.allKeys.firstObject] forKey:data.allKeys.firstObject];
     } else {
         __data = [data mutableCopy];
+    }
+}
+
++ (BOOL)isDisplayBorderEnabled {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kDisplayBorderEnabled];
+}
+
++ (BOOL)saveDisplayBorderEnabled:(BOOL)enabled {
+    [[NSUserDefaults standardUserDefaults] setBool:enabled forKey:kDisplayBorderEnabled];
+    return [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+@end
+
+@implementation DebugManager (DebugView)
+
++ (void)installDebugViewByDefault {
+    DebugView.debugView.commitTapAction(kDebugViewTapActionDisplayActionMenu).show();
+    WEAK_SELF
+    [[NSNotificationCenter defaultCenter] addObserverForName:kDisplayBorderEnabled object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        STRONG_SELF
+        [self.__cachedClasses enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+            displayAllSubviewsBorder(obj, [note.object boolValue]);
+        }];
+    }];
+}
+
++ (void)uninstallDebugView {
+    DebugView.debugView.dismiss();
+}
+
+@end
+
+NSNotificationName const kDisplayBorderEnabled = @"kDisplayBorderEnabled";
+
+@implementation DebugManager (ActionHandler)
+
++ (void)registerNotification:(NSNotificationName)notification byHandler:(ActionHandler)handler {
+    WEAK_SELF
+    [[NSNotificationCenter defaultCenter] addObserverForName:notification object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        STRONG_SELF
+        if (handler) handler(note.userInfo);
+    }];
+}
+
+@end
+
+
+
+@interface UIView (DisplayBorder)
+
+@end
+
+@implementation UIView (DisplayBorder)
+
++ (void)load {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        ReplaceMethod(self, @selector(didMoveToSuperview), @selector(swizzled_didMoveToSuperview));
+    });
+}
+
+- (void)swizzled_didMoveToSuperview {
+    [self swizzled_didMoveToSuperview];
+    if (![DebugManager.__cachedClasses.allKeys containsObject:NSStringFromClass(self.class)]) {
+        __weak UIView *view = self;
+        DebugManager.__cachedClasses[NSStringFromClass(self.class)] = view;
     }
 }
 

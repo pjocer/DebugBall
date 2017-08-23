@@ -7,8 +7,7 @@
 //
 
 #import "DBViewController.h"
-#import <DebugBall/DebugView.h>
-#import <DebugBall/DebugViewMacros.h>
+#import <DebugBall/DebugManager.h>
 
 @interface DBViewController ()
 @property (nonatomic, strong) UITableView *tableView;
@@ -19,15 +18,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        DebugView.debugView.autoHidden(NO).commitTapAction(kDebugViewTapActionDisplayActionMenu).show();
-    });
-    [[NSNotificationCenter defaultCenter] addObserverForName:kAPIHostDidChangedNotification object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
-        NSLog(@"%@",note.userInfo);
+    [DebugManager installDebugViewByDefault];
+    [DebugManager registerNotification:kAPIHostDidChangedNotification byHandler:^(NSDictionary *info) {
+        NSLog(@"%@",info);
+        self.tableView = [UITableView new];
     }];
-    [[NSNotificationCenter defaultCenter] addObserverForName:kH5APIHostDidChangedNotification object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
-        NSLog(@"%@",note.userInfo);
+    [DebugManager registerNotification:kH5APIHostDidChangedNotification byHandler:^(NSDictionary *info) {
+        NSLog(@"%@",info);
     }];
 }
 

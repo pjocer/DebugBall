@@ -63,9 +63,9 @@
         d.identifier = 4;
         d.style = UITableViewCellStyleDefault;
         d.accessoryType = QMUIStaticTableViewCellAccessoryTypeSwitch;
-        d.accessoryValueObject = @(YES);
-        d.didSelectTarget = self;
-        d.didSelectAction = @selector(displayBorderForAllVisibleViews);
+        d.accessoryValueObject = @([DebugManager isDisplayBorderEnabled]);
+        d.accessoryTarget = self;
+        d.accessoryAction = @selector(displayBorderForAllVisibleViews);
         d.height = TableViewCellNormalHeight + 6;
         d.text = @"Display border for all visible views";
         d;
@@ -130,17 +130,11 @@
                     STRONG_SELF
                     QMUIDialogTextFieldViewController *nd = (QMUIDialogTextFieldViewController *)newAddDialog;
                     [DebugManager addNewDomain:nd.textField.text domainType:type];
-                    NSMutableDictionary *info = [@{} mutableCopy];
-                    if (type == APIDomainTypeDefault) {
-                        info[kAPIHostDidChangedNewValue] = nd.textField.text;
-                        if (self.normalSelectedIndex!=-1) {
-                            info[kAPIHostDidChangedOldValue] = d.items[self.normalSelectedIndex];
-                        }
-                    } else {
-                        info[kH5APIHostDidChangedNewValue] = nd.textField.text;
-                        if (self.h5SelectedIndex!=-1) {
-                            info[kH5APIHostDidChangedOldValue] = d.items[self.h5SelectedIndex];
-                        }
+                    NSMutableDictionary *info = [@{kAPIHostDidChangedNewValue:nd.textField.text} mutableCopy];
+                    if (type == APIDomainTypeDefault && self.normalSelectedIndex!=-1) {
+                        info[kAPIHostDidChangedOldValue] = d.items[self.normalSelectedIndex];
+                    } else if (self.h5SelectedIndex!=-1) {
+                        info[kAPIHostDidChangedOldValue] = d.items[self.h5SelectedIndex];
                     }
                     [DebugManager setNeedpushNoticationWithData:@{type==APIDomainTypeDefault?kAPIHostDidChangedNotification:kH5APIHostDidChangedNotification:info}];
                     [DebugManager setCurrentDomain:nd.textField.text type:type];
@@ -153,17 +147,11 @@
         } else {
             STRONG_SELF
             NSString *domain = d.items[d.selectedItemIndex];
-            NSMutableDictionary *info = [@{} mutableCopy];
-            if (type == APIDomainTypeDefault) {
-                info[kAPIHostDidChangedNewValue] = domain;
-                if (self.normalSelectedIndex!=-1) {
-                    info[kAPIHostDidChangedOldValue] = d.items[self.normalSelectedIndex];
-                }
-            } else {
-                info[kH5APIHostDidChangedNewValue] = domain;
-                if (self.h5SelectedIndex!=-1) {
-                    info[kH5APIHostDidChangedOldValue] = d.items[self.h5SelectedIndex];
-                }
+            NSMutableDictionary *info = [@{kAPIHostDidChangedNewValue:domain} mutableCopy];
+            if (type == APIDomainTypeDefault && self.normalSelectedIndex!=-1) {
+                info[kAPIHostDidChangedOldValue] = d.items[self.normalSelectedIndex];
+            } else if (self.h5SelectedIndex!=-1) {
+                info[kAPIHostDidChangedOldValue] = d.items[self.h5SelectedIndex];
             }
             [DebugManager setNeedpushNoticationWithData:@{type==APIDomainTypeDefault?kAPIHostDidChangedNotification:kH5APIHostDidChangedNotification:info}];
             [DebugManager setCurrentDomain:domain type:type];
@@ -201,7 +189,11 @@
 }
 
 - (void)displayBorderForAllVisibleViews {
-    
+    BOOL enabled = @(![(NSNumber *)self.tableView.qmui_staticCellDataSource.cellDataSections[2][0].accessoryValueObject boolValue]);
+    self.tableView.qmui_staticCellDataSource.cellDataSections[2][0].accessoryValueObject = @(enabled);
+    [self reloadIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:2]]];
+    [DebugManager saveDisplayBorderEnabled:enabled];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayBorderEnabled object:@(enabled)];
 }
 
 #pragma mark -- Tool Method

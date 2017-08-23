@@ -149,4 +149,11 @@ Action * const kDebugViewTapActionDisplayActionMenu = @"kDebugViewTapActionDispl
     };
 }
 
+- (DebugView *(^)(Action *))commitCallBackAction {
+    return ^(Action *action) {
+        self.tapAction = self._tapActionDic[action];
+        return self;
+    };
+}
+
 @end

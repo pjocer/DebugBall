@@ -15,6 +15,14 @@ typedef NS_ENUM(NSInteger, APIDomainType) {
     APIDomainTypeH5,
 };
 
+// kAPIHostDidChangedNotification or kH5APIHostDidChangedNotification include a nil object and a userInfo dictionary containing the
+// old and new API-Host value.
+FOUNDATION_EXTERN NSNotificationName const kAPIHostDidChangedNotification;
+FOUNDATION_EXTERN NSNotificationName const kH5APIHostDidChangedNotification;
+
+FOUNDATION_EXTERN NSString * const kAPIHostDidChangedNewValue;
+FOUNDATION_EXTERN NSString * const kAPIHostDidChangedOldValue;
+
 @interface DebugManager : NSObject
 
 + (void)presentDebugActionMenuController;
@@ -30,5 +38,30 @@ typedef NS_ENUM(NSInteger, APIDomainType) {
 + (BOOL)setCurrentDomain:(Domain *)domain type:(APIDomainType)type;
 
 + (void)setNeedpushNoticationWithData:(NSDictionary <NSNotificationName, NSDictionary <NSString *, NSString *> *> *)data;
+
++ (BOOL)isDisplayBorderEnabled;
+
++ (BOOL)saveDisplayBorderEnabled:(BOOL)enabled;
+
+@end
+
+/** Display or hidden DebugView by default settings */
+@interface DebugManager (DebugView)
+
++ (void)installDebugViewByDefault;
+
++ (void)uninstallDebugView;
+
+@end
+
+typedef void (^ActionHandler)(NSDictionary *info);
+
+// Include an NSNumber object,post when status of enable displaying border changed.
+FOUNDATION_EXTERN NSNotificationName const kDisplayBorderEnabled;
+
+/** Handle actions if user registered */
+@interface DebugManager (ActionHandler)
+
++ (void)registerNotification:(NSNotificationName)notification byHandler:(ActionHandler)handler;
 
 @end
