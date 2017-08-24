@@ -7,6 +7,7 @@
 //
 
 #import "DBActionMenuController.h"
+#import "DBDeviceHardwareController.h"
 
 @interface DBActionMenuController ()
 @property (assign, nonatomic, readonly) NSInteger normalSelectedIndex;
@@ -20,11 +21,9 @@
         QMUIStaticTableViewCellData *d = [[QMUIStaticTableViewCellData alloc] init];
         d.identifier = 1;
         d.style = UITableViewCellStyleSubtitle;
-        d.accessoryType = QMUIStaticTableViewCellAccessoryTypeDetailDisclosureButton;
+        d.accessoryType = QMUIStaticTableViewCellAccessoryTypeNone;
         d.didSelectTarget = self;
         d.didSelectAction = @selector(displayAPIDomainList);
-        d.accessoryTarget = self;
-        d.accessoryAction = @selector(displayAddAPIDomainDialog);
         d.height = TableViewCellNormalHeight + 6;
         d.text = @"API Domain";
         d.detailText = [DebugManager currentDomainWithType:APIDomainTypeDefault];
@@ -34,11 +33,9 @@
         QMUIStaticTableViewCellData *d = [[QMUIStaticTableViewCellData alloc] init];
         d.identifier = 2;
         d.style = UITableViewCellStyleSubtitle;
-        d.accessoryType = QMUIStaticTableViewCellAccessoryTypeDetailDisclosureButton;
+        d.accessoryType = QMUIStaticTableViewCellAccessoryTypeNone;
         d.didSelectTarget = self;
         d.didSelectAction = @selector(displayH5APIDomainList);
-        d.accessoryTarget = self;
-        d.accessoryAction = @selector(displayH5AddAPIDomainDialog);
         d.height = TableViewCellNormalHeight + 6;
         d.text = @"H5-API Domain";
         d.detailText = [DebugManager currentDomainWithType:APIDomainTypeH5];
@@ -51,7 +48,7 @@
         d.style = UITableViewCellStyleSubtitle;
         d.accessoryType = QMUIStaticTableViewCellAccessoryTypeDisclosureIndicator;
         d.didSelectTarget = self;
-        d.didSelectAction = @selector(displayDeviceHardwareDetailsDialog);
+        d.didSelectAction = @selector(displayDeviceHardwareDetails);
         d.height = TableViewCellNormalHeight + 6;
         d.text = @"Device Hardware";
         d.detailText = @"Click to view details";
@@ -184,8 +181,9 @@
     
 }
 
-- (void)displayDeviceHardwareDetailsDialog {
-    
+- (void)displayDeviceHardwareDetails {
+    DBDeviceHardwareController *vc = [[DBDeviceHardwareController alloc] initWithStyle:UITableViewStyleGrouped];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)displayBorderForAllVisibleViews {

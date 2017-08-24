@@ -45,6 +45,22 @@ FOUNDATION_EXTERN NSString * const kAPIHostDidChangedOldValue;
 
 @end
 
+/** Intialize the data to display */
+@class DBUser;
+@interface DebugManager (DataRegistry)
+
++ (void)registerPushToken:(NSString *)token;
+
++ (NSString *)getPushToken;
+
++ (void)registerUserDataWithUserID:(NSString *)userID userName:(NSString *)userName userToken:(NSString *)userToken;
+
++ (DBUser *)currentUser;
+
++ (NSArray *)getDeviceHardwareInfo;
+
+@end
+
 /** Display or hidden DebugView by default settings */
 @interface DebugManager (DebugView)
 

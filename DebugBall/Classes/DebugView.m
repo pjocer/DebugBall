@@ -10,8 +10,8 @@
 #import "DebugViewMacros.h"
 #import "DebugView+PanGesturer.h"
 #import "DebugView+Ripple.h"
-#import "Common.h"
 #import "DebugManager.h"
+#import <QMUIKit/QMUICore.h>
 
 Action * const kDebugViewTapActionDisplayBorder = @"kDebugViewTapActionDisplayBorder";
 Action * const kDebugViewTapActionDisplayActionMenu = @"kDebugViewTapActionDisplayActionMenu";
@@ -41,16 +41,10 @@ Action * const kDebugViewTapActionDisplayActionMenu = @"kDebugViewTapActionDispl
 
 - (NSMutableDictionary *)_tapActionDic {
     if (!__tapActionDic) {
-        dispatch_block_t displayBorderAction = ^{
-            static BOOL show = YES;
-            displayAllSubviewsBorder(getCurrentController().view, show);
-            show = !show;
-        };
         dispatch_block_t displayActionMenu = ^{
             [DebugManager presentDebugActionMenuController];
         };
         __tapActionDic = [NSMutableDictionary dictionary];
-        [__tapActionDic setValue:[displayBorderAction copy] forKey:kDebugViewTapActionDisplayBorder];
         [__tapActionDic setValue:[displayActionMenu copy] forKey:kDebugViewTapActionDisplayActionMenu];
     }
     return __tapActionDic;
@@ -120,7 +114,7 @@ Action * const kDebugViewTapActionDisplayActionMenu = @"kDebugViewTapActionDispl
     return ^{
         [self gestureRecognizersConfig];
         [self generalRippleConfiguration];
-        UIWindow *window = getLevelNormalWindow();
+        UIWindow *window = [UIApplication sharedApplication].keyWindow;
         NSAssert(window, @"Application's key window can not be nil before showing debug view");
         [window addSubview:self];
         return self;

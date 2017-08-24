@@ -8,9 +8,10 @@
 
 #import "DebugManager.h"
 #import "DebugView.h"
-#import "Common.h"
+#import "Utils.h"
 #import "DBActionMenuController.h"
 #import <QMUIKit/QMUIKit.h>
+#import "DBUser.h"
 
 NSNotificationName const kAPIHostDidChangedNotification = @"kAPIHostDidChangedNotification";
 NSNotificationName const kH5APIHostDidChangedNotification = @"kH5APIHostDidChangedNotification";
@@ -41,7 +42,7 @@ static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *
 
 + (void)presentDebugActionMenuController {
     if (!__show) {
-        [getCurrentController() presentViewController:self.__nav animated:YES completion:^{
+        [[QMUIHelper visibleViewController] presentViewController:self.__nav animated:YES completion:^{
             __show = YES;
         }];
     } else {
@@ -153,10 +154,88 @@ static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *
 
 @end
 
+#define USER_PATH [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"db_user"]
+#define PUSH_TOKEN_KEY @"PUSH_TOKEN_KEY"
+#define DEVICE_HARDWARE_SOURCE_KEY @"DEVICE_HARDWARE_SOURCE_KEY"
+
+@implementation DebugManager (DataRegistry)
+
++ (void)registerPushToken:(NSString *)token {
+    [[NSUserDefaults standardUserDefaults] setValue:token forKey:PUSH_TOKEN_KEY];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
++ (NSString *)getPushToken {
+    return [[NSUserDefaults standardUserDefaults] stringForKey:PUSH_TOKEN_KEY];
+}
+
++ (void)registerUserDataWithUserID:(NSString *)userID userName:(NSString *)userName userToken:(NSString *)userToken {
+    DBUser *user = [DBUser new];
+    user.user_token = userToken;
+    user.user_id = userID;
+    user.user_name = userName;
+    [NSKeyedArchiver archiveRootObject:user toFile:USER_PATH];
+}
+
++ (DBUser *)currentUser {
+    return [NSKeyedUnarchiver unarchiveObjectWithFile:USER_PATH];
+}
+
++ (NSArray *)getDeviceHardwareInfo {
+    return [[NSUserDefaults standardUserDefaults] arrayForKey:DEVICE_HARDWARE_SOURCE_KEY];
+}
+
++ (void)asyncFetchDeviceHardwareInfo {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        NSMutableArray *dataSource = [NSMutableArray array];
+        DBUser *user = [DebugManager currentUser];
+        NSMutableDictionary *user_info = [NSMutableDictionary dictionary];
+        user_info[@"User Token"] = user.user_token?:@"Not Set";
+        user_info[@"User Name"] = user.user_name?:@"Not Set";
+        user_info[@"User ID"] = user.user_id?:@"Not Set";
+        [dataSource addObject:user_info];
+        NSMutableDictionary *identiders = [NSMutableDictionary dictionary];
+        identiders[@"IDFA"] = [[UIDevice currentDevice] getIDFA]?:@"Unable To Get";
+        identiders[@"Push Token"] = [DebugManager getPushToken]?:@"Not Set";
+        identiders[@"IDFV"] = [[UIDevice currentDevice] getIDFV]?:@"Unable To Get";
+        [dataSource addObject:identiders];
+        NSMutableDictionary *network = [NSMutableDictionary dictionary];
+        network[@"Network Type"] = [[UIDevice currentDevice] getNetworkType]?:@"Unable To Get";
+        network[@"Wifi Mac Address"] = [[UIDevice currentDevice] getWifiMacAddress]?:@"Unable To Get";
+        network[@"IP Address"] = [[UIDevice currentDevice] getIPAddress]?:@"Unable To Get";
+        network[@"Mac Address"] = [[UIDevice currentDevice] getMacAddress]?:@"Unable To Get";
+        [dataSource addObject:network];
+        NSMutableDictionary *memory_usage = [NSMutableDictionary dictionary];
+        memory_usage[@"Memory Used"] = [NSString stringWithFormat:@"%f",[[UIDevice currentDevice] getUsedMemory]];
+        memory_usage[@"Avalible Memory"] = [NSString stringWithFormat:@"%f",[[UIDevice currentDevice] getAvailableMemory]];
+        [dataSource addObject:memory_usage];
+        NSMutableDictionary *system = [NSMutableDictionary dictionary];
+        system[@"Operation System"] = [[UIDevice currentDevice] systemName];
+        system[@"Device Type"] = [[UIDevice currentDevice] model];
+        system[@"Device Is Root"] = [[UIDevice currentDevice] deviceIsRoot];
+        system[@"System Version"] = [[UIDevice currentDevice] systemVersion];
+        system[@"System Area"] = [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode];
+        system[@"System Timezone"] = [NSTimeZone systemTimeZone].description;
+        system[@"System Language"] = [[UIDevice currentDevice] getSystemLanguage];
+        [dataSource addObject:system];
+        NSMutableDictionary *app_info = [NSMutableDictionary dictionary];
+        app_info[@"App Version"] = [[[NSBundle mainBundle] infoDictionary] valueForKey:@"CFBundleShortVersionString"];
+        app_info[@"Bundle Identifier"] = [[NSBundle mainBundle] bundleIdentifier];
+        [dataSource addObject:app_info];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSUserDefaults standardUserDefaults] setObject:dataSource forKey:DEVICE_HARDWARE_SOURCE_KEY];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        });
+    });
+}
+
+@end
+
 @implementation DebugManager (DebugView)
 
 + (void)installDebugViewByDefault {
     DebugView.debugView.commitTapAction(kDebugViewTapActionDisplayActionMenu).show();
+    [self asyncFetchDeviceHardwareInfo];
     WEAK_SELF
     [[NSNotificationCenter defaultCenter] addObserverForName:kDisplayBorderEnabled object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
         STRONG_SELF
@@ -204,8 +283,8 @@ NSNotificationName const kDisplayBorderEnabled = @"kDisplayBorderEnabled";
 - (void)swizzled_didMoveToSuperview {
     if (![DebugManager.__cachedClasses.allKeys containsObject:NSStringFromClass(self.class)]) {
         __weak UIView *view = self;
-        DebugManager.__cachedClasses[NSStringFromClass(self.class)] = view;
-        displayAllSubviewsBorder(self, DebugManager.isDisplayBorderEnabled);
+        DebugManager.__cachedClasses[NSStringFromClass(view.class)] = view;
+        displayAllSubviewsBorder(view, DebugManager.isDisplayBorderEnabled);
     }
     [self swizzled_didMoveToSuperview];
 }

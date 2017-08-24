@@ -19,9 +19,9 @@
 #import <sys/ioctl.h>
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import <sys/utsname.h>
+#import <AdSupport/AdSupport.h>
 
 #define GET_IP_URL_TXT                                              @"http://ipof.in/txt"
-#define GET_IP_URL_JSON                                             @"http://ipof.in/json"
 #define NULL_STR                                                    @""
 
 @implementation UIDevice (Hardware)
@@ -65,47 +65,10 @@
     return operationSystem;
 }
 
--(void)getTime{
-    NSURL *url=[NSURL URLWithString:@"http://www.baidu.com"];
-    NSString *post=@"postData";
-    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:postData];
-    [request setTimeoutInterval:10.0];
-    NSOperationQueue *queue = [[NSOperationQueue alloc]init];
-    [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
-        if (error) {
-            NSLog(@"Httperror:%@%ld", error.localizedDescription,error.code);
-        }else{
-            NSHTTPURLResponse *httpResponse=(NSHTTPURLResponse *)response;
-            if ([response respondsToSelector:@selector(allHeaderFields)]) {
-                NSDictionary *dic=[httpResponse allHeaderFields];
-                NSString *time=[dic objectForKey:@"Date"];
-                NSLog(@"与系统无关的时间戳 = %@",time);
-            }
-        }
-    }];
-}
-
 - (NSString *)getAppVersion{
     NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
     NSString *appVersion =[infoDictionary objectForKey:@"CFBundleShortVersionString"];
     return appVersion;
-}
-
-- (NSString *)getOpenUDID{
-    unsigned char result[16];
-    const char *cStr = [[[NSProcessInfo processInfo] globallyUniqueString] UTF8String];
-    CC_MD5( cStr, (CC_LONG)strlen(cStr), result );
-    NSString *openUDID = [NSString stringWithFormat:
-                          @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%08lx",
-                          result[0], result[1], result[2], result[3],
-                          result[4], result[5], result[6], result[7],
-                          result[8], result[9], result[10], result[11],
-                          result[12], result[13], result[14], result[15],
-                          (long)(arc4random() % 4294967295)];
-    return openUDID;
 }
 
 - (NSString *)getMacAddress{
@@ -161,16 +124,10 @@
     return ip;
 }
 
-- (NSString *)getIMEI{
-    //无法获取
-    return @"已被禁用，获取不到";
-}
-
 - (NSString *)getDeviceType{
     NSString *deviceType = [[UIDevice currentDevice] model];
     struct utsname systemInfo;
     uname(&systemInfo);
-    NSLog(@"localizedModel: %@", [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding]);
     return deviceType;
 }
 
@@ -208,7 +165,7 @@
     NSString *stateString = @"";
     switch (type) {
         case 0:
-            stateString = @"notReachable";
+            stateString = @"Not Reachable";
             break;
         case 1:
             stateString = @"2G";
@@ -223,7 +180,7 @@
             stateString = @"LTE";
             break;
         case 5:
-            stateString = @"wifi";
+            stateString = @"WIFI";
             break;
         default:
             break;
@@ -232,7 +189,6 @@
 }
 
 - (NSString *)getWifiMacAddress{
-//    NSString *ssid = @"Not Found";
     NSString *macIp = @"Not Found";
     CFArrayRef myArray = CNCopySupportedInterfaces();
     if (myArray != nil) {
@@ -240,43 +196,21 @@
         CFRelease(myArray);
         if (myDict != nil) {
             NSDictionary *dict = (NSDictionary*)CFBridgingRelease(myDict);
-//            ssid = [dict valueForKey:@"SSID"];
             macIp = [dict valueForKey:@"BSSID"];
         }
     }
     return macIp;
 }
 
-- (NSString *)getAPNSToken{
-    //需要获取推送的权限才能获取
-    //DeviceToken: {<cbad285b 632ce36b fba3c3ee 61cef046 18ef676e c345bb1b f87c15a4 af08f03b>}
-    return @"需要权限";
-}
-
 - (NSString *)deviceIsRoot{
-    if ([[NSFileManager defaultManager] fileExistsAtPath:@"/User/Applications/"]) {
-        NSLog(@"该设备已越狱");
-        NSArray *applist = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:@"/User/Applications/" error:nil];
-        NSLog(@"applist = %@", applist);
-        return @"已越狱";
-    }
-    else{
-        return @"未越狱";
-    }
+    return [[NSFileManager defaultManager] fileExistsAtPath:@"/User/Applications/"]?@"YES":@"NO";
 }
 
 - (NSString *)getIDFV {
-    NSString *IDFA =[[[UIDevice currentDevice] identifierForVendor] UUIDString];
-    return IDFA;
+    return [[[UIDevice currentDevice] identifierForVendor] UUIDString];;
 }
 
 - (NSString *)getIDFA{
-    NSString *IDFA =[[[UIDevice currentDevice] identifierForVendor] UUIDString];
-    return IDFA;
-}
-
-- (NSString *)getLocation{
-    //需要用户同意权限
-    return @"需要同意权限";
+    return [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
 }
 @end
