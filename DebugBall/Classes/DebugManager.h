@@ -46,18 +46,15 @@ FOUNDATION_EXTERN NSString * const kAPIHostDidChangedOldValue;
 @end
 
 /** Intialize the data to display */
+typedef void(^FetchCompeletion)(NSArray *info);
 @class DBUser;
 @interface DebugManager (DataRegistry)
 
 + (void)registerPushToken:(NSString *)token;
 
-+ (NSString *)getPushToken;
-
 + (void)registerUserDataWithUserID:(NSString *)userID userName:(NSString *)userName userToken:(NSString *)userToken;
 
-+ (DBUser *)currentUser;
-
-+ (NSArray *)getDeviceHardwareInfo;
++ (void)fetchDeviceHardwareInfo:(FetchCompeletion)compeletion;
 
 @end
 

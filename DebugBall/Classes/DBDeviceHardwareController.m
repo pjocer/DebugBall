@@ -17,27 +17,29 @@
 @implementation DBDeviceHardwareController
 
 - (void)initDataSource {
-    NSArray *dataSource = [DebugManager getDeviceHardwareInfo];
-    NSMutableArray *sectionSources = [NSMutableArray array];
-    for (int i = 0; i < dataSource.count; i++) {
-        NSDictionary *info = dataSource[i];
-        NSMutableArray *sectionSource = [NSMutableArray array];
-        for (int j = 0; j < info.allKeys.count; j++) {
-            QMUIStaticTableViewCellData *d = [[QMUIStaticTableViewCellData alloc] init];
-            d.identifier = 10*i+j;
-            d.style = UITableViewCellStyleValue1;
-            d.accessoryType = QMUIStaticTableViewCellAccessoryTypeNone;
-            d.didSelectTarget = self;
-            d.didSelectAction = @selector(displayPopupView:);
-            d.height = TableViewCellNormalHeight + 6;
-            d.text = info.allKeys[j];
-            d.detailText = info[info.allKeys[j]];
-            [sectionSource addObject:d];
+    [DebugManager fetchDeviceHardwareInfo:^(NSArray *dataSource) {
+        NSMutableArray *sectionSources = [NSMutableArray array];
+        for (int i = 0; i < dataSource.count; i++) {
+            NSDictionary *info = dataSource[i];
+            NSMutableArray *sectionSource = [NSMutableArray array];
+            for (int j = 0; j < info.allKeys.count; j++) {
+                QMUIStaticTableViewCellData *d = [[QMUIStaticTableViewCellData alloc] init];
+                d.identifier = 10*i+j;
+                d.style = UITableViewCellStyleValue1;
+                d.accessoryType = QMUIStaticTableViewCellAccessoryTypeNone;
+                d.didSelectTarget = self;
+                d.didSelectAction = @selector(displayPopupView:);
+                d.height = TableViewCellNormalHeight + 6;
+                d.text = info.allKeys[j];
+                d.detailText = info[info.allKeys[j]];
+                [sectionSource addObject:d];
+            }
+            [sectionSources addObject:sectionSource];
         }
-        [sectionSources addObject:sectionSource];
-    }
-    self.tableView.qmui_staticCellDataSource = [[QMUIStaticTableViewCellDataSource alloc] initWithCellDataSections:sectionSources];
-    self.sectionTitles = @[@"User Info",@"Identifier",@"Network",@"Memory Usage",@"System Info",@"App Info"];
+        self.tableView.qmui_staticCellDataSource = [[QMUIStaticTableViewCellDataSource alloc] initWithCellDataSections:sectionSources];
+        self.sectionTitles = @[@"User Info",@"Identifier",@"Network",@"Memory Usage",@"System Info",@"App Info"];
+        [self.tableView reloadData];
+    }];
 }
 
 - (void)displayPopupView:(QMUIStaticTableViewCellData *)data {

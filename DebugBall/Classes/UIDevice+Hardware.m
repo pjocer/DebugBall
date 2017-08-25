@@ -119,7 +119,7 @@
     NSURL *getIpURL = [NSURL URLWithString:GET_IP_URL_TXT];
     NSString *ip = [NSString stringWithContentsOfURL:getIpURL encoding:NSUTF8StringEncoding error:&error];
     if (error) {
-        ip = NULL_STR;
+        ip = @"Unable To Get";
     }
     return ip;
 }

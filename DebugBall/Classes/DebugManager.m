@@ -29,6 +29,7 @@ static NSString *kCurrentH5DomainKey = @"kCurrentH5DomainKey";
 @property (class, nonatomic, strong) DBActionMenuController *__menu;
 @property (class, nonatomic, strong) UINavigationController *__nav;
 @property (class, nonatomic, strong) NSMutableDictionary *__cachedClasses;
+@property (class, nonatomic, copy)dispatch_queue_t __dataRegistryQueue;
 @end
 
 @implementation DebugManager
@@ -103,36 +104,43 @@ static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *
     return instance;
 }
 
++ (dispatch_queue_t)__dataRegistryQueue {
+    static dispatch_once_t onceToken;
+    static dispatch_queue_t t = nil;
+    dispatch_once(&onceToken, ^{
+        t = dispatch_queue_create("dataRegistryQueue", DISPATCH_QUEUE_CONCURRENT);
+    });
+    return t;
+}
+
 + (BOOL)addNewDomain:(Domain *)domain domainType:(APIDomainType)type{
     NSArray *domainList = [self domainListWithType:type];
     if (domainList.count==0) {
-        [[NSUserDefaults standardUserDefaults] setObject:@[domain] forKey:type==APIDomainTypeDefault?kDomainListKey:kH5DomainListKey];
+        return UserDefaultsSetObjectForKey(@[domain], type==APIDomainTypeDefault?kDomainListKey:kH5DomainListKey);
     } else {
         NSMutableArray *newList = [domainList mutableCopy];
         [newList addObject:domain];
-        [[NSUserDefaults standardUserDefaults] setObject:newList forKey:type==APIDomainTypeDefault?kDomainListKey:kH5DomainListKey];
+        return UserDefaultsSetObjectForKey(newList, type==APIDomainTypeDefault?kDomainListKey:kH5DomainListKey);
     }
-    return [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 + (NSArray <NSString *> *)domainListWithType:(APIDomainType)type {
     NSArray *domainList = nil;
     if (type == APIDomainTypeDefault) {
-        domainList = [[NSUserDefaults standardUserDefaults] arrayForKey:kDomainListKey]?:@[];
+        domainList = UserDefaultsObjectForKey(kDomainListKey)?:@[];
     }
     if (type == APIDomainTypeH5) {
-        domainList = [[NSUserDefaults standardUserDefaults] arrayForKey:kH5DomainListKey]?:@[];
+        domainList = UserDefaultsObjectForKey(kH5DomainListKey)?:@[];
     }
     return domainList;
 }
 
 + (Domain *)currentDomainWithType:(APIDomainType)type {
-    return [[NSUserDefaults standardUserDefaults] stringForKey:type==APIDomainTypeDefault?kCurrentDomainKey:kCurrentH5DomainKey]?:@"Not Set";
+    return UserDefaultsObjectForKey(type==APIDomainTypeDefault?kCurrentDomainKey:kCurrentH5DomainKey)?:@"Not Set";
 }
 
 + (BOOL)setCurrentDomain:(Domain *)domain type:(APIDomainType)type {
-    [[NSUserDefaults standardUserDefaults] setObject:domain forKey:type==APIDomainTypeDefault?kCurrentDomainKey:kCurrentH5DomainKey];
-    return [[NSUserDefaults standardUserDefaults] synchronize];
+    return UserDefaultsSetObjectForKey(domain, type==APIDomainTypeDefault?kCurrentDomainKey:kCurrentH5DomainKey);
 }
 
 + (void)setNeedpushNoticationWithData:(NSDictionary<NSNotificationName,NSDictionary<NSString *,NSString *> *> *)data {
@@ -154,55 +162,52 @@ static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *
 
 @end
 
-#define USER_PATH [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"db_user"]
-#define PUSH_TOKEN_KEY @"PUSH_TOKEN_KEY"
 #define DEVICE_HARDWARE_SOURCE_KEY @"DEVICE_HARDWARE_SOURCE_KEY"
+
+static FetchCompeletion __comeletion = nil;
 
 @implementation DebugManager (DataRegistry)
 
 + (void)registerPushToken:(NSString *)token {
-    [[NSUserDefaults standardUserDefaults] setValue:token forKey:PUSH_TOKEN_KEY];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-+ (NSString *)getPushToken {
-    return [[NSUserDefaults standardUserDefaults] stringForKey:PUSH_TOKEN_KEY];
+    if (token) {
+        dispatch_barrier_async(self.__dataRegistryQueue, ^{
+            NSMutableArray *source = [UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY)?:@[] mutableCopy];
+            NSMutableDictionary *temp = [[source firstObject] mutableCopy];
+            temp[@"Push Token"] = token;
+            [source replaceObjectAtIndex:0 withObject:temp];
+            UserDefaultsSetObjectForKey(source, DEVICE_HARDWARE_SOURCE_KEY);
+        });
+    }
 }
 
 + (void)registerUserDataWithUserID:(NSString *)userID userName:(NSString *)userName userToken:(NSString *)userToken {
-    DBUser *user = [DBUser new];
-    user.user_token = userToken;
-    user.user_id = userID;
-    user.user_name = userName;
-    [NSKeyedArchiver archiveRootObject:user toFile:USER_PATH];
+    dispatch_barrier_async(self.__dataRegistryQueue, ^{
+        NSMutableArray *source = [UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY)?:@[] mutableCopy];
+        NSMutableDictionary *user_info = [NSMutableDictionary dictionary];
+        user_info[@"User Token"] = userToken?:@"Not Set";
+        user_info[@"User Name"] = userName?:@"Not Set";
+        user_info[@"User ID"] = userID?:@"Not Set";
+        [source insertObject:user_info atIndex:0];
+        UserDefaultsSetObjectForKey(source, DEVICE_HARDWARE_SOURCE_KEY);
+    });
 }
 
-+ (DBUser *)currentUser {
-    return [NSKeyedUnarchiver unarchiveObjectWithFile:USER_PATH];
-}
-
-+ (NSArray *)getDeviceHardwareInfo {
-    return [[NSUserDefaults standardUserDefaults] arrayForKey:DEVICE_HARDWARE_SOURCE_KEY];
++ (void)fetchDeviceHardwareInfo:(FetchCompeletion)compeletion {
+    __comeletion = compeletion;
+    if (__comeletion)__comeletion(UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY));
 }
 
 + (void)asyncFetchDeviceHardwareInfo {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        NSMutableArray *dataSource = [NSMutableArray array];
-        DBUser *user = [DebugManager currentUser];
-        NSMutableDictionary *user_info = [NSMutableDictionary dictionary];
-        user_info[@"User Token"] = user.user_token?:@"Not Set";
-        user_info[@"User Name"] = user.user_name?:@"Not Set";
-        user_info[@"User ID"] = user.user_id?:@"Not Set";
-        [dataSource addObject:user_info];
+    dispatch_barrier_async(self.__dataRegistryQueue, ^{
+        NSMutableArray *dataSource = [UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY)?:@[] mutableCopy];
         NSMutableDictionary *identiders = [NSMutableDictionary dictionary];
         identiders[@"IDFA"] = [[UIDevice currentDevice] getIDFA]?:@"Unable To Get";
-        identiders[@"Push Token"] = [DebugManager getPushToken]?:@"Not Set";
         identiders[@"IDFV"] = [[UIDevice currentDevice] getIDFV]?:@"Unable To Get";
         [dataSource addObject:identiders];
         NSMutableDictionary *network = [NSMutableDictionary dictionary];
         network[@"Network Type"] = [[UIDevice currentDevice] getNetworkType]?:@"Unable To Get";
         network[@"Wifi Mac Address"] = [[UIDevice currentDevice] getWifiMacAddress]?:@"Unable To Get";
-        network[@"IP Address"] = [[UIDevice currentDevice] getIPAddress]?:@"Unable To Get";
+        network[@"IP Address"] = [[UIDevice currentDevice] getIPAddress];
         network[@"Mac Address"] = [[UIDevice currentDevice] getMacAddress]?:@"Unable To Get";
         [dataSource addObject:network];
         NSMutableDictionary *memory_usage = [NSMutableDictionary dictionary];
@@ -222,10 +227,7 @@ static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *
         app_info[@"App Version"] = [[[NSBundle mainBundle] infoDictionary] valueForKey:@"CFBundleShortVersionString"];
         app_info[@"Bundle Identifier"] = [[NSBundle mainBundle] bundleIdentifier];
         [dataSource addObject:app_info];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSUserDefaults standardUserDefaults] setObject:dataSource forKey:DEVICE_HARDWARE_SOURCE_KEY];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        });
+        UserDefaultsSetObjectForKey(dataSource, DEVICE_HARDWARE_SOURCE_KEY);
     });
 }
 
@@ -243,10 +245,17 @@ static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *
             displayAllSubviewsBorder(obj, [note.object boolValue]);
         }];
     }];
+    [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillTerminateNotification object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+        STRONG_SELF
+        UserDefaultsSetObjectForKey(nil, DEVICE_HARDWARE_SOURCE_KEY);
+    }];
 }
 
 + (void)uninstallDebugView {
-    DebugView.debugView.dismiss();
+    dispatch_async(dispatch_get_main_queue(), ^{
+        DebugView.debugView.dismiss();
+        UserDefaultsSetObjectForKey(nil, DEVICE_HARDWARE_SOURCE_KEY);
+    });
 }
 
 @end
