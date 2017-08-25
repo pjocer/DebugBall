@@ -7,7 +7,6 @@
 //
 
 #import "DBDeviceHardwareController.h"
-#import "DBUser.h"
 #import "UIDevice+Hardware.h"
 
 @interface DBDeviceHardwareController ()
@@ -17,28 +16,31 @@
 @implementation DBDeviceHardwareController
 
 - (void)initDataSource {
-    [DebugManager fetchDeviceHardwareInfo:^(NSArray *dataSource) {
+    [DebugManager fetchDeviceHardwareInfo:^(NSDictionary<NSString *,NSDictionary<NSString *,NSString *> *> *info) {
+        NSArray *titles = @[@"User Info",@"Identifiers",@"Network",@"Memory Used",@"System Info",@"App Info"];
+        self.sectionTitles = [NSMutableArray array];
         NSMutableArray *sectionSources = [NSMutableArray array];
-        for (int i = 0; i < dataSource.count; i++) {
-            NSDictionary *info = dataSource[i];
-            NSMutableArray *sectionSource = [NSMutableArray array];
-            for (int j = 0; j < info.allKeys.count; j++) {
-                QMUIStaticTableViewCellData *d = [[QMUIStaticTableViewCellData alloc] init];
-                d.identifier = 10*i+j;
-                d.style = UITableViewCellStyleValue1;
-                d.accessoryType = QMUIStaticTableViewCellAccessoryTypeNone;
-                d.didSelectTarget = self;
-                d.didSelectAction = @selector(displayPopupView:);
-                d.height = TableViewCellNormalHeight + 6;
-                d.text = info.allKeys[j];
-                d.detailText = info[info.allKeys[j]];
-                [sectionSource addObject:d];
+        for (int i = 0; i<titles.count; i++) {
+            NSString *sectionTitle = titles[i];
+            if (info[sectionTitle]) {
+                [self.sectionTitles addObject:sectionTitle];
+                NSMutableArray *sectionDatas = [NSMutableArray arrayWithCapacity:info[sectionTitle].allKeys.count];
+                for (int j = 0; j < info[sectionTitle].allKeys.count; j++) {
+                    QMUIStaticTableViewCellData *d = [[QMUIStaticTableViewCellData alloc] init];
+                    d.identifier = 10*i+j;
+                    d.style = UITableViewCellStyleValue1;
+                    d.accessoryType = QMUIStaticTableViewCellAccessoryTypeNone;
+                    d.didSelectTarget = self;
+                    d.didSelectAction = @selector(displayPopupView:);
+                    d.height = TableViewCellNormalHeight + 6;
+                    d.text = info[sectionTitle].allKeys[j];
+                    d.detailText = info[sectionTitle][d.text];
+                    [sectionDatas addObject:d];
+                }
+                [sectionSources addObject:sectionDatas];
             }
-            [sectionSources addObject:sectionSource];
         }
         self.tableView.qmui_staticCellDataSource = [[QMUIStaticTableViewCellDataSource alloc] initWithCellDataSections:sectionSources];
-        self.sectionTitles = @[@"User Info",@"Identifier",@"Network",@"Memory Usage",@"System Info",@"App Info"];
-        [self.tableView reloadData];
     }];
 }
 

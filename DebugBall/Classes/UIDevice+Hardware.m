@@ -24,6 +24,9 @@
 #define GET_IP_URL_TXT                                              @"http://ipof.in/txt"
 #define NULL_STR                                                    @""
 
+NSNotificationName const kUsedMemoryDidChanged = @"kUsedMemoryDidChanged";
+NSNotificationName const kAvailableMemoryDidChanged = @"kAvailableMemoryDidChanged";
+
 @implementation UIDevice (Hardware)
 
 - (double)getAvailableMemory {

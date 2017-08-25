@@ -13,7 +13,7 @@
 
 @interface DBCommonTableViewController : UIViewController <QMUITableViewDataSource, QMUITableViewDelegate>
 @property (nonatomic, strong) QMUITableView *tableView;
-@property (nonatomic, strong) NSArray <NSString *>*sectionTitles;
+@property (nonatomic, strong) NSMutableArray <NSString *>*sectionTitles;
 - (instancetype)initWithStyle:(UITableViewStyle)style NS_DESIGNATED_INITIALIZER;
 @end
 

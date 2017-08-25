@@ -176,8 +176,6 @@
 		D3CE83581F4E6FB9003F5339 /* DBDeviceHardwareController.h in Headers */ = {isa = PBXBuildFile; fileRef = D3CE83561F4E6FB9003F5339 /* DBDeviceHardwareController.h */; };
 		D3CE83591F4E6FB9003F5339 /* DBDeviceHardwareController.m in Sources */ = {isa = PBXBuildFile; fileRef = D3CE83571F4E6FB9003F5339 /* DBDeviceHardwareController.m */; };
 		D3FB73031F4EA20800F08AA0 /* Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = D3FB73021F4EA20800F08AA0 /* Utils.h */; };
-		D3FB73061F4EAD2500F08AA0 /* DBUser.h in Headers */ = {isa = PBXBuildFile; fileRef = D3FB73041F4EAD2500F08AA0 /* DBUser.h */; };
-		D3FB73071F4EAD2500F08AA0 /* DBUser.m in Sources */ = {isa = PBXBuildFile; fileRef = D3FB73051F4EAD2500F08AA0 /* DBUser.m */; };
 		D4A4E25F73514B3965A5C2D37AD604E1 /* UIActivityIndicatorView+QMUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 31FB63396A5BC6B653B660BAEEE6CA9C /* UIActivityIndicatorView+QMUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D6A24F52303B5AA52120377AB7FEE6AA /* UIView+QMUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FB608953C3AB1E0B706C9D0F10414A /* UIView+QMUI.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		D727B157B00DAE2FCAB874F0741BBCB3 /* UIImageView+QMUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 08451F3ACBE12CB562FFEF8691413389 /* UIImageView+QMUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -435,8 +433,6 @@
 		D3CE83561F4E6FB9003F5339 /* DBDeviceHardwareController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBDeviceHardwareController.h; path = DebugBall/Classes/DBDeviceHardwareController.h; sourceTree = "<group>"; };
 		D3CE83571F4E6FB9003F5339 /* DBDeviceHardwareController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBDeviceHardwareController.m; path = DebugBall/Classes/DBDeviceHardwareController.m; sourceTree = "<group>"; };
 		D3FB73021F4EA20800F08AA0 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utils.h; path = DebugBall/Classes/Utils.h; sourceTree = "<group>"; };
-		D3FB73041F4EAD2500F08AA0 /* DBUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBUser.h; path = DebugBall/Classes/DBUser.h; sourceTree = "<group>"; };
-		D3FB73051F4EAD2500F08AA0 /* DBUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBUser.m; path = DebugBall/Classes/DBUser.m; sourceTree = "<group>"; };
 		D56A6709FBC4F15DCA4038636BA811DC /* QMUIAsset.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = QMUIAsset.m; path = QMUIKit/UIComponents/AssetLibrary/QMUIAsset.m; sourceTree = "<group>"; };
 		D58FB22089CCF6CC43213EC5DFC71DA7 /* QMUIImagePickerViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = QMUIImagePickerViewController.m; path = QMUIKit/UIComponents/ImagePickerLibrary/QMUIImagePickerViewController.m; sourceTree = "<group>"; };
 		D612779CFEF60555193CFBF6C517C7F4 /* QMUINavigationController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = QMUINavigationController.m; path = QMUIKit/UIMainFrame/QMUINavigationController.m; sourceTree = "<group>"; };
@@ -662,8 +658,6 @@
 				493917933DF2B65A1FF5DCEA0EA3D011 /* DBCommonTableViewController.m */,
 				AE974B833F10EFE8CD89B563C44D189A /* DebugManager.h */,
 				6F536EF509B9DBF31AF5FFD33B9F9A93 /* DebugManager.m */,
-				D3FB73041F4EAD2500F08AA0 /* DBUser.h */,
-				D3FB73051F4EAD2500F08AA0 /* DBUser.m */,
 				A002B65BFF7BF30F301549EA9BB96249 /* DebugView.h */,
 				20A01A252296EE6A1052D74634227587 /* DebugView.m */,
 				B3A3A682ABC8B7A9D9A3C7C55AB4BF65 /* DebugView+PanGesturer.h */,
@@ -886,7 +880,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3FB73061F4EAD2500F08AA0 /* DBUser.h in Headers */,
 				7D32193A470DA39181834CC909F953D4 /* DBActionMenuController.h in Headers */,
 				8B85D26A35BD9FC251597A6AF84B8763 /* DBCommonTableViewController.h in Headers */,
 				D728DCDA1241E00A3A401C0A88F28F52 /* DebugManager.h in Headers */,
@@ -1243,7 +1236,6 @@
 				C154F8047EBEEEFD724B91547CC794AE /* DBActionMenuController.m in Sources */,
 				B2D20B829C0884965E4B7590E1F6EC11 /* DBCommonTableViewController.m in Sources */,
 				36B8535293A0875CE9AA5ACC7C7E2F40 /* DebugBall-dummy.m in Sources */,
-				D3FB73071F4EAD2500F08AA0 /* DBUser.m in Sources */,
 				83A272302DCD4452BC9EA0FBB659C574 /* DebugManager.m in Sources */,
 				3FDA705626C3032752FD7F113B01B970 /* DebugView+PanGesturer.m in Sources */,
 				54F4BB3E22DA392108A04D89CD8FA539 /* DebugView+Ripple.m in Sources */,

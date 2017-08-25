@@ -59,6 +59,8 @@
 -(void)waving {
     double available = [[UIDevice currentDevice] getAvailableMemory];
     double used = [[UIDevice currentDevice] getUsedMemory];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAvailableMemoryDidChanged object:@(available)];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kUsedMemoryDidChanged object:@(used)];
     double percent = available/(available+used);
     UIColor *color = [UIColor colorWithRed:1-percent green:percent blue:0 alpha:1];
     self.ripple.backgroundColor = color.CGColor;

@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+FOUNDATION_EXPORT NSNotificationName const kUsedMemoryDidChanged;
+FOUNDATION_EXPORT NSNotificationName const kAvailableMemoryDidChanged;
+
 @interface UIDevice (Hardware)
 - (double)getAvailableMemory;
 - (double)getUsedMemory;

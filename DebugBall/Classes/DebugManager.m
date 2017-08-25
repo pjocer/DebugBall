@@ -11,7 +11,6 @@
 #import "Utils.h"
 #import "DBActionMenuController.h"
 #import <QMUIKit/QMUIKit.h>
-#import "DBUser.h"
 
 NSNotificationName const kAPIHostDidChangedNotification = @"kAPIHostDidChangedNotification";
 NSNotificationName const kH5APIHostDidChangedNotification = @"kH5APIHostDidChangedNotification";
@@ -37,10 +36,6 @@ static NSString *kCurrentH5DomainKey = @"kCurrentH5DomainKey";
 static BOOL __show = NO;
 static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *> *> * __data = nil;
 
-+ (void)uninstall {
-    __show = NO;
-}
-
 + (void)presentDebugActionMenuController {
     if (!__show) {
         [[QMUIHelper visibleViewController] presentViewController:self.__nav animated:YES completion:^{
@@ -59,7 +54,7 @@ static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *
         __data = nil;
     }
     [self.__nav dismissViewControllerAnimated:YES completion:^{
-        [self uninstall];
+        __show = NO;
     }];
 }
 
@@ -171,10 +166,10 @@ static FetchCompeletion __comeletion = nil;
 + (void)registerPushToken:(NSString *)token {
     if (token) {
         dispatch_barrier_async(self.__dataRegistryQueue, ^{
-            NSMutableArray *source = [UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY)?:@[] mutableCopy];
-            NSMutableDictionary *temp = [[source firstObject] mutableCopy];
-            temp[@"Push Token"] = token;
-            [source replaceObjectAtIndex:0 withObject:temp];
+            NSMutableDictionary *source = [UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY)?:@{} mutableCopy];
+            NSMutableDictionary *identifers = [source[DEVICE_IDENTIFIERS_KEY]?:@{} mutableCopy];
+            identifers[@"Push Token"] = token;
+            source[DEVICE_IDENTIFIERS_KEY] = identifers;
             UserDefaultsSetObjectForKey(source, DEVICE_HARDWARE_SOURCE_KEY);
         });
     }
@@ -182,38 +177,39 @@ static FetchCompeletion __comeletion = nil;
 
 + (void)registerUserDataWithUserID:(NSString *)userID userName:(NSString *)userName userToken:(NSString *)userToken {
     dispatch_barrier_async(self.__dataRegistryQueue, ^{
-        NSMutableArray *source = [UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY)?:@[] mutableCopy];
+        NSMutableDictionary *source = [UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY)?:@{} mutableCopy];
         NSMutableDictionary *user_info = [NSMutableDictionary dictionary];
         user_info[@"User Token"] = userToken?:@"Not Set";
         user_info[@"User Name"] = userName?:@"Not Set";
         user_info[@"User ID"] = userID?:@"Not Set";
-        [source insertObject:user_info atIndex:0];
+        source[DEVICE_USERINFO_KEY] = user_info;
         UserDefaultsSetObjectForKey(source, DEVICE_HARDWARE_SOURCE_KEY);
     });
 }
 
 + (void)fetchDeviceHardwareInfo:(FetchCompeletion)compeletion {
     __comeletion = compeletion;
-    if (__comeletion)__comeletion(UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY));
+    if (__comeletion) __comeletion(UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY));
+    
 }
 
 + (void)asyncFetchDeviceHardwareInfo {
     dispatch_barrier_async(self.__dataRegistryQueue, ^{
-        NSMutableArray *dataSource = [UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY)?:@[] mutableCopy];
+        NSMutableDictionary *dataSource = [UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY)?:@{} mutableCopy];
         NSMutableDictionary *identiders = [NSMutableDictionary dictionary];
         identiders[@"IDFA"] = [[UIDevice currentDevice] getIDFA]?:@"Unable To Get";
         identiders[@"IDFV"] = [[UIDevice currentDevice] getIDFV]?:@"Unable To Get";
-        [dataSource addObject:identiders];
+        dataSource[DEVICE_IDENTIFIERS_KEY] = identiders;
         NSMutableDictionary *network = [NSMutableDictionary dictionary];
         network[@"Network Type"] = [[UIDevice currentDevice] getNetworkType]?:@"Unable To Get";
         network[@"Wifi Mac Address"] = [[UIDevice currentDevice] getWifiMacAddress]?:@"Unable To Get";
         network[@"IP Address"] = [[UIDevice currentDevice] getIPAddress];
         network[@"Mac Address"] = [[UIDevice currentDevice] getMacAddress]?:@"Unable To Get";
-        [dataSource addObject:network];
+        dataSource[DEVICE_NETWORK_KEY] = network;
         NSMutableDictionary *memory_usage = [NSMutableDictionary dictionary];
         memory_usage[@"Memory Used"] = [NSString stringWithFormat:@"%f",[[UIDevice currentDevice] getUsedMemory]];
         memory_usage[@"Avalible Memory"] = [NSString stringWithFormat:@"%f",[[UIDevice currentDevice] getAvailableMemory]];
-        [dataSource addObject:memory_usage];
+        dataSource[DEVICE_MEMORY_KEY] = memory_usage;
         NSMutableDictionary *system = [NSMutableDictionary dictionary];
         system[@"Operation System"] = [[UIDevice currentDevice] systemName];
         system[@"Device Type"] = [[UIDevice currentDevice] model];
@@ -222,11 +218,11 @@ static FetchCompeletion __comeletion = nil;
         system[@"System Area"] = [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode];
         system[@"System Timezone"] = [NSTimeZone systemTimeZone].description;
         system[@"System Language"] = [[UIDevice currentDevice] getSystemLanguage];
-        [dataSource addObject:system];
+        dataSource[DEVICE_SYSYEM_KEY] = system;
         NSMutableDictionary *app_info = [NSMutableDictionary dictionary];
         app_info[@"App Version"] = [[[NSBundle mainBundle] infoDictionary] valueForKey:@"CFBundleShortVersionString"];
         app_info[@"Bundle Identifier"] = [[NSBundle mainBundle] bundleIdentifier];
-        [dataSource addObject:app_info];
+        dataSource[DEVICE_APPINFO_KEY] = app_info;
         UserDefaultsSetObjectForKey(dataSource, DEVICE_HARDWARE_SOURCE_KEY);
     });
 }
@@ -285,17 +281,17 @@ NSNotificationName const kDisplayBorderEnabled = @"kDisplayBorderEnabled";
 + (void)load {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        ReplaceMethod(self, @selector(didMoveToSuperview), @selector(swizzled_didMoveToSuperview));
+        ReplaceMethod(self, @selector(layoutSubviews), @selector(swizzled_layoutSubviews));
     });
 }
 
-- (void)swizzled_didMoveToSuperview {
+- (void)swizzled_layoutSubviews {
+    [self swizzled_layoutSubviews];
     if (![DebugManager.__cachedClasses.allKeys containsObject:NSStringFromClass(self.class)]) {
         __weak UIView *view = self;
         DebugManager.__cachedClasses[NSStringFromClass(view.class)] = view;
         displayAllSubviewsBorder(view, DebugManager.isDisplayBorderEnabled);
     }
-    [self swizzled_didMoveToSuperview];
 }
 
 @end
