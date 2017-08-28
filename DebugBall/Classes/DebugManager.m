@@ -173,36 +173,6 @@ static FetchCompeletion __comeletion = nil;
 
 @implementation DebugManager (DataRegistry)
 
-+ (void)registerPushToken:(NSString *)token {
-    if (token) {
-        dispatch_barrier_async(self.__dataRegistryQueue, ^{
-            NSMutableDictionary *source = [UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY)?:@{} mutableCopy];
-            NSMutableDictionary *identifers = [source[DEVICE_IDENTIFIERS_KEY]?:@{} mutableCopy];
-            identifers[@"Push Token"] = token;
-            source[DEVICE_IDENTIFIERS_KEY] = identifers;
-            UserDefaultsSetObjectForKey(source, DEVICE_HARDWARE_SOURCE_KEY);
-        });
-    }
-}
-
-+ (void)registerUserDataWithUserID:(NSString *)userID userName:(NSString *)userName userToken:(NSString *)userToken {
-    dispatch_barrier_async(self.__dataRegistryQueue, ^{
-        NSMutableDictionary *source = [UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY)?:@{} mutableCopy];
-        NSMutableDictionary *user_info = [NSMutableDictionary dictionary];
-        user_info[@"User Token"] = userToken?:@"Not Set";
-        user_info[@"User Name"] = userName?:@"Not Set";
-        user_info[@"User ID"] = userID?:@"Not Set";
-        source[DEVICE_USERINFO_KEY] = user_info;
-        UserDefaultsSetObjectForKey(source, DEVICE_HARDWARE_SOURCE_KEY);
-    });
-}
-
-+ (void)fetchDeviceHardwareInfo:(FetchCompeletion)compeletion {
-    __comeletion = compeletion;
-    if (__comeletion) __comeletion(UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY));
-    
-}
-
 + (void)asyncFetchDeviceHardwareInfo {
     dispatch_barrier_async(self.__dataRegistryQueue, ^{
         NSMutableDictionary *dataSource = [UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY)?:@{} mutableCopy];
@@ -235,6 +205,43 @@ static FetchCompeletion __comeletion = nil;
         dataSource[DEVICE_APPINFO_KEY] = app_info;
         UserDefaultsSetObjectForKey(dataSource, DEVICE_HARDWARE_SOURCE_KEY);
     });
+}
+
++ (void)registerPushToken:(NSString *)token {
+    if (token) {
+        dispatch_barrier_async(self.__dataRegistryQueue, ^{
+            NSMutableDictionary *source = [UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY)?:@{} mutableCopy];
+            NSMutableDictionary *identifers = [source[DEVICE_IDENTIFIERS_KEY]?:@{} mutableCopy];
+            identifers[@"Push Token"] = token;
+            source[DEVICE_IDENTIFIERS_KEY] = identifers;
+            UserDefaultsSetObjectForKey(source, DEVICE_HARDWARE_SOURCE_KEY);
+        });
+    }
+}
+
++ (void)registerUserDataWithUserID:(NSString *)userID userName:(NSString *)userName userToken:(NSString *)userToken {
+    dispatch_barrier_async(self.__dataRegistryQueue, ^{
+        NSMutableDictionary *source = [UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY)?:@{} mutableCopy];
+        NSMutableDictionary *user_info = [NSMutableDictionary dictionary];
+        user_info[@"User Token"] = userToken?:@"Not Set";
+        user_info[@"User Name"] = userName?:@"Not Set";
+        user_info[@"User ID"] = userID?:@"Not Set";
+        source[DEVICE_USERINFO_KEY] = user_info;
+        UserDefaultsSetObjectForKey(source, DEVICE_HARDWARE_SOURCE_KEY);
+    });
+}
+
++ (void)fetchDeviceHardwareInfo:(FetchCompeletion)compeletion {
+    __comeletion = compeletion;
+    if (__comeletion) __comeletion(UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY));
+    
+}
+
++ (void)registerDefaultAPIHost:(Domain *)domain andH5APIHost:(Domain *)h5Domain {
+    [self addNewDomain:domain domainType:APIDomainTypeDefault];
+    [self setCurrentDomain:domain type:APIDomainTypeDefault];
+    [self addNewDomain:h5Domain domainType:APIDomainTypeH5];
+    [self setCurrentDomain:h5Domain type:APIDomainTypeH5];
 }
 
 @end
