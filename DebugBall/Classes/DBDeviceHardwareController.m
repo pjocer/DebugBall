@@ -10,7 +10,7 @@
 #import "UIDevice+Hardware.h"
 
 @interface DBDeviceHardwareController ()
-
+@property(nonatomic, strong) QMUIPopupMenuView *popupView;
 @end
 
 @implementation DBDeviceHardwareController
@@ -45,7 +45,32 @@
 }
 
 - (void)displayPopupView:(QMUIStaticTableViewCellData *)data {
-    
+    self.popupView = [[QMUIPopupMenuView alloc] init];
+    self.popupView.automaticallyHidesWhenUserTap = YES;
+    self.popupView.maskViewBackgroundColor = UIColorMaskWhite;
+    self.popupView.maximumWidth = 180;
+    self.popupView.shouldShowItemSeparator = YES;
+    self.popupView.separatorInset = UIEdgeInsetsMake(0, self.popupView.padding.left, 0, self.popupView.padding.right);
+    self.popupView.itemHighlightedBackgroundColor = [UIColor whiteColor];
+    WEAK_SELF
+    self.popupView.items = @[[QMUIPopupMenuItem itemWithImage:nil title:@"Copy The Value" handler:^{
+        STRONG_SELF
+        [self.popupView hideWithAnimated:YES];
+        [[UIPasteboard generalPasteboard] setString:data.detailText];
+        QMUITips *tips = [QMUITips createTipsToView:self.navigationController.view];
+        QMUIToastAnimator *animator = [[QMUIToastAnimator alloc] initWithToastView:tips];
+        animator.animationType = QMUIToastAnimationTypeSlide;
+        tips.toastAnimator = animator;
+        [tips showSucceed:@"Copied" hideAfterDelay:1];
+    }]];
+    QMUITableViewCell *cell = [self.tableView.qmui_staticCellDataSource cellForRowAtIndexPath:data.indexPath];
+    [cell setNeedsLayout];
+    [cell layoutIfNeeded];
+    CGRect frame = [self.tableView rectForRowAtIndexPath:data.indexPath];
+    frame.origin.y = frame.origin.y+NavigationBarHeight+StatusBarHeight-self.tableView.contentOffset.y;
+    frame.origin.x = cell.detailTextLabel.center.x-SCREEN_WIDTH/2.f+(SCREEN_WIDTH-cell.qmui_width);
+    [self.popupView layoutWithTargetRectInScreenCoordinate:frame];
+    [self.popupView showWithAnimated:YES];
 }
 
 #pragma mark -- Override Method
@@ -62,4 +87,5 @@
     [tableView.qmui_staticCellDataSource didSelectRowAtIndexPath:indexPath];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
+
 @end
