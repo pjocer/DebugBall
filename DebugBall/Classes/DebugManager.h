@@ -45,13 +45,6 @@ FOUNDATION_EXTERN NSString * const kAPIHostDidChangedOldValue;
 
 @end
 
-#define DEVICE_USERINFO_KEY     @"User Info"
-#define DEVICE_IDENTIFIERS_KEY  @"Identifiers"
-#define DEVICE_NETWORK_KEY      @"Network"
-#define DEVICE_MEMORY_KEY       @"Memory Used"
-#define DEVICE_SYSYEM_KEY       @"System"
-#define DEVICE_APPINFO_KEY      @"App Info"
-
 /** Intialize the data to display */
 typedef void(^FetchCompeletion)(NSDictionary <NSString *, NSDictionary <NSString *, NSString *> *> *info);
 

@@ -168,6 +168,12 @@ static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *
 @end
 
 #define DEVICE_HARDWARE_SOURCE_KEY @"DEVICE_HARDWARE_SOURCE_KEY"
+#define DEVICE_USERINFO_KEY     @"User Info"
+#define DEVICE_IDENTIFIERS_KEY  @"Identifiers"
+#define DEVICE_NETWORK_KEY      @"Network"
+#define DEVICE_MEMORY_KEY       @"Memory Used"
+#define DEVICE_SYSYEM_KEY       @"System"
+#define DEVICE_APPINFO_KEY      @"App Info"
 
 static FetchCompeletion __comeletion = nil;
 
@@ -242,6 +248,8 @@ static FetchCompeletion __comeletion = nil;
     [self setCurrentDomain:domain type:APIDomainTypeDefault];
     [self addNewDomain:h5Domain domainType:APIDomainTypeH5];
     [self setCurrentDomain:h5Domain type:APIDomainTypeH5];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAPIHostDidChangedNotification object:nil userInfo:@{kAPIHostDidChangedNewValue:domain}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kH5APIHostDidChangedNotification object:nil userInfo:@{kAPIHostDidChangedNewValue:h5Domain}];
 }
 
 @end
