@@ -291,15 +291,7 @@ NSNotificationName const kDisplayBorderEnabled = @"kDisplayBorderEnabled";
 @implementation DebugManager (ActionHandler)
 
 + (void)registerNotification:(NSNotificationName)notification byHandler:(ActionHandler)handler {
-    NSMutableArray *__handlers = [self.__cachedObservers[notification] mutableCopy];
-    if (__handlers) {
-        [__handlers addObject:[handler copy]];
-        self.__cachedObservers[notification] = [__handlers copy];
-    } else {
-        self.__cachedObservers[notification] = @[[handler copy]];
-    }
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    if (![self.__cachedObservers.allKeys containsObject:notification]) {
         WEAK_SELF
         [[NSNotificationCenter defaultCenter] addObserverForName:notification object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
             STRONG_SELF
@@ -308,7 +300,14 @@ NSNotificationName const kDisplayBorderEnabled = @"kDisplayBorderEnabled";
                 cached(note.userInfo);
             }
         }];
-    });
+    }
+    NSMutableArray *__handlers = [self.__cachedObservers[notification] mutableCopy];
+    if (__handlers) {
+        [__handlers addObject:[handler copy]];
+        self.__cachedObservers[notification] = [__handlers copy];
+    } else {
+        self.__cachedObservers[notification] = @[[handler copy]];
+    }
 }
 
 @end
