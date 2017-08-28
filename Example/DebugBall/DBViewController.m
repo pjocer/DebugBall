@@ -28,7 +28,9 @@
     }];
     [DebugManager registerUserDataWithUserID:@"1835724623" userName:@"ghji@i9i8.com" userToken:@"1351-5t5y-326-63423"];
     [DebugManager registerPushToken:@"XXXX-XXXX-XXXX-XXXX-XXXX"];
-    [DebugManager registerDefaultAPIHost:@"www.www.www" andH5APIHost:@"h5.www.www"];
+    [DebugManager registerDefaultAPIHost:@"www.www.www" andH5APIHost:@"h5.www.www" compeletion:^(Domain *APIHost, Domain *H5APIHost) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning

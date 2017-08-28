@@ -243,7 +243,7 @@ static FetchCompeletion __comeletion = nil;
     
 }
 
-+ (void)registerDefaultAPIHost:(Domain *)domain andH5APIHost:(Domain *)h5Domain {
++ (void)registerDefaultAPIHost:(Domain *)domain andH5APIHost:(Domain *)h5Domain compeletion:(void (^)(Domain *, Domain *))compeletion {
     NSArray *domainList = [self domainListWithType:APIDomainTypeDefault];
     NSArray *h5DomainList = [self domainListWithType:APIDomainTypeH5];
     if (domain && ![domainList containsObject:domain]) {
@@ -254,8 +254,7 @@ static FetchCompeletion __comeletion = nil;
         [self addNewDomain:h5Domain domainType:APIDomainTypeH5];
         [self setCurrentDomain:h5Domain type:APIDomainTypeH5];
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:kAPIHostDidChangedNotification object:nil userInfo:@{kAPIHostDidChangedNewValue:[self currentDomainWithType:APIDomainTypeDefault]}];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kH5APIHostDidChangedNotification object:nil userInfo:@{kAPIHostDidChangedNewValue:[self currentDomainWithType:APIDomainTypeH5]}];
+    if (compeletion) compeletion([self currentDomainWithType:APIDomainTypeDefault],[self currentDomainWithType:APIDomainTypeH5]);
 }
 
 @end
