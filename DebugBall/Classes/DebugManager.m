@@ -28,7 +28,8 @@ static NSString *kCurrentH5DomainKey = @"kCurrentH5DomainKey";
 @property (class, nonatomic, strong) DBActionMenuController *__menu;
 @property (class, nonatomic, strong) UINavigationController *__nav;
 @property (class, nonatomic, strong) NSMutableDictionary *__cachedClasses;
-@property (class, nonatomic, copy)dispatch_queue_t __dataRegistryQueue;
+@property (class, nonatomic, copy) dispatch_queue_t __dataRegistryQueue;
+@property (class, nonatomic, strong) NSMutableDictionary *__cachedObservers;
 @end
 
 @implementation DebugManager
@@ -91,6 +92,15 @@ static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *
 }
 
 + (NSMutableDictionary *)__cachedClasses {
+    static dispatch_once_t onceToken;
+    static NSMutableDictionary *instance = nil;
+    dispatch_once(&onceToken, ^{
+        instance = [NSMutableDictionary dictionary];
+    });
+    return instance;
+}
+
++ (NSMutableDictionary *)__cachedObservers {
     static dispatch_once_t onceToken;
     static NSMutableDictionary *instance = nil;
     dispatch_once(&onceToken, ^{
@@ -261,11 +271,24 @@ NSNotificationName const kDisplayBorderEnabled = @"kDisplayBorderEnabled";
 @implementation DebugManager (ActionHandler)
 
 + (void)registerNotification:(NSNotificationName)notification byHandler:(ActionHandler)handler {
-    WEAK_SELF
-    [[NSNotificationCenter defaultCenter] addObserverForName:notification object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
-        STRONG_SELF
-        if (handler) handler(note.userInfo);
-    }];
+    NSMutableArray *__handlers = [self.__cachedObservers[notification] mutableCopy];
+    if (__handlers) {
+        [__handlers addObject:[handler copy]];
+        self.__cachedObservers[notification] = [__handlers copy];
+    } else {
+        self.__cachedObservers[notification] = @[[handler copy]];
+    }
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        WEAK_SELF
+        [[NSNotificationCenter defaultCenter] addObserverForName:notification object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
+            STRONG_SELF
+            NSArray *__handlers = self.__cachedObservers[notification];
+            for (ActionHandler cached in __handlers) {
+                cached(note.userInfo);
+            }
+        }];
+    });
 }
 
 @end
