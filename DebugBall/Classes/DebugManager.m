@@ -244,12 +244,18 @@ static FetchCompeletion __comeletion = nil;
 }
 
 + (void)registerDefaultAPIHost:(Domain *)domain andH5APIHost:(Domain *)h5Domain {
-    [self addNewDomain:domain domainType:APIDomainTypeDefault];
-    [self setCurrentDomain:domain type:APIDomainTypeDefault];
-    [self addNewDomain:h5Domain domainType:APIDomainTypeH5];
-    [self setCurrentDomain:h5Domain type:APIDomainTypeH5];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kAPIHostDidChangedNotification object:nil userInfo:@{kAPIHostDidChangedNewValue:domain}];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kH5APIHostDidChangedNotification object:nil userInfo:@{kAPIHostDidChangedNewValue:h5Domain}];
+    NSArray *domainList = [self domainListWithType:APIDomainTypeDefault];
+    NSArray *h5DomainList = [self domainListWithType:APIDomainTypeH5];
+    if (domain && ![domainList containsObject:domain]) {
+        [self addNewDomain:domain domainType:APIDomainTypeDefault];
+        [self setCurrentDomain:domain type:APIDomainTypeDefault];
+    }
+    if (h5Domain && ![h5DomainList containsObject:h5Domain]) {
+        [self addNewDomain:h5Domain domainType:APIDomainTypeH5];
+        [self setCurrentDomain:h5Domain type:APIDomainTypeH5];
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAPIHostDidChangedNotification object:nil userInfo:@{kAPIHostDidChangedNewValue:[self currentDomainWithType:APIDomainTypeDefault]}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kH5APIHostDidChangedNotification object:nil userInfo:@{kAPIHostDidChangedNewValue:[self currentDomainWithType:APIDomainTypeH5]}];
 }
 
 @end
