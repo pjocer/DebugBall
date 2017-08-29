@@ -26,12 +26,12 @@ static NSString *kCurrentH5DomainKey = @"kCurrentH5DomainKey";
 
 @interface DebugManager ()
 #ifdef DEBUG
-@property (class, nonatomic, strong) DBActionMenuController *__menu;
-@property (class, nonatomic, strong) UINavigationController *__nav;
-@property (class, nonatomic, strong) NSMutableDictionary <NSString *, NSMutableArray<__kindof UIView *> *> *__cachedRenderingViews;
-@property (class, nonatomic, copy) dispatch_queue_t __dataRegistryQueue;
+@property (class, nonatomic, strong, readonly) DBActionMenuController *__menu;
+@property (class, nonatomic, strong, readonly) UINavigationController *__nav;
+@property (class, nonatomic, strong, readonly) NSMutableDictionary <NSString *, NSMutableArray<__kindof UIView *> *> *__cachedRenderingViews;
+@property (class, nonatomic, copy, readonly) dispatch_queue_t __dataRegistryQueue;
 #endif
-@property (class, nonatomic, strong) NSMutableDictionary *__cachedObservers;
+@property (class, nonatomic, strong, readonly) NSMutableDictionary *__cachedObservers;
 @end
 
 @implementation DebugManager
