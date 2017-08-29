@@ -36,6 +36,11 @@ static NSString *kCurrentH5DomainKey = @"kCurrentH5DomainKey";
 
 @implementation DebugManager
 
+@dynamic __menu;
+@dynamic __nav;
+@dynamic __cachedRenderingViews;
+@dynamic __dataRegistryQueue;
+@dynamic __cachedObservers;
 
 static BOOL __show = NO;
 
@@ -218,6 +223,7 @@ static FetchCompeletion __comeletion = nil;
 }
 
 + (void)registerPushToken:(NSString *)token {
+#ifdef DEBUG
     if (token) {
         dispatch_barrier_async(self.__dataRegistryQueue, ^{
             NSMutableDictionary *source = [UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY)?:@{} mutableCopy];
@@ -227,9 +233,11 @@ static FetchCompeletion __comeletion = nil;
             UserDefaultsSetObjectForKey(source, DEVICE_HARDWARE_SOURCE_KEY);
         });
     }
+#endif
 }
 
 + (void)registerUserDataWithUserID:(NSString *)userID userName:(NSString *)userName userToken:(NSString *)userToken {
+#ifdef DEBUG
     dispatch_barrier_async(self.__dataRegistryQueue, ^{
         NSMutableDictionary *source = [UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY)?:@{} mutableCopy];
         NSMutableDictionary *user_info = [NSMutableDictionary dictionary];
@@ -239,6 +247,7 @@ static FetchCompeletion __comeletion = nil;
         source[DEVICE_USERINFO_KEY] = user_info;
         UserDefaultsSetObjectForKey(source, DEVICE_HARDWARE_SOURCE_KEY);
     });
+#endif
 }
 
 + (void)fetchDeviceHardwareInfo:(FetchCompeletion)compeletion {
