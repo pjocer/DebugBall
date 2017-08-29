@@ -36,6 +36,11 @@ static NSString *kCurrentH5DomainKey = @"kCurrentH5DomainKey";
 
 @implementation DebugManager
 
+@dynamic __menu;
+@dynamic __nav;
+@dynamic __cachedRenderingViews;
+@dynamic __dataRegistryQueue;
+@dynamic __cachedObservers;
 
 static BOOL __show = NO;
 
