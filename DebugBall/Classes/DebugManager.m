@@ -25,16 +25,20 @@ static NSString *kCurrentH5DomainKey = @"kCurrentH5DomainKey";
 
 
 @interface DebugManager ()
+#ifdef DEBUG
 @property (class, nonatomic, strong) DBActionMenuController *__menu;
 @property (class, nonatomic, strong) UINavigationController *__nav;
-@property (class, nonatomic, strong) NSMutableDictionary *__cachedClasses;
+@property (class, nonatomic, strong) NSMutableDictionary <NSString *, NSMutableArray<__kindof UIView *> *> *__cachedRenderingViews;
 @property (class, nonatomic, copy) dispatch_queue_t __dataRegistryQueue;
+#endif
 @property (class, nonatomic, strong) NSMutableDictionary *__cachedObservers;
 @end
 
 @implementation DebugManager
 
+
 static BOOL __show = NO;
+
 static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *> *> * __data = nil;
 
 + (void)presentDebugActionMenuController {
@@ -91,9 +95,9 @@ static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *
     return menu;
 }
 
-+ (NSMutableDictionary *)__cachedClasses {
++ (NSMutableDictionary<NSString *,NSMutableArray<UIView *> *> *)__cachedRenderingViews {
     static dispatch_once_t onceToken;
-    static NSMutableDictionary *instance = nil;
+    static NSMutableDictionary<NSString *,NSMutableArray<UIView *> *> *instance = nil;
     dispatch_once(&onceToken, ^{
         instance = [NSMutableDictionary dictionary];
     });
@@ -150,7 +154,7 @@ static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *
 
 + (void)setNeedpushNoticationWithData:(NSDictionary<NSNotificationName,NSDictionary<NSString *,NSString *> *> *)data {
     if (__data) {
-        [__data setValue:data[data.allKeys.firstObject] forKey:data.allKeys.firstObject];
+        [__data addEntriesFromDictionary:data];
     } else {
         __data = [data mutableCopy];
     }
@@ -243,7 +247,26 @@ static FetchCompeletion __comeletion = nil;
     
 }
 
-+ (void)registerDefaultAPIHost:(Domain *)domain andH5APIHost:(Domain *)h5Domain compeletion:(void (^)(Domain *, Domain *))compeletion {
++ (void)registerDefaultAPIHosts:(NSArray<Domain *> *)domains andH5APIHosts:(NSArray<Domain *> *)h5Domains {
+    NSArray *domainList = [self domainListWithType:APIDomainTypeDefault];
+    NSArray *h5DomainList = [self domainListWithType:APIDomainTypeH5];
+    if (domains && ![domainList containsObject:domains[0]]) {
+        [domains enumerateObjectsUsingBlock:^(Domain * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [self addNewDomain:obj domainType:APIDomainTypeDefault];
+        }];
+        [self setCurrentDomain:domains[0] type:APIDomainTypeDefault];
+    }
+    if (h5Domains && ![h5DomainList containsObject:h5Domains[0]]) {
+        [h5Domains enumerateObjectsUsingBlock:^(Domain * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [self addNewDomain:obj domainType:APIDomainTypeH5];
+        }];
+        [self setCurrentDomain:domains[0] type:APIDomainTypeH5];
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAPIHostDidChangedNotification object:nil userInfo:@{kAPIHostDidChangedNewValue:domains[0]}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kH5APIHostDidChangedNotification object:nil userInfo:@{kAPIHostDidChangedNewValue:h5Domains[0]}];
+}
+
++ (void)registerDefaultAPIHost:(Domain *)domain andH5APIHost:(Domain *)h5Domain {
     NSArray *domainList = [self domainListWithType:APIDomainTypeDefault];
     NSArray *h5DomainList = [self domainListWithType:APIDomainTypeH5];
     if (domain && ![domainList containsObject:domain]) {
@@ -254,7 +277,8 @@ static FetchCompeletion __comeletion = nil;
         [self addNewDomain:h5Domain domainType:APIDomainTypeH5];
         [self setCurrentDomain:h5Domain type:APIDomainTypeH5];
     }
-    if (compeletion) compeletion([self currentDomainWithType:APIDomainTypeDefault],[self currentDomainWithType:APIDomainTypeH5]);
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAPIHostDidChangedNotification object:nil userInfo:@{kAPIHostDidChangedNewValue:domain}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kH5APIHostDidChangedNotification object:nil userInfo:@{kAPIHostDidChangedNewValue:h5Domain}];
 }
 
 @end
@@ -262,19 +286,27 @@ static FetchCompeletion __comeletion = nil;
 @implementation DebugManager (DebugView)
 
 + (void)installDebugViewByDefault {
+#ifdef DEBUG
     DebugView.debugView.commitTapAction(kDebugViewTapActionDisplayActionMenu).show();
     [self asyncFetchDeviceHardwareInfo];
     WEAK_SELF
     [[NSNotificationCenter defaultCenter] addObserverForName:kDisplayBorderEnabled object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
         STRONG_SELF
-        [self.__cachedClasses enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-            displayAllSubviewsBorder(obj, [note.object boolValue]);
-        }];
+        @autoreleasepool {
+            [self.__cachedRenderingViews enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSMutableArray<__kindof UIView *> * _Nonnull objs, BOOL * _Nonnull stop) {
+                [objs enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        displayAllSubviewsBorder(obj, [note.object boolValue]);
+                    });
+                }];
+            }];
+        }
     }];
     [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillTerminateNotification object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
         STRONG_SELF
         UserDefaultsSetObjectForKey(nil, DEVICE_HARDWARE_SOURCE_KEY);
     }];
+#endif
 }
 
 + (void)uninstallDebugView {
@@ -297,7 +329,9 @@ NSNotificationName const kDisplayBorderEnabled = @"kDisplayBorderEnabled";
             STRONG_SELF
             NSArray *__handlers = self.__cachedObservers[notification];
             for (ActionHandler cached in __handlers) {
-                cached(note.userInfo);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    cached(note.userInfo);
+                });
             }
         }];
     }
@@ -313,7 +347,7 @@ NSNotificationName const kDisplayBorderEnabled = @"kDisplayBorderEnabled";
 @end
 
 
-
+#ifdef DEBUG
 @interface UIView (DisplayBorder)
 
 @end
@@ -321,19 +355,57 @@ NSNotificationName const kDisplayBorderEnabled = @"kDisplayBorderEnabled";
 @implementation UIView (DisplayBorder)
 
 + (void)load {
+
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        ReplaceMethod(self, @selector(layoutSubviews), @selector(swizzled_layoutSubviews));
+        ReplaceMethod(self, @selector(init), @selector(swizlle_init));
+        ReplaceMethod(self, @selector(initWithCoder:), @selector(swizlle_initWithCoder:));
+        ReplaceMethod(self, @selector(initWithFrame:), @selector(swizzle_initWithFrame:));
+        ReplaceMethod(self, @selector(removeFromSuperview), @selector(swizlle_removeFromSuperview));
     });
 }
 
-- (void)swizzled_layoutSubviews {
-    [self swizzled_layoutSubviews];
-    if (![DebugManager.__cachedClasses.allKeys containsObject:NSStringFromClass(self.class)]) {
-        __weak UIView *view = self;
-        DebugManager.__cachedClasses[NSStringFromClass(view.class)] = view;
-        displayAllSubviewsBorder(view, DebugManager.isDisplayBorderEnabled);
+- (void)swizlle_removeFromSuperview {
+    [self swizlle_removeFromSuperview];
+    __weak UIView *view = self;
+    if ([(NSMutableArray *)DebugManager.__cachedRenderingViews[NSStringFromClass(self.class)] containsObject:view]) {
+        [(NSMutableArray *)DebugManager.__cachedRenderingViews[NSStringFromClass(self.class)] removeObject:view];
     }
 }
 
+- (instancetype)swizzle_initWithFrame:(CGRect)frame {
+    UIView *view = [self swizzle_initWithFrame:frame];
+    __weak typeof(view)wView = view;
+    [wView cachedIfNeeded];
+    __strong typeof(wView)sView = wView;
+    return sView;
+}
+
+- (instancetype)swizlle_initWithCoder:(NSCoder *)aDecoder {
+    UIView *view = [self swizlle_initWithCoder:aDecoder];
+    __weak typeof(view)wView = view;
+    [wView cachedIfNeeded];
+    __strong typeof(wView)sView = wView;
+    return sView;
+}
+
+- (instancetype)swizlle_init {
+    UIView *view = [self swizlle_init];
+    __weak typeof(view)wView = view;
+    [wView cachedIfNeeded];
+    __strong typeof(wView)sView = wView;
+    return sView;
+}
+- (void)cachedIfNeeded {
+    if (![DebugManager.__cachedRenderingViews.allKeys containsObject:NSStringFromClass(self.class)]) {
+        DebugManager.__cachedRenderingViews[NSStringFromClass(self.class)] = [NSMutableArray array];
+    }
+    NSMutableArray *cachedViews = DebugManager.__cachedRenderingViews[NSStringFromClass(self.class)];
+    if (cachedViews && ![cachedViews containsObject:self]) {
+        [cachedViews addObject:self];
+        DebugManager.__cachedRenderingViews[NSStringFromClass(self.class)] = cachedViews;
+        displayAllSubviewsBorder(self, DebugManager.isDisplayBorderEnabled);
+    }
+}
 @end
+#endif

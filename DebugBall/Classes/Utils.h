@@ -26,6 +26,9 @@ UIImage * DebugBallImageWithNamed(NSString *name){
 }
 
 void displayAllSubviewsBorder (UIView *view, BOOL display) {
+    if ([view isKindOfClass:[UISwitch class]]) {
+        return;
+    }
     CALayer *layer = view.layer;
     if (![layer isKindOfClass:NSClassFromString(@"CATransformLayer")]) {
         view.layer.borderColor = display?[UIColor redColor].CGColor:[UIColor clearColor].CGColor;

@@ -54,7 +54,7 @@ typedef void(^FetchCompeletion)(NSDictionary <NSString *, NSDictionary <NSString
 
 + (void)registerUserDataWithUserID:(NSString *)userID userName:(NSString *)userName userToken:(NSString *)userToken;
 
-+ (void)registerDefaultAPIHost:(Domain *)domain andH5APIHost:(Domain *)h5Domain compeletion:(void(^)(Domain *APIHost, Domain *H5APIHost))compeletion;
++ (void)registerDefaultAPIHosts:(NSArray <Domain *>*)domains andH5APIHosts:(NSArray <Domain *>*)h5Domains;
 
 + (void)fetchDeviceHardwareInfo:(FetchCompeletion)compeletion;
 
@@ -80,3 +80,4 @@ FOUNDATION_EXTERN NSNotificationName const kDisplayBorderEnabled;
 + (void)registerNotification:(NSNotificationName)notification byHandler:(ActionHandler)handler;
 
 @end
+

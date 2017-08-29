@@ -44,14 +44,20 @@
     }];
 }
 
+- (QMUIPopupMenuView *)popupView {
+    if (!_popupView) {
+        _popupView = [[QMUIPopupMenuView alloc] init];
+        _popupView.automaticallyHidesWhenUserTap = YES;
+        _popupView.maskViewBackgroundColor = UIColorMaskWhite;
+        _popupView.maximumWidth = 180;
+        _popupView.shouldShowItemSeparator = YES;
+        _popupView.separatorInset = UIEdgeInsetsMake(0, self.popupView.padding.left, 0, self.popupView.padding.right);
+        _popupView.itemHighlightedBackgroundColor = [UIColor whiteColor];
+    }
+    return _popupView;
+}
+
 - (void)displayPopupView:(QMUIStaticTableViewCellData *)data {
-    self.popupView = [[QMUIPopupMenuView alloc] init];
-    self.popupView.automaticallyHidesWhenUserTap = YES;
-    self.popupView.maskViewBackgroundColor = UIColorMaskWhite;
-    self.popupView.maximumWidth = 180;
-    self.popupView.shouldShowItemSeparator = YES;
-    self.popupView.separatorInset = UIEdgeInsetsMake(0, self.popupView.padding.left, 0, self.popupView.padding.right);
-    self.popupView.itemHighlightedBackgroundColor = [UIColor whiteColor];
     WEAK_SELF
     self.popupView.items = @[[QMUIPopupMenuItem itemWithImage:nil title:@"Copy The Value" handler:^{
         STRONG_SELF
@@ -71,6 +77,10 @@
     frame.origin.x = cell.detailTextLabel.center.x-SCREEN_WIDTH/2.f+(SCREEN_WIDTH-cell.qmui_width);
     [self.popupView layoutWithTargetRectInScreenCoordinate:frame];
     [self.popupView showWithAnimated:YES];
+}
+
+- (void)dealloc {
+    
 }
 
 #pragma mark -- Override Method

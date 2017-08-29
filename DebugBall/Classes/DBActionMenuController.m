@@ -195,6 +195,10 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayBorderEnabled object:@(enabled)];
 }
 
+- (void)dealloc {
+    
+}
+
 #pragma mark -- Tool Method
 
 - (void)reloadIndexPaths:(NSArray <NSIndexPath *> *)indexPaths {
