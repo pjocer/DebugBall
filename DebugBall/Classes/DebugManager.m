@@ -265,7 +265,7 @@ static FetchCompeletion __comeletion = nil;
             [h5Domains enumerateObjectsUsingBlock:^(Domain * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 [self addNewDomain:obj domainType:APIDomainTypeH5];
             }];
-            [self setCurrentDomain:domains[0] type:APIDomainTypeH5];
+            [self setCurrentDomain:h5Domains[0] type:APIDomainTypeH5];
         }
     });
     if (compeletion) compeletion();

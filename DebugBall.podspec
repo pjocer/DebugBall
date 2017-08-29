@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'DebugBall'
-  s.version          = '0.4.8'
+  s.version          = '0.4.9'
   s.summary          = '一个轻量级的Debug调试工具，一键设置API Host/H5 API Host,以及其它的一些Debug UI调试工具'
 
 # This description is used to generate tags and improve search results.
@@ -39,5 +39,5 @@ TODO: Add long description of the pod here.
     s.public_header_files = 'DebugBall/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.3'
-    s.dependency 'QMUIKit'
+    s.dependency 'QMUIKit', '~> 1.7.6'
 end
