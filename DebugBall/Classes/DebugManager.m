@@ -268,7 +268,9 @@ static FetchCompeletion __comeletion = nil;
             [self setCurrentDomain:domains[0] type:APIDomainTypeH5];
         }
     });
-    if (compeletion)compeletion();
+    if (compeletion) compeletion();
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAPIHostDidChangedNotification object:@{kAPIHostDidChangedNewValue:[self currentDomainWithType:APIDomainTypeDefault]}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kH5APIHostDidChangedNotification object:@{kAPIHostDidChangedNewValue:[self currentDomainWithType:APIDomainTypeH5]}];
 }
 
 @end
