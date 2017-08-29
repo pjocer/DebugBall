@@ -251,23 +251,20 @@ static FetchCompeletion __comeletion = nil;
 }
 
 + (void)registerDefaultAPIHosts:(NSArray<Domain *> *)domains andH5APIHosts:(NSArray<Domain *> *)h5Domains compeletion:(dispatch_block_t)compeletion {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSArray *domainList = [self domainListWithType:APIDomainTypeDefault];
-        NSArray *h5DomainList = [self domainListWithType:APIDomainTypeH5];
-        if (domains) {
-            [domains enumerateObjectsUsingBlock:^(Domain * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                [self addNewDomain:obj domainType:APIDomainTypeDefault];
-            }];
-            [self setCurrentDomain:domains[0] type:APIDomainTypeDefault];
-        }
-        if (h5Domains) {
-            [h5Domains enumerateObjectsUsingBlock:^(Domain * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                [self addNewDomain:obj domainType:APIDomainTypeH5];
-            }];
-            [self setCurrentDomain:h5Domains[0] type:APIDomainTypeH5];
-        }
-    });
+    NSArray *domainList = [self domainListWithType:APIDomainTypeDefault];
+    NSArray *h5DomainList = [self domainListWithType:APIDomainTypeH5];
+    if (domains && ![domainList containsObject:domains[0]]) {
+        [domains enumerateObjectsUsingBlock:^(Domain * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [self addNewDomain:obj domainType:APIDomainTypeDefault];
+        }];
+        [self setCurrentDomain:domains[0] type:APIDomainTypeDefault];
+    }
+    if (h5Domains && ![h5DomainList containsObject:h5Domains[0]]) {
+        [h5Domains enumerateObjectsUsingBlock:^(Domain * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [self addNewDomain:obj domainType:APIDomainTypeH5];
+        }];
+        [self setCurrentDomain:h5Domains[0] type:APIDomainTypeH5];
+    }
     if (compeletion) compeletion();
     [[NSNotificationCenter defaultCenter] postNotificationName:kAPIHostDidChangedNotification object:@{kAPIHostDidChangedNewValue:[self currentDomainWithType:APIDomainTypeDefault]}];
     [[NSNotificationCenter defaultCenter] postNotificationName:kH5APIHostDidChangedNotification object:@{kAPIHostDidChangedNewValue:[self currentDomainWithType:APIDomainTypeH5]}];

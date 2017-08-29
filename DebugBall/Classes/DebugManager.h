@@ -53,7 +53,7 @@ typedef void(^FetchCompeletion)(NSDictionary <NSString *, NSDictionary <NSString
 + (void)registerPushToken:(NSString *)token;
 
 + (void)registerUserDataWithUserID:(NSString *)userID userName:(NSString *)userName userToken:(NSString *)userToken;
-
+/** Will post kAPIHostDidChangedNotification and kH5APIHostDidChangedNotification after compeletion block */
 + (void)registerDefaultAPIHosts:(NSArray <Domain *>*)domains andH5APIHosts:(NSArray <Domain *>*)h5Domains compeletion:(dispatch_block_t)compeletion;
 
 + (void)fetchDeviceHardwareInfo:(FetchCompeletion)compeletion;
