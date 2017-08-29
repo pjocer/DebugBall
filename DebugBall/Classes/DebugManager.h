@@ -54,7 +54,7 @@ typedef void(^FetchCompeletion)(NSDictionary <NSString *, NSDictionary <NSString
 
 + (void)registerUserDataWithUserID:(NSString *)userID userName:(NSString *)userName userToken:(NSString *)userToken;
 
-+ (void)registerDefaultAPIHosts:(NSArray <Domain *>*)domains andH5APIHosts:(NSArray <Domain *>*)h5Domains;
++ (void)registerDefaultAPIHosts:(NSArray <Domain *>*)domains andH5APIHosts:(NSArray <Domain *>*)h5Domains compeletion:(dispatch_block_t)compeletion;
 
 + (void)fetchDeviceHardwareInfo:(FetchCompeletion)compeletion;
 
