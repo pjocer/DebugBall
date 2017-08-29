@@ -183,6 +183,7 @@
 
 - (void)displayDeviceHardwareDetails {
     DBDeviceHardwareController *vc = [[DBDeviceHardwareController alloc] initWithStyle:UITableViewStyleGrouped];
+    vc.navigationItem.title = @"Device Hardware";
     [self.navigationController pushViewController:vc animated:YES];
 }
 
