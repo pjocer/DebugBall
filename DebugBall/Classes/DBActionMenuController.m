@@ -26,7 +26,7 @@
         d.didSelectAction = @selector(displayAPIDomainList);
         d.height = TableViewCellNormalHeight + 6;
         d.text = @"API Domain";
-        d.detailText = [DebugManager currentDomainWithType:APIDomainTypeDefault];
+        d.detailText = [DebugManager currentDomainWithType:APIDomainTypeDefault]?:@"Not Set";
         d;
     }),
                                                                                                                               ({
@@ -38,7 +38,7 @@
         d.didSelectAction = @selector(displayH5APIDomainList);
         d.height = TableViewCellNormalHeight + 6;
         d.text = @"H5-API Domain";
-        d.detailText = [DebugManager currentDomainWithType:APIDomainTypeH5];
+        d.detailText = [DebugManager currentDomainWithType:APIDomainTypeH5]?:@"Not Set";
         d;
     })],
                                                                                                                           @[
@@ -74,7 +74,7 @@
 - (NSInteger)normalSelectedIndex {
     NSArray *list = [DebugManager domainListWithType:APIDomainTypeDefault];
     NSString *domain = [DebugManager currentDomainWithType:APIDomainTypeDefault];
-    if ([domain isEqualToString:@"Not Set"] || list.count==0) {
+    if (!domain || list.count==0) {
         return -1;
     } else if ([list containsObject:domain]) {
         return [list indexOfObject:domain];
@@ -85,7 +85,7 @@
 - (NSInteger)h5SelectedIndex {
     NSArray *list = [DebugManager domainListWithType:APIDomainTypeH5];
     NSString *domain = [DebugManager currentDomainWithType:APIDomainTypeH5];
-    if ([domain isEqualToString:@"Not Set"] || list.count==0) {
+    if (!domain || list.count==0) {
         return -1;
     } else if ([list containsObject:domain]) {
         return [list indexOfObject:domain];

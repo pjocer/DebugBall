@@ -20,6 +20,9 @@ typedef NS_ENUM(NSInteger, APIDomainType) {
 FOUNDATION_EXTERN NSNotificationName const kAPIHostDidChangedNotification;
 FOUNDATION_EXTERN NSNotificationName const kH5APIHostDidChangedNotification;
 
+// Include an NSNumber object,post when status of enable displaying border changed.
+FOUNDATION_EXTERN NSNotificationName const kDisplayBorderEnabled;
+
 FOUNDATION_EXTERN NSString * const kAPIHostDidChangedNewValue;
 FOUNDATION_EXTERN NSString * const kAPIHostDidChangedOldValue;
 
@@ -54,7 +57,7 @@ typedef void(^FetchCompeletion)(NSDictionary <NSString *, NSDictionary <NSString
 
 + (void)registerUserDataWithUserID:(NSString *)userID userName:(NSString *)userName userToken:(NSString *)userToken;
 /** Will post kAPIHostDidChangedNotification and kH5APIHostDidChangedNotification after compeletion block */
-+ (void)registerDefaultAPIHosts:(NSArray <Domain *>*)domains andH5APIHosts:(NSArray <Domain *>*)h5Domains compeletion:(dispatch_block_t)compeletion;
++ (void)registerDefaultAPIHosts:(NSArray <Domain *>*)domains andH5APIHosts:(NSArray <Domain *>*)h5Domains;
 
 + (void)fetchDeviceHardwareInfo:(FetchCompeletion)compeletion;
 
@@ -70,14 +73,4 @@ typedef void(^FetchCompeletion)(NSDictionary <NSString *, NSDictionary <NSString
 @end
 
 typedef void (^ActionHandler)(NSDictionary *info);
-
-// Include an NSNumber object,post when status of enable displaying border changed.
-FOUNDATION_EXTERN NSNotificationName const kDisplayBorderEnabled;
-
-/** Handle actions if user registered */
-@interface DebugManager (ActionHandler)
-
-+ (void)registerNotification:(NSNotificationName)notification byHandler:(ActionHandler)handler;
-
-@end
 

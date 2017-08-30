@@ -14,6 +14,7 @@
 
 NSNotificationName const kAPIHostDidChangedNotification = @"kAPIHostDidChangedNotification";
 NSNotificationName const kH5APIHostDidChangedNotification = @"kH5APIHostDidChangedNotification";
+NSNotificationName const kDisplayBorderEnabled = @"kDisplayBorderEnabled";
 
 NSString * const kAPIHostDidChangedNewValue = @"kAPIHostDidChangedNewValue";
 NSString * const kAPIHostDidChangedOldValue = @"kAPIHostDidChangedOldValue";
@@ -31,7 +32,6 @@ static NSString *kCurrentH5DomainKey = @"kCurrentH5DomainKey";
 @property (class, nonatomic, strong, readonly) NSMutableDictionary <NSString *, NSMutableArray<__kindof UIView *> *> *__cachedRenderingViews;
 @property (class, nonatomic, copy, readonly) dispatch_queue_t __dataRegistryQueue;
 #endif
-@property (class, nonatomic, strong, readonly) NSMutableDictionary *__cachedObservers;
 @end
 
 @implementation DebugManager
@@ -103,15 +103,6 @@ static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *
     return instance;
 }
 
-+ (NSMutableDictionary *)__cachedObservers {
-    static dispatch_once_t onceToken;
-    static NSMutableDictionary *instance = nil;
-    dispatch_once(&onceToken, ^{
-        instance = [NSMutableDictionary dictionary];
-    });
-    return instance;
-}
-
 + (dispatch_queue_t)__dataRegistryQueue {
     static dispatch_once_t onceToken;
     static dispatch_queue_t t = nil;
@@ -144,7 +135,7 @@ static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *
 }
 
 + (Domain *)currentDomainWithType:(APIDomainType)type {
-    return UserDefaultsObjectForKey(type==APIDomainTypeDefault?kCurrentDomainKey:kCurrentH5DomainKey)?:@"Not Set";
+    return UserDefaultsObjectForKey(type==APIDomainTypeDefault?kCurrentDomainKey:kCurrentH5DomainKey);
 }
 
 + (BOOL)setCurrentDomain:(Domain *)domain type:(APIDomainType)type {
@@ -250,7 +241,7 @@ static FetchCompeletion __comeletion = nil;
     
 }
 
-+ (void)registerDefaultAPIHosts:(NSArray<Domain *> *)domains andH5APIHosts:(NSArray<Domain *> *)h5Domains compeletion:(dispatch_block_t)compeletion {
++ (void)registerDefaultAPIHosts:(NSArray<Domain *> *)domains andH5APIHosts:(NSArray<Domain *> *)h5Domains {
     NSArray *domainList = [self domainListWithType:APIDomainTypeDefault];
     NSArray *h5DomainList = [self domainListWithType:APIDomainTypeH5];
     if (domains && ![domainList containsObject:domains[0]]) {
@@ -264,9 +255,6 @@ static FetchCompeletion __comeletion = nil;
             [self addNewDomain:obj domainType:APIDomainTypeH5];
         }];
         [self setCurrentDomain:h5Domains[0] type:APIDomainTypeH5];
-    }
-    if (compeletion) {
-        compeletion();
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:kAPIHostDidChangedNotification object:nil userInfo:@{kAPIHostDidChangedNewValue:[self currentDomainWithType:APIDomainTypeDefault]}];
     [[NSNotificationCenter defaultCenter] postNotificationName:kH5APIHostDidChangedNotification object:nil userInfo:@{kAPIHostDidChangedNewValue:[self currentDomainWithType:APIDomainTypeH5]}];
@@ -305,34 +293,6 @@ static FetchCompeletion __comeletion = nil;
         DebugView.debugView.dismiss();
         UserDefaultsSetObjectForKey(nil, DEVICE_HARDWARE_SOURCE_KEY);
     });
-}
-
-@end
-
-NSNotificationName const kDisplayBorderEnabled = @"kDisplayBorderEnabled";
-
-@implementation DebugManager (ActionHandler)
-
-+ (void)registerNotification:(NSNotificationName)notification byHandler:(ActionHandler)handler {
-    if (![self.__cachedObservers.allKeys containsObject:notification]) {
-        WEAK_SELF
-        [[NSNotificationCenter defaultCenter] addObserverForName:notification object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
-            STRONG_SELF
-            NSArray *__handlers = self.__cachedObservers[notification];
-            for (ActionHandler cached in __handlers) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    cached(note.userInfo);
-                });
-            }
-        }];
-    }
-    NSMutableArray *__handlers = [self.__cachedObservers[notification] mutableCopy];
-    if (__handlers) {
-        [__handlers addObject:[handler copy]];
-        self.__cachedObservers[notification] = [__handlers copy];
-    } else {
-        self.__cachedObservers[notification] = @[[handler copy]];
-    }
 }
 
 @end
