@@ -350,16 +350,7 @@ NSNotificationName const kDisplayBorderEnabled = @"kDisplayBorderEnabled";
         ReplaceMethod(self, @selector(init), @selector(swizlle_init));
         ReplaceMethod(self, @selector(initWithCoder:), @selector(swizlle_initWithCoder:));
         ReplaceMethod(self, @selector(initWithFrame:), @selector(swizzle_initWithFrame:));
-        ReplaceMethod(self, @selector(removeFromSuperview), @selector(swizlle_removeFromSuperview));
     });
-}
-
-- (void)swizlle_removeFromSuperview {
-    [self swizlle_removeFromSuperview];
-    __weak UIView *view = self;
-    if ([(NSMutableArray *)DebugManager.__cachedRenderingViews[NSStringFromClass(self.class)] containsObject:view]) {
-        [(NSMutableArray *)DebugManager.__cachedRenderingViews[NSStringFromClass(self.class)] removeObject:view];
-    }
 }
 
 - (instancetype)swizzle_initWithFrame:(CGRect)frame {
