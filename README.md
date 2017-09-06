@@ -22,10 +22,29 @@ pod "DebugBall"
 
 ## Usage
 
+** Commit API Domains **
+
 ```objc
-#ifdef DEBUG
-DebugView.debugView.commitTapAction(kDebugViewTapActionDisplayBorder).show();
-#endif
+[DebugManager registerDefaultAPIHosts:NSArray<Domain *> * andH5APIHosts:NSArray<Domain *> *];
+```
+
+** Commit User Info **
+
+```objc
+[DebugManager registerUserDataWithUserID:<NSString *> userName:<NSString *> userToken:<NSString *>;
+```
+
+** Commit APNs Token **
+
+```objc
+[DebugManager registerPushToken:<NSString *>];
+```
+
+** Install DebugBall after the key-window of application did initialized **
+
+```objc
+[self.window makeKeyAndVisible];
+[DebugManager installDebugViewByDefault];
 ```
 
 **Discussion**
