@@ -169,16 +169,8 @@
     [self displayAPIDomainListWithType:APIDomainTypeDefault];
 }
 
-- (void)displayAddAPIDomainDialog {
-    
-}
-
 - (void)displayH5APIDomainList {
     [self displayAPIDomainListWithType:APIDomainTypeH5];
-}
-
-- (void)displayH5AddAPIDomainDialog {
-    
 }
 
 - (void)displayDeviceHardwareDetails {
@@ -199,7 +191,7 @@
     
 }
 
-#pragma mark -- Tool Method
+#pragma mark -- Private Method
 
 - (void)reloadIndexPaths:(NSArray <NSIndexPath *> *)indexPaths {
     [self.tableView beginUpdates];

@@ -12,17 +12,17 @@
 #import "DBActionMenuController.h"
 #import <QMUIKit/QMUIKit.h>
 
-NSNotificationName const kAPIHostDidChangedNotification = @"kAPIHostDidChangedNotification";
-NSNotificationName const kH5APIHostDidChangedNotification = @"kH5APIHostDidChangedNotification";
-NSNotificationName const kDisplayBorderEnabled = @"kDisplayBorderEnabled";
+NSNotificationName const kAPIHostDidChangedNotification     = @"kAPIHostDidChangedNotification";
+NSNotificationName const kH5APIHostDidChangedNotification   = @"kH5APIHostDidChangedNotification";
+NSNotificationName const kDisplayBorderEnabled              = @"kDisplayBorderEnabled";
 
 NSString * const kAPIHostDidChangedNewValue = @"kAPIHostDidChangedNewValue";
 NSString * const kAPIHostDidChangedOldValue = @"kAPIHostDidChangedOldValue";
 
-static NSString * kDomainListKey = @"kDomainListKey";
-static NSString * kH5DomainListKey = @"kH5DomainListKey";
-static NSString *kCurrentDomainKey = @"kCurrentDomainKey";
-static NSString *kCurrentH5DomainKey = @"kCurrentH5DomainKey";
+static NSString * kDomainListKey        = @"kDomainListKey";
+static NSString * kH5DomainListKey      = @"kH5DomainListKey";
+static NSString * kCurrentDomainKey     = @"kCurrentDomainKey";
+static NSString * kCurrentH5DomainKey   = @"kCurrentH5DomainKey";
 
 
 @interface DebugManager ()

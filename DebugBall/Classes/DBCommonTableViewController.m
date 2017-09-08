@@ -59,7 +59,7 @@
 @implementation DBCommonTableViewController (UISubclassingHooks)
 
 - (void)initDataSource {
-    
+    NSCAssert(![self isMemberOfClass:self.class], @"%@ is an abstract class, you should not instantiate it directly.", NSStringFromClass(self.class));
 }
 
 @end
