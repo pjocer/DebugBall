@@ -53,7 +53,10 @@ static NSString *kIdentifier = @"networkInfoCell";
         cell.detailTextLabel.font = UIFontMake(13);
     }
     NSDictionary *info = self.dataSource[indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ : %@",info[@"Type"],info[@"Method"]];
+    NSString *text = [NSString stringWithFormat:@"%@ : %@",info[@"Method"],info[@"Type"]];
+    NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:text];
+    [attr addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0, [info[@"Method"] length])];
+    cell.textLabel.attributedText = attr;
     cell.detailTextLabel.text = info[@"URL"];
     return cell;
 }

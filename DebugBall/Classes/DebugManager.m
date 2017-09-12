@@ -245,6 +245,9 @@ static void (^__snifferring)(NSDictionary<NSString *,NSString *> *) = nil;
                                   @"Method":request.HTTPMethod,
                                   @"Type":type==APIDomainTypeH5?@"WebView Request":@"API Request"};
     [requestInfos insertObject:requestInfo atIndex:0];
+    if (requestInfos.count > 50) {
+        [requestInfos removeLastObject];
+    }
     UserDefaultsSetObjectForKey(requestInfos, DEVICE_NETWORK_SOURCE_KEY);
     if (__snifferring) __snifferring(requestInfo);
 #endif
