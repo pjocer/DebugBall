@@ -15,15 +15,17 @@
 NSNotificationName const kAPIHostDidChangedNotification     = @"kAPIHostDidChangedNotification";
 NSNotificationName const kH5APIHostDidChangedNotification   = @"kH5APIHostDidChangedNotification";
 NSNotificationName const kDisplayBorderEnabled              = @"kDisplayBorderEnabled";
+NSNotificationName const kDebugBallAutoHidden               = @"kDebugBallAutoHidden";
+
 
 NSString * const kAPIHostDidChangedNewValue = @"kAPIHostDidChangedNewValue";
 NSString * const kAPIHostDidChangedOldValue = @"kAPIHostDidChangedOldValue";
 
-static NSString * kDomainListKey        = @"kDomainListKey";
-static NSString * kH5DomainListKey      = @"kH5DomainListKey";
-static NSString * kCurrentDomainKey     = @"kCurrentDomainKey";
-static NSString * kCurrentH5DomainKey   = @"kCurrentH5DomainKey";
-
+static NSString * kDomainListKey            = @"kDomainListKey";
+static NSString * kH5DomainListKey          = @"kH5DomainListKey";
+static NSString * kCurrentDomainKey         = @"kCurrentDomainKey";
+static NSString * kCurrentH5DomainKey       = @"kCurrentH5DomainKey";
+static NSString * kHasInstalledDebugBall    = @"kHasInstalledDebugBall";
 
 @interface DebugManager ()
 #ifdef DEBUG
@@ -159,6 +161,15 @@ static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *
     return [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
++ (BOOL)isDebugBallAutoHidden {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kDebugBallAutoHidden];
+}
+
++ (BOOL)setDebugBallAutoHidden:(BOOL)enabled {
+    [[NSUserDefaults standardUserDefaults] setBool:enabled forKey:kDebugBallAutoHidden];
+    return [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 @end
 
 #define DEVICE_HARDWARE_SOURCE_KEY @"DEVICE_HARDWARE_SOURCE_KEY"
@@ -288,9 +299,13 @@ static void (^__snifferring)(NSDictionary<NSString *,NSString *> *) = nil;
 
 @implementation DebugManager (DebugView)
 
-+ (void)installDebugViewByDefault {
++ (void)installDebugView {
 #ifdef DEBUG
-    DebugView.debugView.commitTapAction(kDebugViewTapActionDisplayActionMenu).show();
+    if (![UserDefaultsObjectForKey(kHasInstalledDebugBall) boolValue]) {
+        [self setDebugBallAutoHidden:YES];
+    }
+    DebugView.debugView.autoHidden([self isDebugBallAutoHidden]).commitTapAction(kDebugViewTapActionDisplayActionMenu).show();
+    UserDefaultsSetObjectForKey(@(YES), kHasInstalledDebugBall);
     [self asyncFetchDeviceHardwareInfo];
     WEAK_SELF
     [[NSNotificationCenter defaultCenter] addObserverForName:kDisplayBorderEnabled object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
@@ -308,15 +323,25 @@ static void (^__snifferring)(NSDictionary<NSString *,NSString *> *) = nil;
     [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillTerminateNotification object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
         STRONG_SELF
         UserDefaultsSetObjectForKey(nil, DEVICE_HARDWARE_SOURCE_KEY);
+        UserDefaultsSetObjectForKey(nil, DEVICE_NETWORK_SOURCE_KEY);
     }];
 #endif
 }
 
 + (void)uninstallDebugView {
+#ifdef DEBUG
     dispatch_async(dispatch_get_main_queue(), ^{
         DebugView.debugView.dismiss();
         UserDefaultsSetObjectForKey(nil, DEVICE_HARDWARE_SOURCE_KEY);
+        UserDefaultsSetObjectForKey(nil, DEVICE_NETWORK_SOURCE_KEY);
     });
+#endif
+}
+
++ (void)resetDebugBallAutoHidden {
+#ifdef DEBUG
+    DebugView.debugView.autoHidden([self isDebugBallAutoHidden]);
+#endif
 }
 
 @end

@@ -46,6 +46,10 @@ FOUNDATION_EXTERN NSString * const kAPIHostDidChangedOldValue;
 
 + (BOOL)saveDisplayBorderEnabled:(BOOL)enabled;
 
++ (BOOL)isDebugBallAutoHidden;
+
++ (BOOL)setDebugBallAutoHidden:(BOOL)enabled;
+
 @end
 
 /** Intialize the data to display */
@@ -71,9 +75,11 @@ typedef void(^NetworkSnifferCompeletion)(NSArray <NSDictionary <NSString *, NSSt
 /** Display or hidden DebugView by default settings */
 @interface DebugManager (DebugView)
 
-+ (void)installDebugViewByDefault;
++ (void)installDebugView;
 
 + (void)uninstallDebugView;
+
++ (void)resetDebugBallAutoHidden;
 
 @end
 

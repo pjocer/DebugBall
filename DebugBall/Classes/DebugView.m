@@ -54,7 +54,7 @@ Action * const kDebugViewTapActionDisplayActionMenu = @"kDebugViewTapActionDispl
     static dispatch_once_t onceToken;
     static DebugView *view = nil;
     dispatch_once(&onceToken, ^{
-        view = [[DebugView alloc] _initWithFrame:CGRectMake(SCREEN_WIDTH-40, 150, 30, 30)];
+        view = [[DebugView alloc] _initWithFrame:CGRectMake(SCREEN_WIDTH-50, 150, 40, 40)];
         [view generalConfiguration:nil];
     });
     return view;
@@ -63,6 +63,7 @@ Action * const kDebugViewTapActionDisplayActionMenu = @"kDebugViewTapActionDispl
 - (DebugView *(^)(BOOL))autoHidden {
     return ^(BOOL hidden) {
         self._autoHidden = hidden;
+        [self gestureRecognizersConfig];
         return self;
     };
 }
@@ -103,7 +104,7 @@ Action * const kDebugViewTapActionDisplayActionMenu = @"kDebugViewTapActionDispl
 }
 
 - (void)generalConfiguration:(dispatch_block_t)action {
-    self.autoHidden(YES).waterDepth(0.5).speed(0.05f).angularVelocity(10.f).phase(0).amplitude(1.f);
+    self.waterDepth(0.5).speed(0.05f).angularVelocity(10.f).phase(0).amplitude(1.f);
     self.tapAction = action;
     self.layer.cornerRadius = self.frame.size.width/2.f;
     self.layer.masksToBounds = YES;
@@ -112,11 +113,11 @@ Action * const kDebugViewTapActionDisplayActionMenu = @"kDebugViewTapActionDispl
 
 - (DebugView *(^)())show {
     return ^{
-        [self gestureRecognizersConfig];
         [self generalRippleConfiguration];
         UIWindow *window = [UIApplication sharedApplication].keyWindow;
         NSAssert(window, @"Application's key window can not be nil before showing debug view");
         [window addSubview:self];
+        [window bringSubviewToFront:self];
         return self;
     };
 }

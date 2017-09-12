@@ -21,6 +21,14 @@
 static CGPoint origin;
 
 - (void)gestureRecognizersConfig {
+    if (self.gestureRecognizers.count>0) {
+        [self clearConfiguration];
+    } else {
+        [self start];
+    }
+}
+
+- (void)start {
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(locationChange:)];
     pan.delaysTouchesBegan = NO;
     [self addGestureRecognizer:pan];
@@ -31,6 +39,19 @@ static CGPoint origin;
     if ([[self valueForKey:@"_autoHidden"] boolValue]) {
         [self performSelector:@selector(changeStatus) withObject:nil afterDelay:statusChangeDuration];
     }
+}
+
+- (void)clearConfiguration {
+    [self.gestureRecognizers enumerateObjectsUsingBlock:^(__kindof UIGestureRecognizer * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [self removeGestureRecognizer:obj];
+    }];
+    [UIView animateWithDuration:animateDuration animations:^{
+        self.alpha = 1;
+        self.center = origin;
+    } completion:^(BOOL finished) {
+        self.hidden = NO;
+        [self start];
+    }];
 }
 
 - (void)tapViewAction:(UITapGestureRecognizer *)tap {

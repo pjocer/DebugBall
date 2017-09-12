@@ -32,13 +32,13 @@
 - (void)tick:(CADisplayLink *)link {
     static int count = 0;
     static float lastTime = 0;
-    UIFont *font = [UIFont fontWithName:@"Menlo" size:9];
+    UIFont *font = [UIFont fontWithName:@"Menlo" size:11];
     UIFont *subFont = nil;
     if (font) {
-        subFont = [UIFont fontWithName:@"Menlo" size:9];
+        subFont = [UIFont fontWithName:@"Menlo" size:11];
     } else {
-        font = [UIFont fontWithName:@"Courier" size:9];
-        subFont = [UIFont fontWithName:@"Courier" size:9];
+        font = [UIFont fontWithName:@"Courier" size:11];
+        subFont = [UIFont fontWithName:@"Courier" size:11];
     }
     count++;
     NSTimeInterval delta = link.timestamp - lastTime;

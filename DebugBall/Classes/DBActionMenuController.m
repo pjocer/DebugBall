@@ -42,8 +42,7 @@
         d.detailText = [DebugManager currentDomainWithType:APIDomainTypeH5]?:@"Not Set";
         d;
     })],
-                                                                                                                          @[
-                                                                                                                              ({
+                                                                                                                          @[({
         QMUIStaticTableViewCellData *d = [[QMUIStaticTableViewCellData alloc] init];
         d.identifier = 3;
         d.style = UITableViewCellStyleSubtitle;
@@ -55,15 +54,14 @@
         d.detailText = @"Click to view details";
         d;
     })],
-                                                                                                                          @[
-                                                                                                                              ({
+                                                                                                                          @[({
         QMUIStaticTableViewCellData *d = [[QMUIStaticTableViewCellData alloc] init];
         d.identifier = 4;
         d.style = UITableViewCellStyleDefault;
         d.accessoryType = QMUIStaticTableViewCellAccessoryTypeSwitch;
         d.accessoryValueObject = @([DebugManager isDisplayBorderEnabled]);
         d.accessoryTarget = self;
-        d.accessoryAction = @selector(displayBorderForAllVisibleViews);
+        d.accessoryAction = @selector(displayBorderForAllVisibleViews:);
         d.height = TableViewCellNormalHeight + 6;
         d.text = @"Display border for all visible views";
         d;
@@ -76,11 +74,23 @@
         d.didSelectAction = @selector(displayNetworkSniffer);
         d.didSelectTarget = self;
         d.height = TableViewCellNormalHeight + 6;
-        d.text = @"Display Network Sniffer";
+        d.text = @"Display network sniffer";
+        d;
+    })],
+                                                                                                                          @[({
+        QMUIStaticTableViewCellData *d = [[QMUIStaticTableViewCellData alloc] init];
+        d.identifier = 6;
+        d.style = UITableViewCellStyleDefault;
+        d.accessoryType = QMUIStaticTableViewCellAccessoryTypeSwitch;
+        d.accessoryValueObject = @([DebugManager isDebugBallAutoHidden]);
+        d.accessoryTarget = self;
+        d.accessoryAction = @selector(enableDebugBallAutoHidden:);
+        d.height = TableViewCellNormalHeight + 6;
+        d.text = @"Enable auto-hidden for the DebugBall";
         d;
     })]]];
     self.tableView.qmui_staticCellDataSource = dataSource;
-    self.sectionTitles = @[@"API Configuration", @"Device Hardware", @"Tools"];
+    self.sectionTitles = @[@"API Configuration", @"Device Hardware", @"Tools", @"DebugBall Configuration"];
 }
 
 - (NSInteger)normalSelectedIndex {
@@ -191,18 +201,20 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)displayBorderForAllVisibleViews {
-    BOOL enabled = ![(NSNumber *)self.tableView.qmui_staticCellDataSource.cellDataSections[2][0].accessoryValueObject boolValue];
-    self.tableView.qmui_staticCellDataSource.cellDataSections[2][0].accessoryValueObject = @(enabled);
-    [self reloadIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:2]]];
-    [DebugManager saveDisplayBorderEnabled:enabled];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayBorderEnabled object:@(enabled)];
+- (void)displayBorderForAllVisibleViews:(UISwitch *)view {
+    [DebugManager saveDisplayBorderEnabled:view.isOn];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayBorderEnabled object:@(view.isOn)];
 }
 
 - (void)displayNetworkSniffer {
     DBNetworkSnifferController *controller = [[DBNetworkSnifferController alloc] initWithStyle:UITableViewStylePlain];
     controller.title = @"Network Sniffer";
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)enableDebugBallAutoHidden:(UISwitch *)view {
+    [DebugManager setDebugBallAutoHidden:view.isOn];
+    [DebugManager resetDebugBallAutoHidden];
 }
 
 - (void)dealloc {
