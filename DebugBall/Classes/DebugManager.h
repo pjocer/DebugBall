@@ -22,6 +22,8 @@ FOUNDATION_EXTERN NSNotificationName const kH5APIHostDidChangedNotification;
 
 // Include an NSNumber object,post when status of enable displaying border changed.
 FOUNDATION_EXTERN NSNotificationName const kDisplayBorderEnabled;
+// Include an NSNumber object,post when status of DebugBall's auto-hidden did changed.
+FOUNDATION_EXTERN NSNotificationName const kDebugBallAutoHidden;
 
 FOUNDATION_EXTERN NSString * const kAPIHostDidChangedNewValue;
 FOUNDATION_EXTERN NSString * const kAPIHostDidChangedOldValue;

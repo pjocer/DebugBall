@@ -341,6 +341,7 @@ static void (^__snifferring)(NSDictionary<NSString *,NSString *> *) = nil;
 + (void)resetDebugBallAutoHidden {
 #ifdef DEBUG
     DebugView.debugView.autoHidden([self isDebugBallAutoHidden]);
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayBorderEnabled object:@([self isDebugBallAutoHidden])];
 #endif
 }
 
