@@ -323,7 +323,6 @@ static void (^__snifferring)(NSDictionary<NSString *,NSString *> *) = nil;
     [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillTerminateNotification object:nil queue:[NSOperationQueue currentQueue] usingBlock:^(NSNotification * _Nonnull note) {
         STRONG_SELF
         UserDefaultsSetObjectForKey(nil, DEVICE_HARDWARE_SOURCE_KEY);
-        UserDefaultsSetObjectForKey(nil, DEVICE_NETWORK_SOURCE_KEY);
     }];
 #endif
 }
@@ -341,7 +340,7 @@ static void (^__snifferring)(NSDictionary<NSString *,NSString *> *) = nil;
 + (void)resetDebugBallAutoHidden {
 #ifdef DEBUG
     DebugView.debugView.autoHidden([self isDebugBallAutoHidden]);
-    [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayBorderEnabled object:@([self isDebugBallAutoHidden])];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kDebugBallAutoHidden object:@([self isDebugBallAutoHidden])];
 #endif
 }
 

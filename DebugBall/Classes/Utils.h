@@ -26,18 +26,20 @@ UIImage * DebugBallImageWithNamed(NSString *name){
 }
 
 void displayAllSubviewsBorder (UIView *view, BOOL display) {
-    if ([view isKindOfClass:[UISwitch class]]) {
+    if (view.superview) {
         return;
     }
     CALayer *layer = view.layer;
-    if (![layer isKindOfClass:NSClassFromString(@"CATransformLayer")]) {
+    if ([layer isMemberOfClass:CALayer.class]) {
         view.layer.borderColor = display?[UIColor redColor].CGColor:[UIColor clearColor].CGColor;
         view.layer.borderWidth = display?1/[UIScreen mainScreen].scale:0;
     }
-    if (view.subviews.count > 0 && ![view isKindOfClass:[UISwitch class]]) {
-        [view.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            displayAllSubviewsBorder(obj, display);
-        }];
+    if (view.subviews.count > 0) {
+        @autoreleasepool {
+            [view.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                displayAllSubviewsBorder(obj, display);
+            }];
+        }
     } else {
         return ;
     }
