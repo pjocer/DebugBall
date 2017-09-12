@@ -50,6 +50,7 @@ FOUNDATION_EXTERN NSString * const kAPIHostDidChangedOldValue;
 
 /** Intialize the data to display */
 typedef void(^FetchCompeletion)(NSDictionary <NSString *, NSDictionary <NSString *, NSString *> *> *info);
+typedef void(^NetworkSnifferCompeletion)(NSArray <NSDictionary <NSString *, NSString *> *>* sources);
 
 @interface DebugManager (DataRegistry)
 
@@ -59,7 +60,11 @@ typedef void(^FetchCompeletion)(NSDictionary <NSString *, NSDictionary <NSString
 /** Will post kAPIHostDidChangedNotification and kH5APIHostDidChangedNotification after compeletion block */
 + (void)registerDefaultAPIHosts:(NSArray <Domain *>*)domains andH5APIHosts:(NSArray <Domain *>*)h5Domains;
 
++ (void)registerNetworkRequest:(NSURLRequest *)request type:(APIDomainType)type;
+
 + (void)fetchDeviceHardwareInfo:(FetchCompeletion)compeletion;
+
++ (void)fetchDeviceNetworkSnifferInfo:(NetworkSnifferCompeletion)compeletion snifferring:(void(^)(NSDictionary <NSString *, NSString *> *info))snifferring;
 
 @end
 
@@ -71,6 +76,4 @@ typedef void(^FetchCompeletion)(NSDictionary <NSString *, NSDictionary <NSString
 + (void)uninstallDebugView;
 
 @end
-
-typedef void (^ActionHandler)(NSDictionary *info);
 

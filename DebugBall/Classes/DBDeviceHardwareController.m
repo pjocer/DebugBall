@@ -51,7 +51,7 @@
         _popupView.maskViewBackgroundColor = UIColorMaskWhite;
         _popupView.maximumWidth = 180;
         _popupView.shouldShowItemSeparator = YES;
-        _popupView.separatorInset = UIEdgeInsetsMake(0, self.popupView.padding.left, 0, self.popupView.padding.right);
+        _popupView.separatorInset = UIEdgeInsetsMake(0, _popupView.padding.left, 0, _popupView.padding.right);
         _popupView.itemHighlightedBackgroundColor = [UIColor whiteColor];
     }
     return _popupView;

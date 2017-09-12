@@ -8,6 +8,7 @@
 
 #import "DBActionMenuController.h"
 #import "DBDeviceHardwareController.h"
+#import "DBNetworkSnifferController.h"
 
 @interface DBActionMenuController ()
 @property (assign, nonatomic, readonly) NSInteger normalSelectedIndex;
@@ -65,6 +66,17 @@
         d.accessoryAction = @selector(displayBorderForAllVisibleViews);
         d.height = TableViewCellNormalHeight + 6;
         d.text = @"Display border for all visible views";
+        d;
+    }),
+                                                                                                                              ({
+        QMUIStaticTableViewCellData *d = [[QMUIStaticTableViewCellData alloc] init];
+        d.identifier = 5;
+        d.style = UITableViewCellStyleDefault;
+        d.accessoryType = QMUIStaticTableViewCellAccessoryTypeDisclosureIndicator;
+        d.didSelectAction = @selector(displayNetworkSniffer);
+        d.didSelectTarget = self;
+        d.height = TableViewCellNormalHeight + 6;
+        d.text = @"Display Network Sniffer";
         d;
     })]]];
     self.tableView.qmui_staticCellDataSource = dataSource;
@@ -185,6 +197,12 @@
     [self reloadIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:2]]];
     [DebugManager saveDisplayBorderEnabled:enabled];
     [[NSNotificationCenter defaultCenter] postNotificationName:kDisplayBorderEnabled object:@(enabled)];
+}
+
+- (void)displayNetworkSniffer {
+    DBNetworkSnifferController *controller = [[DBNetworkSnifferController alloc] initWithStyle:UITableViewStylePlain];
+    controller.title = @"Network Sniffer";
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)dealloc {

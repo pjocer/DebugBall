@@ -8,7 +8,6 @@
 
 #import "DBCommonTableViewController.h"
 
-
 @interface DBActionMenuController : DBCommonTableViewController
 
 @end

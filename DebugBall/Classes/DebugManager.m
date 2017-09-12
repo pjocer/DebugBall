@@ -168,8 +168,11 @@ static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *
 #define DEVICE_MEMORY_KEY       @"Memory Used"
 #define DEVICE_SYSYEM_KEY       @"System"
 #define DEVICE_APPINFO_KEY      @"App Info"
+#define DEVICE_NETWORK_SOURCE_KEY   @"DEVICE_NETWORK_SOURCE_KEY"
 
 static FetchCompeletion __comeletion = nil;
+static NetworkSnifferCompeletion __networkCompeletion = nil;
+static void (^__snifferring)(NSDictionary<NSString *,NSString *> *) = nil;
 
 @implementation DebugManager (DataRegistry)
 
@@ -235,10 +238,28 @@ static FetchCompeletion __comeletion = nil;
 #endif
 }
 
++ (void)registerNetworkRequest:(NSURLRequest *)request type:(APIDomainType)type {
+#ifdef DEBUG
+    NSMutableArray *requestInfos = [UserDefaultsObjectForKey(DEVICE_NETWORK_SOURCE_KEY)?:@[] mutableCopy];
+    NSDictionary *requestInfo = @{@"URL":request.URL.absoluteString,
+                                  @"Method":request.HTTPMethod,
+                                  @"Type":type==APIDomainTypeH5?@"WebView Request":@"API Request"};
+    [requestInfos insertObject:requestInfo atIndex:0];
+    UserDefaultsSetObjectForKey(requestInfos, DEVICE_NETWORK_SOURCE_KEY);
+    if (__snifferring) __snifferring(requestInfo);
+#endif
+}
+
 + (void)fetchDeviceHardwareInfo:(FetchCompeletion)compeletion {
     __comeletion = compeletion;
     if (__comeletion) __comeletion(UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY));
     
+}
+
++ (void)fetchDeviceNetworkSnifferInfo:(NetworkSnifferCompeletion)compeletion snifferring:(void (^)(NSDictionary<NSString *,NSString *> *))snifferring{
+    __networkCompeletion = compeletion;
+    __snifferring = snifferring;
+    if (__networkCompeletion) __networkCompeletion(UserDefaultsObjectForKey(DEVICE_NETWORK_SOURCE_KEY));
 }
 
 + (void)registerDefaultAPIHosts:(NSArray<Domain *> *)domains andH5APIHosts:(NSArray<Domain *> *)h5Domains {
