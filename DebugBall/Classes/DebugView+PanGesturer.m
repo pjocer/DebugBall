@@ -42,6 +42,7 @@ static CGPoint origin;
 }
 
 - (void)clearConfiguration {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(changeStatus) object:nil];
     [self.gestureRecognizers enumerateObjectsUsingBlock:^(__kindof UIGestureRecognizer * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         [self removeGestureRecognizer:obj];
     }];

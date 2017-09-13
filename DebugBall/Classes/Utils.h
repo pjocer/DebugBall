@@ -25,23 +25,29 @@ UIImage * DebugBallImageWithNamed(NSString *name){
     return [UIImage imageNamed:name inBundle:DebugBallBundle() compatibleWithTraitCollection:nil];
 }
 
-void displayAllSubviewsBorder (UIView *view, BOOL display) {
-    if (view.superview) {
+void displayBorder (UIView *view, BOOL display, BOOL recursion) {
+    if (![view isKindOfClass:UIView.class]) {
         return;
     }
-    CALayer *layer = view.layer;
-    if ([layer isMemberOfClass:CALayer.class]) {
-        view.layer.borderColor = display?[UIColor redColor].CGColor:[UIColor clearColor].CGColor;
-        view.layer.borderWidth = display?1/[UIScreen mainScreen].scale:0;
-    }
-    if (view.subviews.count > 0) {
-        @autoreleasepool {
-            [view.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                displayAllSubviewsBorder(obj, display);
-            }];
+    if (recursion) {
+        if (view.superview) {
+            displayBorder(view.superview, display, recursion);
+        } else {
+            displayBorder(view, display, !recursion);
         }
     } else {
-        return ;
+        CALayer *layer = view.layer;
+        if ([layer isMemberOfClass:CALayer.class]) {
+            layer.borderColor = display?[UIColor redColor].CGColor:[UIColor clearColor].CGColor;
+            layer.borderWidth = display?1/[UIScreen mainScreen].scale:0;
+        }
+        if (view.subviews.count>0) {
+            @autoreleasepool {
+                [view.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    displayBorder(obj, display, recursion);
+                }];
+            }
+        }
     }
 }
 

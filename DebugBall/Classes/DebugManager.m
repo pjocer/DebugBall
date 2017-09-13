@@ -314,7 +314,7 @@ static void (^__snifferring)(NSDictionary<NSString *,NSString *> *) = nil;
             [self.__cachedRenderingViews enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSMutableArray<__kindof UIView *> * _Nonnull objs, BOOL * _Nonnull stop) {
                 [objs enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        displayAllSubviewsBorder(obj, [note.object boolValue]);
+                        displayBorder(obj, [note.object boolValue], YES);
                     });
                 }];
             }];
@@ -395,7 +395,7 @@ static void (^__snifferring)(NSDictionary<NSString *,NSString *> *) = nil;
     if (cachedViews && ![cachedViews containsObject:self]) {
         [cachedViews addObject:self];
         DebugManager.__cachedRenderingViews[NSStringFromClass(self.class)] = cachedViews;
-        displayAllSubviewsBorder(self, DebugManager.isDisplayBorderEnabled);
+        displayBorder(self, DebugManager.isDisplayBorderEnabled, NO);
     }
 }
 @end
