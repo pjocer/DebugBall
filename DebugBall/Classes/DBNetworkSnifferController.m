@@ -18,6 +18,9 @@ static NSString *kIdentifier = @"networkInfoCell";
 @implementation DBNetworkSnifferController
 
 - (void)initDataSource {
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStylePlain target:self action:@selector(clearHistoricalRecords)];
+    [item setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont boldSystemFontOfSize:16]} forState:UIControlStateNormal];
+    self.navigationItem.rightBarButtonItem = item;
     self.dataSource = [NSMutableArray array];
     __weak typeof(self)wSelf = self;
     [DebugManager fetchDeviceNetworkSnifferInfo:^(NSArray<NSDictionary<NSString *,NSString *> *> *sources) {
@@ -27,7 +30,14 @@ static NSString *kIdentifier = @"networkInfoCell";
     } snifferring:^(NSDictionary<NSString *,NSString *> *info) {
         __strong typeof(wSelf)self = wSelf;
         [self.dataSource insertObject:info atIndex:0];
-        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    }];
+}
+
+- (void)clearHistoricalRecords {
+    [DebugManager clearDeviceNetworkSnifferInfoWithCompeletion:^{
+        [self.dataSource removeAllObjects];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
     }];
 }
 

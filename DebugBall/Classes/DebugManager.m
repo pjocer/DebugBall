@@ -276,6 +276,11 @@ static void (^__snifferring)(NSDictionary<NSString *,NSString *> *) = nil;
     if (__networkCompeletion) __networkCompeletion(UserDefaultsObjectForKey(DEVICE_NETWORK_SOURCE_KEY));
 }
 
++ (void)clearDeviceNetworkSnifferInfoWithCompeletion:(dispatch_block_t)compeletion {
+    UserDefaultsSetObjectForKey(nil, DEVICE_NETWORK_SOURCE_KEY);
+    if (compeletion) compeletion();
+}
+
 + (void)registerDefaultAPIHosts:(NSArray<Domain *> *)domains andH5APIHosts:(NSArray<Domain *> *)h5Domains {
     NSArray *domainList = [self domainListWithType:APIDomainTypeDefault];
     NSArray *h5DomainList = [self domainListWithType:APIDomainTypeH5];

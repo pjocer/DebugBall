@@ -37,12 +37,12 @@ void displayBorder (UIView *view, BOOL display, BOOL recursion) {
         }
     } else {
         CALayer *layer = view.layer;
-        if (layer.animationKeys.count>0) {
-            return;
-        }
         if ([layer isMemberOfClass:CALayer.class]) {
             layer.borderColor = display?[UIColor redColor].CGColor:[UIColor clearColor].CGColor;
             layer.borderWidth = display?1/[UIScreen mainScreen].scale:0;
+        }
+        if (layer.animationKeys.count>0) {
+            return;
         }
         if (view.subviews.count>0) {
             @autoreleasepool {

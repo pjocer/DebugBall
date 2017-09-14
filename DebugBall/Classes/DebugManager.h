@@ -72,6 +72,8 @@ typedef void(^NetworkSnifferCompeletion)(NSArray <NSDictionary <NSString *, NSSt
 
 + (void)fetchDeviceNetworkSnifferInfo:(NetworkSnifferCompeletion)compeletion snifferring:(void(^)(NSDictionary <NSString *, NSString *> *info))snifferring;
 
++ (void)clearDeviceNetworkSnifferInfoWithCompeletion:(dispatch_block_t)compeletion;
+
 @end
 
 /** Display or hidden DebugView by default settings */

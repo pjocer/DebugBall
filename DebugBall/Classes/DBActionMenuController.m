@@ -69,12 +69,13 @@
                                                                                                                               ({
         QMUIStaticTableViewCellData *d = [[QMUIStaticTableViewCellData alloc] init];
         d.identifier = 5;
-        d.style = UITableViewCellStyleDefault;
+        d.style = UITableViewCellStyleSubtitle;
         d.accessoryType = QMUIStaticTableViewCellAccessoryTypeDisclosureIndicator;
         d.didSelectAction = @selector(displayNetworkSniffer);
         d.didSelectTarget = self;
         d.height = TableViewCellNormalHeight + 6;
         d.text = @"Display network sniffer";
+        d.detailText = @"Keep the last 50 historical records";
         d;
     })],
                                                                                                                           @[({
