@@ -39,7 +39,6 @@ static NSString * kHasInstalledDebugBall    = @"kHasInstalledDebugBall";
 @implementation DebugManager
 
 static BOOL __show = NO;
-
 static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *> *> * __data = nil;
 
 + (void)presentDebugActionMenuController {
@@ -59,6 +58,7 @@ static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *
         }
         __data = nil;
     }
+    [[QMUIHelper visibleViewController] setNeedsStatusBarAppearanceUpdate];
     [self.__nav dismissViewControllerAnimated:YES completion:^{
         __show = NO;
     }];
@@ -79,6 +79,7 @@ static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *
         UIImage *backgroundImage = [DebugBallImageWithNamed(@"navigationbar_background") resizableImageWithCapInsets:UIEdgeInsetsMake(0, 2, 0, 2)];
         [bar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
         bar.shadowImage = [UIImage new];
+        bar.barStyle = UIBarStyleBlack;
         bar.tintColor = UIColorWhite;
     });
     return nav;
@@ -296,8 +297,6 @@ static void (^__snifferring)(NSDictionary<NSString *,NSString *> *) = nil;
         }];
         [self setCurrentDomain:h5Domains[0] type:APIDomainTypeH5];
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:kAPIHostDidChangedNotification object:nil userInfo:@{kAPIHostDidChangedNewValue:[self currentDomainWithType:APIDomainTypeDefault]}];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kH5APIHostDidChangedNotification object:nil userInfo:@{kAPIHostDidChangedNewValue:[self currentDomainWithType:APIDomainTypeH5]}];
 }
 
 @end
@@ -308,9 +307,9 @@ static void (^__snifferring)(NSDictionary<NSString *,NSString *> *) = nil;
 #ifdef DEBUG
     if (![UserDefaultsObjectForKey(kHasInstalledDebugBall) boolValue]) {
         [self setDebugBallAutoHidden:YES];
+        UserDefaultsSetObjectForKey(@(YES), kHasInstalledDebugBall);
     }
     DebugView.debugView.autoHidden([self isDebugBallAutoHidden]).commitTapAction(kDebugViewTapActionDisplayActionMenu).show();
-    UserDefaultsSetObjectForKey(@(YES), kHasInstalledDebugBall);
     [self asyncFetchDeviceHardwareInfo];
     WEAK_SELF
     [[NSNotificationCenter defaultCenter] addObserverForName:kDisplayBorderEnabled object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
@@ -354,13 +353,9 @@ static void (^__snifferring)(NSDictionary<NSString *,NSString *> *) = nil;
 
 #ifdef DEBUG
 @interface UIView (DisplayBorder)
-
 @end
-
 @implementation UIView (DisplayBorder)
-
 + (void)load {
-
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         ReplaceMethod(self, @selector(init), @selector(swizlle_init));
@@ -368,7 +363,6 @@ static void (^__snifferring)(NSDictionary<NSString *,NSString *> *) = nil;
         ReplaceMethod(self, @selector(initWithFrame:), @selector(swizzle_initWithFrame:));
     });
 }
-
 - (instancetype)swizzle_initWithFrame:(CGRect)frame {
     UIView *view = [self swizzle_initWithFrame:frame];
     __weak typeof(view)wView = view;
@@ -376,7 +370,6 @@ static void (^__snifferring)(NSDictionary<NSString *,NSString *> *) = nil;
     __strong typeof(wView)sView = wView;
     return sView;
 }
-
 - (instancetype)swizlle_initWithCoder:(NSCoder *)aDecoder {
     UIView *view = [self swizlle_initWithCoder:aDecoder];
     __weak typeof(view)wView = view;
@@ -384,7 +377,6 @@ static void (^__snifferring)(NSDictionary<NSString *,NSString *> *) = nil;
     __strong typeof(wView)sView = wView;
     return sView;
 }
-
 - (instancetype)swizlle_init {
     UIView *view = [self swizlle_init];
     __weak typeof(view)wView = view;
@@ -402,6 +394,19 @@ static void (^__snifferring)(NSDictionary<NSString *,NSString *> *) = nil;
         DebugManager.__cachedRenderingViews[NSStringFromClass(self.class)] = cachedViews;
         displayBorder(self, DebugManager.isDisplayBorderEnabled, NO);
     }
+}
+@end
+@interface UIWindow (Bri)
+@end
+@implementation UIWindow (Bri)
++ (void)load {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        ReplaceMethod(self, @selector(addSubview:), @selector(swizzle_addSubview:));
+    });
+}
+- (void)swizzle_addSubview:(UIView *)view {
+    [self insertSubview:view belowSubview:DebugView.debugView];
 }
 @end
 #endif

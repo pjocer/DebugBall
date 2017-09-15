@@ -75,7 +75,7 @@
         d.didSelectTarget = self;
         d.height = TableViewCellNormalHeight + 6;
         d.text = @"Display network sniffer";
-        d.detailText = @"Keep the last 50 historical records";
+        d.detailText = @"Keep the latest 50 historical records";
         d;
     })],
                                                                                                                           @[({
