@@ -87,3 +87,18 @@ typedef void(^NetworkSnifferCompeletion)(NSArray <NSDictionary <NSString *, NSSt
 
 @end
 
+typedef NS_ENUM(NSInteger, TipsDisplayType) {
+    TipsDisplayTypeInfo,
+    TipsDisplayTypeSucceed,
+};
+
+@interface DebugManager (Helper)
+
++ (void)showTipsWithType:(TipsDisplayType)type text:(NSString *)text inView:(__kindof UIView *)view;
+
++ (void)showTipsWithType:(TipsDisplayType)type text:(NSString *)text detailText:(NSString *)detailText inView:(__kindof UIView *)view;
+
++ (void)showTipsWithType:(TipsDisplayType)type text:(NSString *)text detailText:(NSString *)detailText afterDelay:(NSTimeInterval)delay inView:(__kindof UIView *)view;
+
+@end
+

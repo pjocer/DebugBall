@@ -11,6 +11,7 @@
 #import "Utils.h"
 #import "DBActionMenuController.h"
 #import <QMUIKit/QMUIKit.h>
+#import "DBToastAnimator.h"
 
 NSNotificationName const kAPIHostDidChangedNotification     = @"kAPIHostDidChangedNotification";
 NSNotificationName const kH5APIHostDidChangedNotification   = @"kH5APIHostDidChangedNotification";
@@ -410,3 +411,39 @@ static void (^__snifferring)(NSDictionary<NSString *,NSString *> *) = nil;
 }
 @end
 #endif
+
+@implementation DebugManager (Helper)
+
++ (void)showTipsWithType:(TipsDisplayType)type text:(NSString *)text inView:(__kindof UIView *)view {
+    [self showTipsWithType:type text:text detailText:nil inView:view];
+}
+
++ (void)showTipsWithType:(TipsDisplayType)type text:(NSString *)text detailText:(NSString *)detailText inView:(__kindof UIView *)view {
+    [self showTipsWithType:type text:text detailText:detailText afterDelay:0.5*[[text stringByAppendingString:detailText] length] inView:view];
+}
+
++ (void)showTipsWithType:(TipsDisplayType)type text:(NSString *)text detailText:(NSString *)detailText afterDelay:(NSTimeInterval)delay inView:(__kindof UIView *)view {
+    QMUITips *tips = [QMUITips createTipsToView:view];
+    DBToastAnimator *customAnimator = [[DBToastAnimator alloc] initWithToastView:tips];
+    tips.toastAnimator = customAnimator;
+    tips.maskView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hiddenToastView:)];
+    [tips.maskView addGestureRecognizer:tap];
+    if (type == TipsDisplayTypeInfo) {
+        [tips showInfo:text detailText:detailText hideAfterDelay:delay];
+    } else {
+        [(QMUIToastContentView *)tips.contentView setDetailTextLabelAttributes:@{NSUnderlineStyleAttributeName:@(NSUnderlineStyleSingle),NSUnderlineColorAttributeName:UIColorBlue,NSFontAttributeName: UIFontBoldMake(12), NSForegroundColorAttributeName: UIColorWhite, NSParagraphStyleAttributeName: [NSMutableParagraphStyle qmui_paragraphStyleWithLineHeight: 18]}];
+        [tips showSucceed:text detailText:detailText hideAfterDelay:delay];
+    }
+}
+
++ (void)hiddenToastView:(UITapGestureRecognizer *)tap {
+    QMUITips *tip = tap.view.superview;
+    if (tip) {
+        [tip hideAnimated:YES];
+    }
+}
+
+@end
+
+
