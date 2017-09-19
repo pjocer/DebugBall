@@ -8,6 +8,7 @@
 
 #import "DBNetworkSnifferController.h"
 #import "DebugManager.h"
+#import "DBToastAnimator.h"
 
 static NSString *kIdentifier = @"networkInfoCell";
 
@@ -43,7 +44,12 @@ static NSString *kIdentifier = @"networkInfoCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [QMUITips showInfo:self.dataSource[indexPath.row][@"Type"] detailText:self.dataSource[indexPath.row][@"URL"] inView:self.view hideAfterDelay:5];
+    QMUITips *tips = [QMUITips createTipsToView:self.view];
+    tips.toastAnimator = [[DBToastAnimator alloc] initWithToastView:tips];
+    tips.maskView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hiddenToast)];
+    [tips.maskView addGestureRecognizer:tap];
+    [tips showInfo:self.dataSource[indexPath.row][@"Type"] detailText:self.dataSource[indexPath.row][@"URL"]];
 }
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     return nil;
@@ -75,5 +81,8 @@ static NSString *kIdentifier = @"networkInfoCell";
     return self.dataSource.count;
 }
 
+- (void)hiddenToast {
+    [QMUITips hideAllToastInView:self.view animated:YES];
+}
 
 @end
