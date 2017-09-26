@@ -20,6 +20,7 @@
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import <sys/utsname.h>
 #import <AdSupport/AdSupport.h>
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
 
 #define GET_IP_URL_TXT                                              @"http://ipof.in/txt"
 #define NULL_STR                                                    @""
@@ -157,38 +158,35 @@ NSNotificationName const kAvailableMemoryDidChanged = @"kAvailableMemoryDidChang
 }
 
 - (NSString *)getNetworkType{
-    UIApplication *app = [UIApplication sharedApplication];
-    NSArray *children = [[[app valueForKeyPath:@"statusBar"] valueForKeyPath:@"foregroundView"] subviews];
-    int type = 0;
-    for (id child in children) {
-        if ([child isKindOfClass:[NSClassFromString(@"UIStatusBarDataNetworkItemView") class]]) {
-            type = [[child valueForKeyPath:@"dataNetworkType"] intValue];
+    NSArray *typeStrings2G = @[CTRadioAccessTechnologyEdge,
+                               CTRadioAccessTechnologyGPRS,
+                               CTRadioAccessTechnologyCDMA1x];
+    
+    NSArray *typeStrings3G = @[CTRadioAccessTechnologyHSDPA,
+                               CTRadioAccessTechnologyWCDMA,
+                               CTRadioAccessTechnologyHSUPA,
+                               CTRadioAccessTechnologyCDMAEVDORev0,
+                               CTRadioAccessTechnologyCDMAEVDORevA,
+                               CTRadioAccessTechnologyCDMAEVDORevB,
+                               CTRadioAccessTechnologyeHRPD];
+    
+    NSArray *typeStrings4G = @[CTRadioAccessTechnologyLTE];
+    
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
+        CTTelephonyNetworkInfo *teleInfo= [[CTTelephonyNetworkInfo alloc] init];
+        NSString *accessString = teleInfo.currentRadioAccessTechnology;
+        if ([typeStrings4G containsObject:accessString]) {
+            return @"4G";
+        } else if ([typeStrings3G containsObject:accessString]) {
+            return @"3G";
+        } else if ([typeStrings2G containsObject:accessString]) {
+            return @"2G";
+        } else {
+            return @"Null";
         }
+    } else {
+        return @"Unknow";
     }
-    NSString *stateString = @"";
-    switch (type) {
-        case 0:
-            stateString = @"Not Reachable";
-            break;
-        case 1:
-            stateString = @"2G";
-            break;
-        case 2:
-            stateString = @"3G";
-            break;
-        case 3:
-            stateString = @"4G";
-            break;
-        case 4:
-            stateString = @"LTE";
-            break;
-        case 5:
-            stateString = @"WIFI";
-            break;
-        default:
-            break;
-    }
-    return stateString;
 }
 
 - (NSString *)getWifiMacAddress{
