@@ -76,12 +76,12 @@ static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *
         nav = [[UINavigationController alloc] initWithRootViewController:self.__menu];
         nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         UINavigationBar *bar = nav.navigationBar;
-        bar.titleTextAttributes = [NSDictionary dictionaryWithObject:[UIColor whiteColor] forKey:NSForegroundColorAttributeName];
+        [bar.backItem.backBarButtonItem setTintColor:UIColorWhite];
+        bar.titleTextAttributes = @{NSForegroundColorAttributeName:UIColorWhite};
         UIImage *backgroundImage = [DebugBallImageWithNamed(@"navigationbar_background") resizableImageWithCapInsets:UIEdgeInsetsMake(0, 2, 0, 2)];
         [bar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
         bar.shadowImage = [UIImage new];
         bar.barStyle = UIBarStyleBlack;
-        bar.tintColor = UIColorWhite;
     });
     return nav;
 }
@@ -91,9 +91,13 @@ static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *
     static DBActionMenuController *menu = nil;
     dispatch_once(&onceToken, ^{
         menu = [[DBActionMenuController alloc] initWithStyle:UITableViewStyleGrouped];
+        menu.tableView.estimatedRowHeight = 0;
+        menu.tableView.estimatedSectionHeaderHeight = 0;
+        menu.tableView.estimatedSectionFooterHeight = 0;
         menu.title = @"Project Configuration";
         menu.hidesBottomBarWhenPushed = YES;
         menu.navigationItem.leftBarButtonItem = [QMUINavigationButton closeBarButtonItemWithTarget:self action:@selector(handleCloseButtonEvent:)];
+        menu.navigationItem.leftBarButtonItem.tintColor = UIColorWhite;
     });
     return menu;
 }
