@@ -357,50 +357,50 @@ static void (^__snifferring)(NSDictionary<NSString *,NSString *> *) = nil;
 
 
 #ifdef DEBUG
-@interface UIView (DisplayBorder)
-@end
-@implementation UIView (DisplayBorder)
-+ (void)load {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        ReplaceMethod(self, @selector(init), @selector(swizlle_init));
-        ReplaceMethod(self, @selector(initWithCoder:), @selector(swizlle_initWithCoder:));
-        ReplaceMethod(self, @selector(initWithFrame:), @selector(swizzle_initWithFrame:));
-    });
-}
-- (instancetype)swizzle_initWithFrame:(CGRect)frame {
-    UIView *view = [self swizzle_initWithFrame:frame];
-    __weak typeof(view)wView = view;
-    [wView cachedIfNeeded];
-    __strong typeof(wView)sView = wView;
-    return sView;
-}
-- (instancetype)swizlle_initWithCoder:(NSCoder *)aDecoder {
-    UIView *view = [self swizlle_initWithCoder:aDecoder];
-    __weak typeof(view)wView = view;
-    [wView cachedIfNeeded];
-    __strong typeof(wView)sView = wView;
-    return sView;
-}
-- (instancetype)swizlle_init {
-    UIView *view = [self swizlle_init];
-    __weak typeof(view)wView = view;
-    [wView cachedIfNeeded];
-    __strong typeof(wView)sView = wView;
-    return sView;
-}
-- (void)cachedIfNeeded {
-    if (![DebugManager.__cachedRenderingViews.allKeys containsObject:NSStringFromClass(self.class)]) {
-        DebugManager.__cachedRenderingViews[NSStringFromClass(self.class)] = [NSMutableArray array];
-    }
-    NSMutableArray *cachedViews = DebugManager.__cachedRenderingViews[NSStringFromClass(self.class)];
-    if (cachedViews && ![cachedViews containsObject:self]) {
-        [cachedViews addObject:self];
-        DebugManager.__cachedRenderingViews[NSStringFromClass(self.class)] = cachedViews;
-        displayBorder(self, DebugManager.isDisplayBorderEnabled, NO);
-    }
-}
-@end
+//@interface UIView (DisplayBorder)
+//@end
+//@implementation UIView (DisplayBorder)
+//+ (void)load {
+//    static dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
+//        ReplaceMethod(self, @selector(init), @selector(swizlle_init));
+//        ReplaceMethod(self, @selector(initWithCoder:), @selector(swizlle_initWithCoder:));
+//        ReplaceMethod(self, @selector(initWithFrame:), @selector(swizzle_initWithFrame:));
+//    });
+//}
+//- (instancetype)swizzle_initWithFrame:(CGRect)frame {
+//    UIView *view = [self swizzle_initWithFrame:frame];
+//    __weak typeof(view)wView = view;
+//    [wView cachedIfNeeded];
+//    __strong typeof(wView)sView = wView;
+//    return sView;
+//}
+//- (instancetype)swizlle_initWithCoder:(NSCoder *)aDecoder {
+//    UIView *view = [self swizlle_initWithCoder:aDecoder];
+//    __weak typeof(view)wView = view;
+//    [wView cachedIfNeeded];
+//    __strong typeof(wView)sView = wView;
+//    return sView;
+//}
+//- (instancetype)swizlle_init {
+//    UIView *view = [self swizlle_init];
+//    __weak typeof(view)wView = view;
+//    [wView cachedIfNeeded];
+//    __strong typeof(wView)sView = wView;
+//    return sView;
+//}
+//- (void)cachedIfNeeded {
+//    if (![DebugManager.__cachedRenderingViews.allKeys containsObject:NSStringFromClass(self.class)]) {
+//        DebugManager.__cachedRenderingViews[NSStringFromClass(self.class)] = [NSMutableArray array];
+//    }
+//    NSMutableArray *cachedViews = DebugManager.__cachedRenderingViews[NSStringFromClass(self.class)];
+//    if (cachedViews && ![cachedViews containsObject:self]) {
+//        [cachedViews addObject:self];
+//        DebugManager.__cachedRenderingViews[NSStringFromClass(self.class)] = cachedViews;
+//        displayBorder(self, DebugManager.isDisplayBorderEnabled, NO);
+//    }
+//}
+//@end
 @interface UIWindow (Bri)
 @end
 @implementation UIWindow (Bri)
