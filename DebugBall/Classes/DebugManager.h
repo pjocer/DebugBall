@@ -57,6 +57,7 @@ FOUNDATION_EXTERN NSString * const kAPIHostDidChangedOldValue;
 /** Intialize the data to display */
 typedef void(^FetchCompeletion)(NSDictionary <NSString *, NSDictionary <NSString *, NSString *> *> *info);
 typedef void(^NetworkSnifferCompeletion)(NSArray <NSDictionary <NSString *, NSString *> *>* sources);
+typedef void(^CrashAssertsCompeletion)(NSArray <NSException *>* sources);
 
 @interface DebugManager (DataRegistry)
 
@@ -73,6 +74,10 @@ typedef void(^NetworkSnifferCompeletion)(NSArray <NSDictionary <NSString *, NSSt
 + (void)fetchDeviceNetworkSnifferInfo:(NetworkSnifferCompeletion)compeletion snifferring:(void(^)(NSDictionary <NSString *, NSString *> *info))snifferring;
 
 + (void)clearDeviceNetworkSnifferInfoWithCompeletion:(dispatch_block_t)compeletion;
+
++ (void)fetchDeviceCrashAssert:(CrashAssertsCompeletion)compeletion;
+
++ (void)clearDeviceCrashSnifferInfoWithCompeletion:(dispatch_block_t)compeletion;;
 
 @end
 

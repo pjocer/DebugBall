@@ -12,6 +12,8 @@
 #import "DBActionMenuController.h"
 #import <QMUIKit/QMUIKit.h>
 #import "DBToastAnimator.h"
+#import "UncaughtExceptionHandler.h"
+#import "SignalHandler.h"
 
 NSNotificationName const kAPIHostDidChangedNotification     = @"kAPIHostDidChangedNotification";
 NSNotificationName const kH5APIHostDidChangedNotification   = @"kH5APIHostDidChangedNotification";
@@ -186,10 +188,12 @@ static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *
 #define DEVICE_SYSYEM_KEY       @"System"
 #define DEVICE_APPINFO_KEY      @"App Info"
 #define DEVICE_NETWORK_SOURCE_KEY   @"DEVICE_NETWORK_SOURCE_KEY"
+#define CRASH_EXCEPTION_SOURCE_KEY   @"CRASH_EXCEPTION_SOURCE_KEY"
 
 static FetchCompeletion __comeletion = nil;
 static NetworkSnifferCompeletion __networkCompeletion = nil;
 static void (^__snifferring)(NSDictionary<NSString *,NSString *> *) = nil;
+static void (^__crash_snifferring)(NSException *) = nil;
 
 @implementation DebugManager (DataRegistry)
 
@@ -270,6 +274,23 @@ static void (^__snifferring)(NSDictionary<NSString *,NSString *> *) = nil;
 #endif
 }
 
++ (void)registerCrashReport:(NSException *)exception {
+#ifdef DEBUG
+    NSMutableArray *exceptions = [UserDefaultsObjectForKey(CRASH_EXCEPTION_SOURCE_KEY)?:@[] mutableCopy];
+    NSDictionary *exceptionInfo = @{@"name":exception.name,
+                                  @"callStackSymbols":exception.callStackSymbols,
+                                  @"reason":exception.reason,
+                                  @"user_info":exception.userInfo
+                                  };
+    [exceptions insertObject:exceptionInfo atIndex:0];
+    if (exceptions.count > 50) {
+        [exceptions removeLastObject];
+    }
+    UserDefaultsSetObjectForKey(exceptions, CRASH_EXCEPTION_SOURCE_KEY);
+    if (__crash_snifferring) __crash_snifferring(exceptionInfo);
+#endif
+}
+
 + (void)fetchDeviceHardwareInfo:(FetchCompeletion)compeletion {
     __comeletion = compeletion;
     if (__comeletion) __comeletion(UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY));
@@ -282,8 +303,17 @@ static void (^__snifferring)(NSDictionary<NSString *,NSString *> *) = nil;
     if (__networkCompeletion) __networkCompeletion(UserDefaultsObjectForKey(DEVICE_NETWORK_SOURCE_KEY));
 }
 
++ (void)fetchDeviceCrashAssert:(CrashAssertsCompeletion)compeletion {
+    if (compeletion) compeletion(UserDefaultsObjectForKey(CRASH_EXCEPTION_SOURCE_KEY));
+}
+
 + (void)clearDeviceNetworkSnifferInfoWithCompeletion:(dispatch_block_t)compeletion {
     UserDefaultsSetObjectForKey(nil, DEVICE_NETWORK_SOURCE_KEY);
+    if (compeletion) compeletion();
+}
+
++ (void)clearDeviceCrashSnifferInfoWithCompeletion:(dispatch_block_t)compeletion {
+    UserDefaultsSetObjectForKey(nil, CRASH_EXCEPTION_SOURCE_KEY);
     if (compeletion) compeletion();
 }
 
@@ -316,6 +346,8 @@ static void (^__snifferring)(NSDictionary<NSString *,NSString *> *) = nil;
     }
     DebugView.debugView.autoHidden([self isDebugBallAutoHidden]).commitTapAction(kDebugViewTapActionDisplayActionMenu).show();
     [self asyncFetchDeviceHardwareInfo];
+    InstallUncaughtExceptionHandler();
+    InstallSignalHandler();
     WEAK_SELF
     [[NSNotificationCenter defaultCenter] addObserverForName:kDisplayBorderEnabled object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
         STRONG_SELF

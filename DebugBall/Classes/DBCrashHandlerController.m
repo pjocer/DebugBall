@@ -1,22 +1,21 @@
 //
-//  DBNetworkSnifferController.m
-//  Pods
+//  DBCrashHandlerController.m
+//  AFNetworking
 //
-//  Created by Jocer on 2017/9/12.
-//
+//  Created by Jocer on 2018/1/30.
 //
 
-#import "DBNetworkSnifferController.h"
+#import "DBCrashHandlerController.h"
 #import "DebugManager.h"
 #import "DBToastAnimator.h"
 
-static NSString *kIdentifier = @"networkInfoCell";
+static NSString *kIdentifier = @"crashInfoCell";
 
-@interface DBNetworkSnifferController ()
+@interface DBCrashHandlerController ()
 @property (nonatomic, strong) NSMutableArray *dataSource;
 @end
 
-@implementation DBNetworkSnifferController
+@implementation DBCrashHandlerController
 
 - (void)initDataSource {
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStylePlain target:self action:@selector(clearHistoricalRecords)];
@@ -24,14 +23,10 @@ static NSString *kIdentifier = @"networkInfoCell";
     self.navigationItem.rightBarButtonItem = item;
     self.dataSource = [NSMutableArray array];
     __weak typeof(self)wSelf = self;
-    [DebugManager fetchDeviceNetworkSnifferInfo:^(NSArray<NSDictionary<NSString *,NSString *> *> *sources) {
+    [DebugManager fetchDeviceCrashAssert:^(NSArray<NSException *> *sources) {
         __strong typeof(wSelf)self = wSelf;
         [self.dataSource addObjectsFromArray:sources];
         [self.tableView reloadData];
-    } snifferring:^(NSDictionary<NSString *,NSString *> *info) {
-        __strong typeof(wSelf)self = wSelf;
-        [self.dataSource insertObject:info atIndex:0];
-        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
     }];
 }
 
@@ -44,7 +39,15 @@ static NSString *kIdentifier = @"networkInfoCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [DebugManager showTipsWithType:TipsDisplayTypeInfo text:self.dataSource[indexPath.row][@"Type"] detailText:self.dataSource[indexPath.row][@"URL"] inView:self.view];
+    NSMutableString *stacks = [[NSMutableString alloc] init];
+    [(NSArray *)self.dataSource[indexPath.row][@"callStackSymbols"] enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [stacks appendFormat:@"\n*-*%@",obj];
+    }];
+    NSMutableString *infos = [[NSMutableString alloc] init];
+    [(NSDictionary *)self.dataSource[indexPath.row][@"user_info"] enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+        [infos appendFormat:@"\n*-*%@ : %@",key, obj];
+    }];
+    [DebugManager showTipsWithType:TipsDisplayTypeInfo text:infos detailText:stacks inView:self.view];
 }
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     return nil;
@@ -64,11 +67,11 @@ static NSString *kIdentifier = @"networkInfoCell";
         cell.detailTextLabel.font = UIFontMake(13);
     }
     NSDictionary *info = self.dataSource[indexPath.row];
-    NSString *text = [NSString stringWithFormat:@"%@ : %@",info[@"Method"],info[@"Type"]];
+    NSString *text = [NSString stringWithFormat:@"Name : %@",info[@"name"]];
     NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:text];
-    [attr addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0, [info[@"Method"] length])];
+    [attr addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0, [info[@"name"] length])];
     cell.textLabel.attributedText = attr;
-    cell.detailTextLabel.text = info[@"URL"];
+    cell.detailTextLabel.text = info[@"reason"];
     return cell;
 }
 

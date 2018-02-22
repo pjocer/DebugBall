@@ -9,6 +9,7 @@
 #import "DBActionMenuController.h"
 #import "DBDeviceHardwareController.h"
 #import "DBNetworkSnifferController.h"
+#import "DBCrashHandlerController.h"
 
 @interface DBActionMenuController ()
 @property (assign, nonatomic, readonly) NSInteger normalSelectedIndex;
@@ -75,6 +76,18 @@
         d.didSelectTarget = self;
         d.height = TableViewCellNormalHeight + 6;
         d.text = @"Display network sniffer";
+        d.detailText = @"Keep the latest 50 historical records";
+        d;
+    }),
+                                                                                                                            ({
+        QMUIStaticTableViewCellData *d = [[QMUIStaticTableViewCellData alloc] init];
+        d.identifier = 5;
+        d.style = UITableViewCellStyleSubtitle;
+        d.accessoryType = QMUIStaticTableViewCellAccessoryTypeDisclosureIndicator;
+        d.didSelectAction = @selector(displayCrashHandler);
+        d.didSelectTarget = self;
+        d.height = TableViewCellNormalHeight + 6;
+        d.text = @"Display crash asserts & stacks";
         d.detailText = @"Keep the latest 50 historical records";
         d;
     })],
@@ -210,6 +223,12 @@
 - (void)displayNetworkSniffer {
     DBNetworkSnifferController *controller = [[DBNetworkSnifferController alloc] initWithStyle:UITableViewStylePlain];
     controller.title = @"Network Sniffer";
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)displayCrashHandler {
+    DBCrashHandlerController *controller = [[DBCrashHandlerController alloc] initWithStyle:UITableViewStylePlain];
+    controller.title = @"Crash Sniffer";
     [self.navigationController pushViewController:controller animated:YES];
 }
 
