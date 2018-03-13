@@ -10,6 +10,7 @@
 #import "DBDeviceHardwareController.h"
 #import "DBNetworkSnifferController.h"
 #import "DBCrashHandlerController.h"
+#import <RouterManager.h>
 
 @interface DBActionMenuController ()
 @property (assign, nonatomic, readonly) NSInteger normalSelectedIndex;
@@ -90,10 +91,21 @@
         d.text = @"Display crash asserts & stacks";
         d.detailText = @"Keep the latest 50 historical records";
         d;
+    }),
+                                                                                                                            ({
+        QMUIStaticTableViewCellData *d = [[QMUIStaticTableViewCellData alloc] init];
+        d.identifier = 6;
+        d.style = UITableViewCellStyleDefault;
+        d.accessoryType = QMUIStaticTableViewCellAccessoryTypeNone;
+        d.didSelectTarget = self;
+        d.didSelectAction = @selector(displayH5TestFiled);
+        d.height = TableViewCellNormalHeight + 6;
+        d.text = @"Test Custom H5-WebView";
+        d;
     })],
                                                                                                                           @[({
         QMUIStaticTableViewCellData *d = [[QMUIStaticTableViewCellData alloc] init];
-        d.identifier = 6;
+        d.identifier = 7;
         d.style = UITableViewCellStyleDefault;
         d.accessoryType = QMUIStaticTableViewCellAccessoryTypeSwitch;
         d.accessoryValueObject = @([DebugManager isDebugBallAutoHidden]);
@@ -230,6 +242,24 @@
     DBCrashHandlerController *controller = [[DBCrashHandlerController alloc] initWithStyle:UITableViewStylePlain];
     controller.title = @"Crash Sniffer";
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)displayH5TestFiled {
+    QMUIDialogTextFieldViewController *newAddDialog = [[QMUIDialogTextFieldViewController alloc] init];
+    newAddDialog.title = @"Enter an new web url here";
+    newAddDialog.textField.placeholder = @"e.g.https://m.azazie.com/";
+    [newAddDialog addCancelButtonWithText:@"Cancel" block:nil];
+    WEAK_SELF
+    [newAddDialog addSubmitButtonWithText:@"Confirm" block:^(QMUIDialogViewController *newAddDialog) {
+        STRONG_SELF
+        QMUIDialogTextFieldViewController *nd = (QMUIDialogTextFieldViewController *)newAddDialog;
+        UIViewController *vc = [RouterManager.sharedManager request:[[RouterRequest alloc] initWithURL:[NSURL URLWithString:nd.textField.text] parameters:nil]];
+        if (vc) {
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        [nd hide];
+    }];
+    [newAddDialog show];
 }
 
 - (void)enableDebugBallAutoHidden:(UISwitch *)view {
