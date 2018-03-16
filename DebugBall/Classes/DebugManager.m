@@ -410,7 +410,7 @@ static void (^__crash_snifferring)(NSException *) = nil;
 }
 
 + (void)showTipsWithType:(TipsDisplayType)type text:(NSString *)text detailText:(NSString *)detailText inView:(__kindof UIView *)view {
-    [self showTipsWithType:type text:text detailText:detailText afterDelay:0.5*[[text stringByAppendingString:detailText] length] inView:view];
+    [self showTipsWithType:type text:text detailText:detailText afterDelay:0.5*[[text stringByAppendingString:detailText?:@""] length] inView:view];
 }
 
 + (void)showTipsWithType:(TipsDisplayType)type text:(NSString *)text detailText:(NSString *)detailText afterDelay:(NSTimeInterval)delay inView:(__kindof UIView *)view {

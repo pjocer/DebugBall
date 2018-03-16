@@ -256,6 +256,8 @@
         UIViewController *vc = [RouterManager.sharedManager request:[[RouterRequest alloc] initWithURL:[NSURL URLWithString:nd.textField.text] parameters:nil]];
         if (vc) {
             [self.navigationController pushViewController:vc animated:YES];
+        } else {
+            [DebugManager showTipsWithType:TipsDisplayTypeInfo text:@"Invalid url" inView:self.view];
         }
         [nd hide];
     }];
