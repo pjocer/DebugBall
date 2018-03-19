@@ -225,6 +225,7 @@ static void (^__crash_snifferring)(NSException *) = nil;
         dataSource[DEVICE_SYSYEM_KEY] = system;
         NSMutableDictionary *app_info = [NSMutableDictionary dictionary];
         app_info[@"App Version"] = [[[NSBundle mainBundle] infoDictionary] valueForKey:@"CFBundleShortVersionString"];
+        app_info[@"Build Number"] = [[[NSBundle mainBundle] infoDictionary] valueForKey:@"CFBundleVersion"];
         app_info[@"Bundle Identifier"] = [[NSBundle mainBundle] bundleIdentifier];
         dataSource[DEVICE_APPINFO_KEY] = app_info;
         UserDefaultsSetObjectForKey(dataSource, DEVICE_HARDWARE_SOURCE_KEY);
