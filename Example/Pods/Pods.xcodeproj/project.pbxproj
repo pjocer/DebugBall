@@ -57,7 +57,6 @@
 		39F91152C8FCDAA96DF2807300BDF23E /* QMUIStaticTableViewCellData.h in Headers */ = {isa = PBXBuildFile; fileRef = 345C63897D90C786DB97FE0975EADFE0 /* QMUIStaticTableViewCellData.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3D2FCA3466AF3C644479192C821743D5 /* QMUIKeyboardManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C11BA61C44557DF34E8D72F6E60636B /* QMUIKeyboardManager.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		3FA62A94195A3863362500BB21ED48C3 /* UILabel+QMUI.m in Sources */ = {isa = PBXBuildFile; fileRef = F3D6C9A24AAF62D75F3AC8FBB4C8C019 /* UILabel+QMUI.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		3FDA705626C3032752FD7F113B01B970 /* DebugView+PanGesturer.m in Sources */ = {isa = PBXBuildFile; fileRef = 65604D03C03D4B1C14ADBBFF2B208D64 /* DebugView+PanGesturer.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		40E2D63917B7A2A167C7A26453DD2C4E /* UIColor+QMUI.m in Sources */ = {isa = PBXBuildFile; fileRef = F75D0DBB0F525D4167F1C5B389FF7CEA /* UIColor+QMUI.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		41A08F3FF50392D34E214E6545649A1B /* DebugView.h in Headers */ = {isa = PBXBuildFile; fileRef = A002B65BFF7BF30F301549EA9BB96249 /* DebugView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4701A02F7C4E196AE5F01E614B89051A /* UITextView+QMUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D068DF80B8048EED16B99FF51736396 /* UITextView+QMUI.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -110,7 +109,6 @@
 		744F4A6A4CD018E4F0516C79C869B30F /* UILabel+QMUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 20A7BD3955CCF7E63CDC622F73ACA610 /* UILabel+QMUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		78DC5ED7412EAA1365559E31588479EB /* NSObject+QMUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 1825C4820EA800ED6ABC8230F925437C /* NSObject+QMUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7A943531FBEFCB8F34AFECE364C231B5 /* QMUITestView.m in Sources */ = {isa = PBXBuildFile; fileRef = 007C0E40A7F9EBAF46FB63A745BAC23B /* QMUITestView.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		7D32193A470DA39181834CC909F953D4 /* DBActionMenuController.h in Headers */ = {isa = PBXBuildFile; fileRef = F48A1C4EAC899CC7AB674B2428DD3846 /* DBActionMenuController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7DB6C49BFC16FAA3DBB84F4A982FD5F8 /* QMUIZoomImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A9964CD273DB999704E91772B38D02 /* QMUIZoomImageView.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		7DB89F5952A259C262702D6297388E68 /* QMUIAssetsGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = BFCAB93F27DDA7FF07EE8E74A4078308 /* QMUIAssetsGroup.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		7DF01C412DAC1ADC4EB6E514F42E102A /* UINavigationController+QMUI.h in Headers */ = {isa = PBXBuildFile; fileRef = D75236A9DA1851661FD5CF783A285DC4 /* UINavigationController+QMUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -118,11 +116,9 @@
 		808C4EB396EBE8CDA54C72F7A9603F55 /* DebugView+PanGesturer.h in Headers */ = {isa = PBXBuildFile; fileRef = B3A3A682ABC8B7A9D9A3C7C55AB4BF65 /* DebugView+PanGesturer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		819E0DCC26D78F77DF3E85E2F6F16022 /* QMUIMoreOperationController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B3F0F05CD4D907E59B7AAD0E61829C3 /* QMUIMoreOperationController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		820A61F3870BD358D5317A5658825B13 /* QMUIImagePickerHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 93F736DD5EDDF1FB2866992DFB0AFB3E /* QMUIImagePickerHelper.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		83A272302DCD4452BC9EA0FBB659C574 /* DebugManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F536EF509B9DBF31AF5FFD33B9F9A93 /* DebugManager.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		83C6AA9F169D71A413F38D1FCA3EBE41 /* UITableView+QMUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B9ACCA5FE5BA298D9BC22B7011A3A2C /* UITableView+QMUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		879DA08D6831FE843F50717A1EF5EB38 /* QMUIEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA7B2D345F456676550131ED048DA352 /* QMUIEmptyView.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		885804CB48ABB23EBF9D7598FC5BD6A2 /* QMUIAlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E975F4547EBAF2A7B8F7678BD8546B6F /* QMUIAlbumViewController.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
-		89D5064882FB657DB1A5347B8694E3D9 /* DebugView+Ripple.h in Headers */ = {isa = PBXBuildFile; fileRef = E6306428F46EE7E9A1EB4D15B2E03513 /* DebugView+Ripple.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B85D26A35BD9FC251597A6AF84B8763 /* DBCommonTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 72B55D05B69AD9EEBA465F6B7D67A6F8 /* DBCommonTableViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BE09C1930C507C3969DA1A7C23F0405 /* QMUISearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = BC113552936D83DA98089B464B68C350 /* QMUISearchBar.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		8CC3457EFC4032DF30C899E99A079191 /* UICollectionView+QMUI.h in Headers */ = {isa = PBXBuildFile; fileRef = F938F9D38107CB5166BD33EEC9735ED7 /* UICollectionView+QMUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -155,7 +151,6 @@
 		B6F3005F6B05EC4F74AFDE045F142C8C /* QMUISearchBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 28D0736F8B9BDE36C757D59B87B16B51 /* QMUISearchBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B6F7EBF9A0829F97A6000D55F2924AE6 /* QMUIVisualEffectView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E6CEEA86A48BDF284AAF013EBD79BA1 /* QMUIVisualEffectView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BBEBA24773A66EF174FF22F488478226 /* UIBezierPath+QMUI.h in Headers */ = {isa = PBXBuildFile; fileRef = C4730BB80C5B3ADA36FF8FAC13C7808B /* UIBezierPath+QMUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C154F8047EBEEEFD724B91547CC794AE /* DBActionMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5A6D57185263704D58EB14502FC2C4D /* DBActionMenuController.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		C19C571131A2A380132E0EB1EAA1C52A /* QMUITableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 727BF8CCDF267633197AB8F3AF83C648 /* QMUITableViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2C7E4B366822E3A5BEEA5A904E53316 /* UITabBarItem+QMUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 79ED92B91560CAE1E1426F9367288677 /* UITabBarItem+QMUI.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		C34C39D9ECD1F55A611B7938DFA2AC9E /* QMUIImagePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1C885B1AFFE6B4129D6D897870B1AA0 /* QMUIImagePreviewViewController.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -175,6 +170,43 @@
 		D2863428ABED1D9C3A8E4E3F04FD9C17 /* UITabBarItem+QMUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 0B79BF1D30EE95009B77339B8F01D6A3 /* UITabBarItem+QMUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3CE83581F4E6FB9003F5339 /* DBDeviceHardwareController.h in Headers */ = {isa = PBXBuildFile; fileRef = D3CE83561F4E6FB9003F5339 /* DBDeviceHardwareController.h */; };
 		D3CE83591F4E6FB9003F5339 /* DBDeviceHardwareController.m in Sources */ = {isa = PBXBuildFile; fileRef = D3CE83571F4E6FB9003F5339 /* DBDeviceHardwareController.m */; };
+		D3F9EBAC20613D9E00401F9E /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9EB8D20613D9A00401F9E /* UncaughtExceptionHandler.m */; };
+		D3F9EBAD20613D9E00401F9E /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9EB8D20613D9A00401F9E /* UncaughtExceptionHandler.m */; };
+		D3F9EBAE20613D9E00401F9E /* ExceptionModel.h in Headers */ = {isa = PBXBuildFile; fileRef = D3F9EB8E20613D9A00401F9E /* ExceptionModel.h */; };
+		D3F9EBB120613D9E00401F9E /* UncaughtExceptionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = D3F9EB9020613D9A00401F9E /* UncaughtExceptionHandler.h */; };
+		D3F9EBB220613D9E00401F9E /* SignalHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = D3F9EB9120613D9B00401F9E /* SignalHandler.h */; };
+		D3F9EBB320613D9E00401F9E /* DBNetworkSnifferController.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9EB9220613D9B00401F9E /* DBNetworkSnifferController.m */; };
+		D3F9EBB420613D9E00401F9E /* DBNetworkSnifferController.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9EB9220613D9B00401F9E /* DBNetworkSnifferController.m */; };
+		D3F9EBB520613D9E00401F9E /* UIDevice+Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = D3F9EB9320613D9B00401F9E /* UIDevice+Hardware.h */; };
+		D3F9EBB620613D9E00401F9E /* SignalHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9EB9420613D9B00401F9E /* SignalHandler.m */; };
+		D3F9EBB720613D9E00401F9E /* SignalHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9EB9420613D9B00401F9E /* SignalHandler.m */; };
+		D3F9EBB820613D9E00401F9E /* DebugView+PanGesturer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9EB9520613D9B00401F9E /* DebugView+PanGesturer.m */; };
+		D3F9EBB920613D9E00401F9E /* DebugView+PanGesturer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9EB9520613D9B00401F9E /* DebugView+PanGesturer.m */; };
+		D3F9EBBA20613D9E00401F9E /* ExceptionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9EB9620613D9B00401F9E /* ExceptionModel.m */; };
+		D3F9EBBB20613D9E00401F9E /* ExceptionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9EB9620613D9B00401F9E /* ExceptionModel.m */; };
+		D3F9EBBF20613D9E00401F9E /* DBNetworkSnifferController.h in Headers */ = {isa = PBXBuildFile; fileRef = D3F9EB9920613D9C00401F9E /* DBNetworkSnifferController.h */; };
+		D3F9EBC020613D9E00401F9E /* DBDeviceHardwareController.h in Headers */ = {isa = PBXBuildFile; fileRef = D3F9EB9A20613D9C00401F9E /* DBDeviceHardwareController.h */; };
+		D3F9EBC120613D9E00401F9E /* DBActionMenuController.h in Headers */ = {isa = PBXBuildFile; fileRef = D3F9EB9B20613D9C00401F9E /* DBActionMenuController.h */; };
+		D3F9EBC220613D9E00401F9E /* DBActionMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9EB9C20613D9C00401F9E /* DBActionMenuController.m */; };
+		D3F9EBC320613D9E00401F9E /* DBActionMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9EB9C20613D9C00401F9E /* DBActionMenuController.m */; };
+		D3F9EBC420613D9E00401F9E /* DBCrashHandlerController.h in Headers */ = {isa = PBXBuildFile; fileRef = D3F9EB9D20613D9C00401F9E /* DBCrashHandlerController.h */; };
+		D3F9EBC520613D9E00401F9E /* DBCommonTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9EB9E20613D9C00401F9E /* DBCommonTableViewController.m */; };
+		D3F9EBC620613D9E00401F9E /* DBCommonTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9EB9E20613D9C00401F9E /* DBCommonTableViewController.m */; };
+		D3F9EBC720613D9E00401F9E /* DBToastAnimator.h in Headers */ = {isa = PBXBuildFile; fileRef = D3F9EB9F20613D9C00401F9E /* DBToastAnimator.h */; };
+		D3F9EBC820613D9E00401F9E /* DBToastAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9EBA020613D9D00401F9E /* DBToastAnimator.m */; };
+		D3F9EBC920613D9E00401F9E /* DBToastAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9EBA020613D9D00401F9E /* DBToastAnimator.m */; };
+		D3F9EBCB20613D9E00401F9E /* DBCommonTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = D3F9EBA220613D9D00401F9E /* DBCommonTableViewController.h */; };
+		D3F9EBCC20613D9E00401F9E /* UIDevice+Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9EBA320613D9D00401F9E /* UIDevice+Hardware.m */; };
+		D3F9EBCD20613D9E00401F9E /* UIDevice+Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9EBA320613D9D00401F9E /* UIDevice+Hardware.m */; };
+		D3F9EBCE20613D9E00401F9E /* Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = D3F9EBA420613D9D00401F9E /* Utils.h */; };
+		D3F9EBD020613D9E00401F9E /* DebugBall.h in Headers */ = {isa = PBXBuildFile; fileRef = D3F9EBA620613D9D00401F9E /* DebugBall.h */; };
+		D3F9EBD220613D9E00401F9E /* DebugView+Ripple.h in Headers */ = {isa = PBXBuildFile; fileRef = D3F9EBA820613D9E00401F9E /* DebugView+Ripple.h */; };
+		D3F9EBD320613D9E00401F9E /* DebugManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9EBA920613D9E00401F9E /* DebugManager.m */; };
+		D3F9EBD420613D9E00401F9E /* DebugManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9EBA920613D9E00401F9E /* DebugManager.m */; };
+		D3F9EBD520613D9E00401F9E /* DBDeviceHardwareController.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9EBAA20613D9E00401F9E /* DBDeviceHardwareController.m */; };
+		D3F9EBD620613D9E00401F9E /* DBDeviceHardwareController.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9EBAA20613D9E00401F9E /* DBDeviceHardwareController.m */; };
+		D3F9EBD720613D9E00401F9E /* DBCrashHandlerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9EBAB20613D9E00401F9E /* DBCrashHandlerController.m */; };
+		D3F9EBD820613D9E00401F9E /* DBCrashHandlerController.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F9EBAB20613D9E00401F9E /* DBCrashHandlerController.m */; };
 		D3FB73031F4EA20800F08AA0 /* Utils.h in Headers */ = {isa = PBXBuildFile; fileRef = D3FB73021F4EA20800F08AA0 /* Utils.h */; };
 		D4A4E25F73514B3965A5C2D37AD604E1 /* UIActivityIndicatorView+QMUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 31FB63396A5BC6B653B660BAEEE6CA9C /* UIActivityIndicatorView+QMUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D6A24F52303B5AA52120377AB7FEE6AA /* UIView+QMUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 26FB608953C3AB1E0B706C9D0F10414A /* UIView+QMUI.m */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
@@ -334,7 +366,6 @@
 		615A901F46779DC65CF7B1E53A2F0518 /* QMUIEmotionView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = QMUIEmotionView.m; path = QMUIKit/UIComponents/QMUIEmotionView.m; sourceTree = "<group>"; };
 		624A5F866E468B8C2215F0E145BCC7E8 /* Pods-DebugBall_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DebugBall_Example.release.xcconfig"; sourceTree = "<group>"; };
 		644D1D8E2973601CEB8FD949FA854656 /* QMUITextView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = QMUITextView.m; path = QMUIKit/UIKitExtensions/QMUITextView.m; sourceTree = "<group>"; };
-		65604D03C03D4B1C14ADBBFF2B208D64 /* DebugView+PanGesturer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "DebugView+PanGesturer.m"; path = "DebugBall/Classes/DebugView+PanGesturer.m"; sourceTree = "<group>"; };
 		658CFE8D5DAD2C77B6A3B359041056B5 /* DebugBall.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = DebugBall.xcconfig; sourceTree = "<group>"; };
 		65DE2F044F4E76A1126FF81D653B890E /* QMUIGridView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = QMUIGridView.h; path = QMUIKit/UIComponents/QMUIGridView.h; sourceTree = "<group>"; };
 		66EA78F3DC9B93C2E0A2212CDC3AD4A8 /* QMUIToastView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = QMUIToastView.m; path = QMUIKit/UIComponents/QMUIToastView.m; sourceTree = "<group>"; };
@@ -346,7 +377,6 @@
 		6C11BA61C44557DF34E8D72F6E60636B /* QMUIKeyboardManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = QMUIKeyboardManager.m; path = QMUIKit/UIComponents/QMUIKeyboardManager.m; sourceTree = "<group>"; };
 		6D0CA6153666F29159BAF4FB0B8A3494 /* QMUITextField.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = QMUITextField.h; path = QMUIKit/UIKitExtensions/QMUITextField.h; sourceTree = "<group>"; };
 		6E6CEEA86A48BDF284AAF013EBD79BA1 /* QMUIVisualEffectView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = QMUIVisualEffectView.h; path = QMUIKit/UIComponents/QMUIVisualEffectView.h; sourceTree = "<group>"; };
-		6F536EF509B9DBF31AF5FFD33B9F9A93 /* DebugManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DebugManager.m; path = DebugBall/Classes/DebugManager.m; sourceTree = "<group>"; };
 		7218601DC64B5B08F6615683BE18F12D /* UITableView+QMUIStaticCell.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UITableView+QMUIStaticCell.m"; path = "QMUIKit/UIComponents/StaticTableView/UITableView+QMUIStaticCell.m"; sourceTree = "<group>"; };
 		7253B05F459AACB74EEC14F892618C10 /* QMUIImagePickerViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = QMUIImagePickerViewController.h; path = QMUIKit/UIComponents/ImagePickerLibrary/QMUIImagePickerViewController.h; sourceTree = "<group>"; };
 		725500BF042211A9A7294544CD23E485 /* UIFont+QMUI.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIFont+QMUI.h"; path = "QMUIKit/UIKitExtensions/UIFont+QMUI.h"; sourceTree = "<group>"; };
@@ -432,6 +462,31 @@
 		D2DE07EF69F187EC3BC3AD4108670E16 /* QMUILabel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = QMUILabel.h; path = QMUIKit/UIKitExtensions/QMUILabel.h; sourceTree = "<group>"; };
 		D3CE83561F4E6FB9003F5339 /* DBDeviceHardwareController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBDeviceHardwareController.h; path = DebugBall/Classes/DBDeviceHardwareController.h; sourceTree = "<group>"; };
 		D3CE83571F4E6FB9003F5339 /* DBDeviceHardwareController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBDeviceHardwareController.m; path = DebugBall/Classes/DBDeviceHardwareController.m; sourceTree = "<group>"; };
+		D3F9EB8D20613D9A00401F9E /* UncaughtExceptionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UncaughtExceptionHandler.m; path = DebugBall/Classes/UncaughtExceptionHandler.m; sourceTree = "<group>"; };
+		D3F9EB8E20613D9A00401F9E /* ExceptionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExceptionModel.h; path = DebugBall/Classes/ExceptionModel.h; sourceTree = "<group>"; };
+		D3F9EB9020613D9A00401F9E /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UncaughtExceptionHandler.h; path = DebugBall/Classes/UncaughtExceptionHandler.h; sourceTree = "<group>"; };
+		D3F9EB9120613D9B00401F9E /* SignalHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SignalHandler.h; path = DebugBall/Classes/SignalHandler.h; sourceTree = "<group>"; };
+		D3F9EB9220613D9B00401F9E /* DBNetworkSnifferController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBNetworkSnifferController.m; path = DebugBall/Classes/DBNetworkSnifferController.m; sourceTree = "<group>"; };
+		D3F9EB9320613D9B00401F9E /* UIDevice+Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIDevice+Hardware.h"; path = "DebugBall/Classes/UIDevice+Hardware.h"; sourceTree = "<group>"; };
+		D3F9EB9420613D9B00401F9E /* SignalHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SignalHandler.m; path = DebugBall/Classes/SignalHandler.m; sourceTree = "<group>"; };
+		D3F9EB9520613D9B00401F9E /* DebugView+PanGesturer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "DebugView+PanGesturer.m"; path = "DebugBall/Classes/DebugView+PanGesturer.m"; sourceTree = "<group>"; };
+		D3F9EB9620613D9B00401F9E /* ExceptionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExceptionModel.m; path = DebugBall/Classes/ExceptionModel.m; sourceTree = "<group>"; };
+		D3F9EB9920613D9C00401F9E /* DBNetworkSnifferController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBNetworkSnifferController.h; path = DebugBall/Classes/DBNetworkSnifferController.h; sourceTree = "<group>"; };
+		D3F9EB9A20613D9C00401F9E /* DBDeviceHardwareController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBDeviceHardwareController.h; path = DebugBall/Classes/DBDeviceHardwareController.h; sourceTree = "<group>"; };
+		D3F9EB9B20613D9C00401F9E /* DBActionMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBActionMenuController.h; path = DebugBall/Classes/DBActionMenuController.h; sourceTree = "<group>"; };
+		D3F9EB9C20613D9C00401F9E /* DBActionMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBActionMenuController.m; path = DebugBall/Classes/DBActionMenuController.m; sourceTree = "<group>"; };
+		D3F9EB9D20613D9C00401F9E /* DBCrashHandlerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBCrashHandlerController.h; path = DebugBall/Classes/DBCrashHandlerController.h; sourceTree = "<group>"; };
+		D3F9EB9E20613D9C00401F9E /* DBCommonTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBCommonTableViewController.m; path = DebugBall/Classes/DBCommonTableViewController.m; sourceTree = "<group>"; };
+		D3F9EB9F20613D9C00401F9E /* DBToastAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBToastAnimator.h; path = DebugBall/Classes/DBToastAnimator.h; sourceTree = "<group>"; };
+		D3F9EBA020613D9D00401F9E /* DBToastAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBToastAnimator.m; path = DebugBall/Classes/DBToastAnimator.m; sourceTree = "<group>"; };
+		D3F9EBA220613D9D00401F9E /* DBCommonTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBCommonTableViewController.h; path = DebugBall/Classes/DBCommonTableViewController.h; sourceTree = "<group>"; };
+		D3F9EBA320613D9D00401F9E /* UIDevice+Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIDevice+Hardware.m"; path = "DebugBall/Classes/UIDevice+Hardware.m"; sourceTree = "<group>"; };
+		D3F9EBA420613D9D00401F9E /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utils.h; path = DebugBall/Classes/Utils.h; sourceTree = "<group>"; };
+		D3F9EBA620613D9D00401F9E /* DebugBall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DebugBall.h; path = DebugBall/Classes/DebugBall.h; sourceTree = "<group>"; };
+		D3F9EBA820613D9E00401F9E /* DebugView+Ripple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "DebugView+Ripple.h"; path = "DebugBall/Classes/DebugView+Ripple.h"; sourceTree = "<group>"; };
+		D3F9EBA920613D9E00401F9E /* DebugManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DebugManager.m; path = DebugBall/Classes/DebugManager.m; sourceTree = "<group>"; };
+		D3F9EBAA20613D9E00401F9E /* DBDeviceHardwareController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBDeviceHardwareController.m; path = DebugBall/Classes/DBDeviceHardwareController.m; sourceTree = "<group>"; };
+		D3F9EBAB20613D9E00401F9E /* DBCrashHandlerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBCrashHandlerController.m; path = DebugBall/Classes/DBCrashHandlerController.m; sourceTree = "<group>"; };
 		D3FB73021F4EA20800F08AA0 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utils.h; path = DebugBall/Classes/Utils.h; sourceTree = "<group>"; };
 		D56A6709FBC4F15DCA4038636BA811DC /* QMUIAsset.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = QMUIAsset.m; path = QMUIKit/UIComponents/AssetLibrary/QMUIAsset.m; sourceTree = "<group>"; };
 		D58FB22089CCF6CC43213EC5DFC71DA7 /* QMUIImagePickerViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = QMUIImagePickerViewController.m; path = QMUIKit/UIComponents/ImagePickerLibrary/QMUIImagePickerViewController.m; sourceTree = "<group>"; };
@@ -450,8 +505,6 @@
 		E4E6058668E24397178B6E3EE873202B /* QMUIKit.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = QMUIKit.xcconfig; sourceTree = "<group>"; };
 		E583C534B9FD1F7B865AC6F6E5ECC26E /* QMUIImagePreviewView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = QMUIImagePreviewView.m; path = QMUIKit/UIComponents/QMUIImagePreviewView.m; sourceTree = "<group>"; };
 		E5A2509789650A23FCDFED204FC16C12 /* QMUIVisualEffectView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = QMUIVisualEffectView.m; path = QMUIKit/UIComponents/QMUIVisualEffectView.m; sourceTree = "<group>"; };
-		E5A6D57185263704D58EB14502FC2C4D /* DBActionMenuController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DBActionMenuController.m; path = DebugBall/Classes/DBActionMenuController.m; sourceTree = "<group>"; };
-		E6306428F46EE7E9A1EB4D15B2E03513 /* DebugView+Ripple.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "DebugView+Ripple.h"; path = "DebugBall/Classes/DebugView+Ripple.h"; sourceTree = "<group>"; };
 		E668AD2D54A7B6FBB4C38375F1F78E3C /* QMUIOrderedDictionary.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = QMUIOrderedDictionary.m; path = QMUIKit/UIComponents/QMUIOrderedDictionary.m; sourceTree = "<group>"; };
 		E7C9E3B55BB4DFEB31AB27A4EAFC9FD2 /* QMUINavigationTitleView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = QMUINavigationTitleView.h; path = QMUIKit/UIComponents/QMUINavigationTitleView.h; sourceTree = "<group>"; };
 		E975F4547EBAF2A7B8F7678BD8546B6F /* QMUIAlbumViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = QMUIAlbumViewController.m; path = QMUIKit/UIComponents/ImagePickerLibrary/QMUIAlbumViewController.m; sourceTree = "<group>"; };
@@ -467,7 +520,6 @@
 		F292E3BEEA3001852C6B7CAAA99B7CEA /* QMUIImagePickerPreviewViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = QMUIImagePickerPreviewViewController.m; path = QMUIKit/UIComponents/ImagePickerLibrary/QMUIImagePickerPreviewViewController.m; sourceTree = "<group>"; };
 		F2D1D61535EF2732BB04259C0DDE010E /* QMUITableViewProtocols.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = QMUITableViewProtocols.h; path = QMUIKit/UIKitExtensions/QMUITableViewProtocols.h; sourceTree = "<group>"; };
 		F3D6C9A24AAF62D75F3AC8FBB4C8C019 /* UILabel+QMUI.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UILabel+QMUI.m"; path = "QMUIKit/UIKitExtensions/UILabel+QMUI.m"; sourceTree = "<group>"; };
-		F48A1C4EAC899CC7AB674B2428DD3846 /* DBActionMenuController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DBActionMenuController.h; path = DebugBall/Classes/DBActionMenuController.h; sourceTree = "<group>"; };
 		F5D2E34ABF51D5D5571F9B0A0F1308F4 /* NSObject+QMUI.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSObject+QMUI.m"; path = "QMUIKit/UIKitExtensions/NSObject+QMUI.m"; sourceTree = "<group>"; };
 		F75D0DBB0F525D4167F1C5B389FF7CEA /* UIColor+QMUI.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIColor+QMUI.m"; path = "QMUIKit/UIKitExtensions/UIColor+QMUI.m"; sourceTree = "<group>"; };
 		F938F9D38107CB5166BD33EEC9735ED7 /* UICollectionView+QMUI.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UICollectionView+QMUI.h"; path = "QMUIKit/UIKitExtensions/UICollectionView+QMUI.h"; sourceTree = "<group>"; };
@@ -650,22 +702,41 @@
 			children = (
 				D3FB73021F4EA20800F08AA0 /* Utils.h */,
 				7374125ECA48715C5576DBDAF0F90684 /* DebugViewMacros.h */,
-				F48A1C4EAC899CC7AB674B2428DD3846 /* DBActionMenuController.h */,
-				E5A6D57185263704D58EB14502FC2C4D /* DBActionMenuController.m */,
+				D3F9EB9B20613D9C00401F9E /* DBActionMenuController.h */,
+				D3F9EB9C20613D9C00401F9E /* DBActionMenuController.m */,
+				D3F9EBA220613D9D00401F9E /* DBCommonTableViewController.h */,
+				D3F9EB9E20613D9C00401F9E /* DBCommonTableViewController.m */,
+				D3F9EB9D20613D9C00401F9E /* DBCrashHandlerController.h */,
+				D3F9EBAB20613D9E00401F9E /* DBCrashHandlerController.m */,
 				D3CE83561F4E6FB9003F5339 /* DBDeviceHardwareController.h */,
 				D3CE83571F4E6FB9003F5339 /* DBDeviceHardwareController.m */,
 				72B55D05B69AD9EEBA465F6B7D67A6F8 /* DBCommonTableViewController.h */,
 				493917933DF2B65A1FF5DCEA0EA3D011 /* DBCommonTableViewController.m */,
+				D3F9EB9F20613D9C00401F9E /* DBToastAnimator.h */,
+				D3F9EBA020613D9D00401F9E /* DBToastAnimator.m */,
+				D3F9EBA620613D9D00401F9E /* DebugBall.h */,
 				AE974B833F10EFE8CD89B563C44D189A /* DebugManager.h */,
-				6F536EF509B9DBF31AF5FFD33B9F9A93 /* DebugManager.m */,
+				D3F9EBA920613D9E00401F9E /* DebugManager.m */,
 				A002B65BFF7BF30F301549EA9BB96249 /* DebugView.h */,
-				20A01A252296EE6A1052D74634227587 /* DebugView.m */,
+				D3F9EB9A20613D9C00401F9E /* DBDeviceHardwareController.h */,
+				D3F9EBAA20613D9E00401F9E /* DBDeviceHardwareController.m */,
+				D3F9EB9920613D9C00401F9E /* DBNetworkSnifferController.h */,
+				D3F9EB9220613D9B00401F9E /* DBNetworkSnifferController.m */,
 				B3A3A682ABC8B7A9D9A3C7C55AB4BF65 /* DebugView+PanGesturer.h */,
-				65604D03C03D4B1C14ADBBFF2B208D64 /* DebugView+PanGesturer.m */,
-				E6306428F46EE7E9A1EB4D15B2E03513 /* DebugView+Ripple.h */,
+				D3F9EB9520613D9B00401F9E /* DebugView+PanGesturer.m */,
+				D3F9EBA820613D9E00401F9E /* DebugView+Ripple.h */,
 				B0AB5591FA87CB6A726FEC61302CA47D /* DebugView+Ripple.m */,
+				D3F9EB9120613D9B00401F9E /* SignalHandler.h */,
+				D3F9EB9420613D9B00401F9E /* SignalHandler.m */,
 				C77F8338F4AC3141156A108480A01F44 /* UIDevice+Hardware.h */,
 				FB063F9FAD2257B166A81A27CA4A6ABE /* UIDevice+Hardware.m */,
+				D3F9EB8E20613D9A00401F9E /* ExceptionModel.h */,
+				D3F9EB9620613D9B00401F9E /* ExceptionModel.m */,
+				D3F9EB9320613D9B00401F9E /* UIDevice+Hardware.h */,
+				D3F9EBA320613D9D00401F9E /* UIDevice+Hardware.m */,
+				D3F9EB9020613D9A00401F9E /* UncaughtExceptionHandler.h */,
+				D3F9EB8D20613D9A00401F9E /* UncaughtExceptionHandler.m */,
+				D3F9EBA420613D9D00401F9E /* Utils.h */,
 				38DF3B8E4A0FF88FF6B7446CEE8069E1 /* Resources */,
 				16260DEEC7B454E7FC19C3B9A350B2DB /* Support Files */,
 			);
@@ -880,15 +951,26 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D32193A470DA39181834CC909F953D4 /* DBActionMenuController.h in Headers */,
+				D3F9EBCB20613D9E00401F9E /* DBCommonTableViewController.h in Headers */,
+				D3F9EBB220613D9E00401F9E /* SignalHandler.h in Headers */,
+				D3F9EBC020613D9E00401F9E /* DBDeviceHardwareController.h in Headers */,
+				D3F9EBD020613D9E00401F9E /* DebugBall.h in Headers */,
+				D3F9EBC420613D9E00401F9E /* DBCrashHandlerController.h in Headers */,
 				8B85D26A35BD9FC251597A6AF84B8763 /* DBCommonTableViewController.h in Headers */,
+				D3F9EBBF20613D9E00401F9E /* DBNetworkSnifferController.h in Headers */,
+				D3F9EBC120613D9E00401F9E /* DBActionMenuController.h in Headers */,
 				D728DCDA1241E00A3A401C0A88F28F52 /* DebugManager.h in Headers */,
 				808C4EB396EBE8CDA54C72F7A9603F55 /* DebugView+PanGesturer.h in Headers */,
-				89D5064882FB657DB1A5347B8694E3D9 /* DebugView+Ripple.h in Headers */,
+				D3F9EBB120613D9E00401F9E /* UncaughtExceptionHandler.h in Headers */,
+				D3F9EBB520613D9E00401F9E /* UIDevice+Hardware.h in Headers */,
+				D3F9EBC720613D9E00401F9E /* DBToastAnimator.h in Headers */,
 				41A08F3FF50392D34E214E6545649A1B /* DebugView.h in Headers */,
 				FF8FE3638D104DE779B7F18DD01DEA74 /* DebugViewMacros.h in Headers */,
 				D3CE83581F4E6FB9003F5339 /* DBDeviceHardwareController.h in Headers */,
+				D3F9EBAE20613D9E00401F9E /* ExceptionModel.h in Headers */,
+				D3F9EBCE20613D9E00401F9E /* Utils.h in Headers */,
 				D3FB73031F4EA20800F08AA0 /* Utils.h in Headers */,
+				D3F9EBD220613D9E00401F9E /* DebugView+Ripple.h in Headers */,
 				56837E6978EDD1922D89B93A63D83D05 /* UIDevice+Hardware.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1126,6 +1208,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3F9EBC320613D9E00401F9E /* DBActionMenuController.m in Sources */,
+				D3F9EBCD20613D9E00401F9E /* UIDevice+Hardware.m in Sources */,
+				D3F9EBB920613D9E00401F9E /* DebugView+PanGesturer.m in Sources */,
+				D3F9EBB420613D9E00401F9E /* DBNetworkSnifferController.m in Sources */,
+				D3F9EBD620613D9E00401F9E /* DBDeviceHardwareController.m in Sources */,
+				D3F9EBC620613D9E00401F9E /* DBCommonTableViewController.m in Sources */,
+				D3F9EBD820613D9E00401F9E /* DBCrashHandlerController.m in Sources */,
+				D3F9EBC920613D9E00401F9E /* DBToastAnimator.m in Sources */,
+				D3F9EBBB20613D9E00401F9E /* ExceptionModel.m in Sources */,
+				D3F9EBB720613D9E00401F9E /* SignalHandler.m in Sources */,
+				D3F9EBAD20613D9E00401F9E /* UncaughtExceptionHandler.m in Sources */,
+				D3F9EBD420613D9E00401F9E /* DebugManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1232,13 +1326,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3F9EBB320613D9E00401F9E /* DBNetworkSnifferController.m in Sources */,
+				D3F9EBB820613D9E00401F9E /* DebugView+PanGesturer.m in Sources */,
+				D3F9EBD320613D9E00401F9E /* DebugManager.m in Sources */,
 				D3CE83591F4E6FB9003F5339 /* DBDeviceHardwareController.m in Sources */,
-				C154F8047EBEEEFD724B91547CC794AE /* DBActionMenuController.m in Sources */,
+				D3F9EBD720613D9E00401F9E /* DBCrashHandlerController.m in Sources */,
+				D3F9EBAC20613D9E00401F9E /* UncaughtExceptionHandler.m in Sources */,
+				D3F9EBC820613D9E00401F9E /* DBToastAnimator.m in Sources */,
+				D3F9EBCC20613D9E00401F9E /* UIDevice+Hardware.m in Sources */,
 				B2D20B829C0884965E4B7590E1F6EC11 /* DBCommonTableViewController.m in Sources */,
+				D3F9EBC220613D9E00401F9E /* DBActionMenuController.m in Sources */,
+				D3F9EBD520613D9E00401F9E /* DBDeviceHardwareController.m in Sources */,
 				36B8535293A0875CE9AA5ACC7C7E2F40 /* DebugBall-dummy.m in Sources */,
-				83A272302DCD4452BC9EA0FBB659C574 /* DebugManager.m in Sources */,
-				3FDA705626C3032752FD7F113B01B970 /* DebugView+PanGesturer.m in Sources */,
+				D3F9EBB620613D9E00401F9E /* SignalHandler.m in Sources */,
+				D3F9EBBA20613D9E00401F9E /* ExceptionModel.m in Sources */,
 				54F4BB3E22DA392108A04D89CD8FA539 /* DebugView+Ripple.m in Sources */,
+				D3F9EBC520613D9E00401F9E /* DBCommonTableViewController.m in Sources */,
 				CA4FAF3362175973E96F9329F1D4A792 /* DebugView.m in Sources */,
 				6440B143F5201AE7C5EDCF0E3AE1D4F2 /* UIDevice+Hardware.m in Sources */,
 			);

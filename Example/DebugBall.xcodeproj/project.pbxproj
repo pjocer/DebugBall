@@ -262,6 +262,9 @@
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = pjocer;
 				TargetAttributes = {
+					6003F589195388D20070C39A = {
+						DevelopmentTeam = 49X2X2Y4J5;
+					};
 					6003F5AD195388D20070C39A = {
 						TestTargetID = 6003F589195388D20070C39A;
 					};
@@ -572,7 +575,8 @@
 			baseConfigurationReference = 12342F8E7161796D0508865F /* Pods-DebugBall_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ENABLE_BITCODE = NO;
+				DEVELOPMENT_TEAM = 49X2X2Y4J5;
+				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DebugBall/DebugBall-Prefix.pch";
@@ -590,7 +594,8 @@
 			baseConfigurationReference = C0756E96967A05AA7E1CB151 /* Pods-DebugBall_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ENABLE_BITCODE = NO;
+				DEVELOPMENT_TEAM = 49X2X2Y4J5;
+				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DebugBall/DebugBall-Prefix.pch";
