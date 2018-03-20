@@ -1,7 +1,7 @@
 {
   "name": "DebugBall",
-  "version": "0.2.4",
-  "summary": "一个轻量级的FPS、内存检测View",
+  "version": "1.0.1",
+  "summary": "一个轻量级的Debug调试工具，一键设置API Host/H5 API Host,以及其它的一些Debug UI调试工具",
   "description": "TODO: Add long description of the pod here.",
   "homepage": "https://github.com/pjocer/DebugBall",
   "license": {
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/pjocer/DebugBall.git",
-    "tag": "0.2.4"
+    "tag": "1.0.1"
   },
   "platforms": {
     "ios": "8.0"
@@ -27,7 +27,7 @@
   "public_header_files": "DebugBall/Classes/**/*.h",
   "dependencies": {
     "QMUIKit": [
-
+      "~> 1.7.6"
     ]
   }
 }
