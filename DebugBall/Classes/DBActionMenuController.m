@@ -10,7 +10,6 @@
 #import "DBDeviceHardwareController.h"
 #import "DBNetworkSnifferController.h"
 #import "DBCrashHandlerController.h"
-#import <base/RouterManager.h>
 
 @interface DBActionMenuController ()
 @property (assign, nonatomic, readonly) NSInteger normalSelectedIndex;
@@ -147,6 +146,7 @@
     [list addObject:type == APIDomainTypeDefault ? @"Add an new domain" : @"Add an new h5-domain"];
     QMUIDialogSelectionViewController *dialogViewController = [[QMUIDialogSelectionViewController alloc] init];
     dialogViewController.title = type == APIDomainTypeDefault ? @"API Domain List" : @"H5 API Domain List";
+    dialogViewController.tableView;
     dialogViewController.items = list;
     dialogViewController.selectedItemIndex = type == APIDomainTypeDefault ? self.normalSelectedIndex : self.h5SelectedIndex;
     [dialogViewController addCancelButtonWithText:@"Cancel" block:nil];
@@ -253,12 +253,7 @@
     [newAddDialog addSubmitButtonWithText:@"Confirm" block:^(QMUIDialogViewController *newAddDialog) {
         STRONG_SELF
         QMUIDialogTextFieldViewController *nd = (QMUIDialogTextFieldViewController *)newAddDialog;
-        UIViewController *vc = [RouterManager.sharedManager request:[[RouterRequest alloc] initWithURL:[NSURL URLWithString:nd.textField.text] parameters:nil]];
-        if (vc) {
-            [self.navigationController pushViewController:vc animated:YES];
-        } else {
-            [DebugManager showTipsWithType:TipsDisplayTypeInfo text:@"Invalid url" inView:self.view];
-        }
+        if (self.webViewAction) self.webViewAction(nd.textField.text);
         [nd hide];
     }];
     [newAddDialog show];

@@ -107,3 +107,8 @@ typedef NS_ENUM(NSInteger, TipsDisplayType) {
 
 @end
 
+@interface DebugManager (CustomAction)
+
++ (void)setCustomWebViewAction:(void(^)(id data))action;
+
+@end

@@ -9,5 +9,5 @@
 #import "DBCommonTableViewController.h"
 
 @interface DBActionMenuController : DBCommonTableViewController
-
+@property (nonatomic, copy) void(^webViewAction)(id data);
 @end

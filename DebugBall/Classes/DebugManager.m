@@ -438,4 +438,10 @@ static void (^__crash_snifferring)(NSException *) = nil;
 
 @end
 
+@implementation DebugManager (CustomAction)
++ (void)setCustomWebViewAction:(void(^)(id data))action {
+    self.__menu.webViewAction = action;
+}
+@end
+
 
