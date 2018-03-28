@@ -113,6 +113,19 @@
         d.height = TableViewCellNormalHeight + 6;
         d.text = @"Enable auto-hidden for the DebugBall";
         d;
+    }),
+                                                                                                                            ({
+        QMUIStaticTableViewCellData *d = [[QMUIStaticTableViewCellData alloc] init];
+        d.identifier = 8;
+        d.style = UITableViewCellStyleDefault;
+        d.accessoryType = QMUIStaticTableViewCellAccessoryTypeSwitch;
+        d.accessoryValueObject = @([DebugManager isDebugBallAutoHidden]);
+        d.accessoryTarget = self;
+        d.accessoryValueObject = @(NO);
+        d.accessoryAction = @selector(dimissDebugBallUntilRelaunch:);
+        d.height = TableViewCellNormalHeight + 6;
+        d.text = @"Dismiss debug-ball until application relaunch";
+        d;
     })]]];
     self.tableView.qmui_staticCellDataSource = dataSource;
     self.sectionTitles = @[@"API Configuration", @"Device Hardware", @"Tools", @"DebugBall Configuration"];
@@ -262,6 +275,10 @@
 - (void)enableDebugBallAutoHidden:(UISwitch *)view {
     [DebugManager setDebugBallAutoHidden:view.isOn];
     [DebugManager resetDebugBallAutoHidden];
+}
+
+- (void)dimissDebugBallUntilRelaunch:(UISwitch *)view {
+    [DebugManager uninstallDebugView];
 }
 
 - (void)dealloc {
