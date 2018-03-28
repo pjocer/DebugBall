@@ -11,6 +11,7 @@
 #include <execinfo.h>
 #import <UIKit/UIKit.h>
 #import "ExceptionModel.h"
+#import "DebugManager.h"
 
 @implementation UncaughtExceptionHandler
 
@@ -34,13 +35,7 @@
 
 
 void HandleException(NSException *exception) {
-    NSArray *stackArray = [exception callStackSymbols];
-    NSString *reason = [exception reason];
-    NSString *name = [exception name];
-    [UncaughtExceptionHandler saveCrash:@{@"name":name,
-                                          @"reason":reason,
-                                          @"callStackSymbols":stackArray,
-                                          }];
+    [DebugManager registerCrashReport:exception];
 }
 
 

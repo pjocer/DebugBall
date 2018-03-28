@@ -31,7 +31,7 @@ static NSString *kIdentifier = @"crashInfoCell";
 }
 
 - (void)clearHistoricalRecords {
-    [DebugManager clearDeviceNetworkSnifferInfoWithCompeletion:^{
+    [DebugManager clearDeviceCrashSnifferInfoWithCompeletion:^{
         [self.dataSource removeAllObjects];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
     }];

@@ -78,6 +78,8 @@ typedef void(^CrashAssertsCompeletion)(NSArray <NSException *>* sources);
 
 + (void)fetchDeviceCrashAssert:(CrashAssertsCompeletion)compeletion;
 
++ (void)registerCrashReport:(NSException *)exception;
+
 + (void)clearDeviceCrashSnifferInfoWithCompeletion:(dispatch_block_t)compeletion;;
 
 @end

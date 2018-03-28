@@ -12,6 +12,7 @@
 #import <UIKit/UIKit.h>
 #import "UncaughtExceptionHandler.h"
 #import "ExceptionModel.h"
+#import "DebugManager.h"
 
 @interface SignalHandler()<UIAlertViewDelegate>
 
@@ -50,6 +51,8 @@ void SignalExceptionHandler(int signal)
     for (i = 0; i <frames; ++i) {
         [mstr appendFormat:@"%s\n", strs[i]];
     }
+    NSException *exception = [NSException exceptionWithName:@"System Signal Crash" reason:[NSString stringWithFormat:@"Signal Type : %d",signal] userInfo:@{@"Stacks":mstr}];
+    [DebugManager registerCrashReport:exception];
     [SignalHandler saveCrash:mstr];
 
 }
