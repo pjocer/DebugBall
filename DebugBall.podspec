@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'DebugBall'
-  s.version          = '1.0.3'
+  s.version          = '1.0.4'
   s.summary          = '一个轻量级的Debug调试工具，一键设置API Host/H5 API Host,以及其它的一些Debug UI调试工具'
 
 # This description is used to generate tags and improve search results.
