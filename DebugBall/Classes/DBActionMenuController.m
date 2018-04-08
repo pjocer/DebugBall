@@ -64,7 +64,7 @@
         d.accessoryTarget = self;
         d.accessoryAction = @selector(displayBorderForAllVisibleViews:);
         d.height = TableViewCellNormalHeight + 6;
-        d.text = @"Display border for all visible views";
+        d.text = @"Display debug mask view for all visible views";
         d;
     }),
                                                                                                                               ({
