@@ -2,12 +2,14 @@
 //  UIView+QMUI.h
 //  qmui
 //
-//  Created by QQMail on 15/7/20.
+//  Created by QMUI Team on 15/7/20.
 //  Copyright (c) 2015年 QMUI Team. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface UIView (QMUI)
 
@@ -16,11 +18,15 @@
  */
 - (instancetype)qmui_initWithSize:(CGSize)size;
 
+/// 在 iOS 11 及之后的版本，此属性将返回系统已有的 self.safeAreaInsets。在之前的版本此属性返回 UIEdgeInsetsZero
+@property(nonatomic, assign, readonly) UIEdgeInsets qmui_safeAreaInsets;
+
 - (void)qmui_removeAllSubviews;
 
-+ (void)qmui_animateWithAnimated:(BOOL)animated duration:(NSTimeInterval)duration delay:(NSTimeInterval)delay options:(UIViewAnimationOptions)options animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion;
-+ (void)qmui_animateWithAnimated:(BOOL)animated duration:(NSTimeInterval)duration animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion;
-+ (void)qmui_animateWithAnimated:(BOOL)animated duration:(NSTimeInterval)duration animations:(void (^)(void))animations;
++ (void)qmui_animateWithAnimated:(BOOL)animated duration:(NSTimeInterval)duration delay:(NSTimeInterval)delay options:(UIViewAnimationOptions)options animations:(void (^)(void))animations completion:(void (^ __nullable)(BOOL finished))completion;
++ (void)qmui_animateWithAnimated:(BOOL)animated duration:(NSTimeInterval)duration animations:(void (^ __nullable)(void))animations completion:(void (^)(BOOL finished))completion;
++ (void)qmui_animateWithAnimated:(BOOL)animated duration:(NSTimeInterval)duration animations:(void (^ __nullable)(void))animations;
++ (void)qmui_animateWithAnimated:(BOOL)animated duration:(NSTimeInterval)duration delay:(NSTimeInterval)delay usingSpringWithDamping:(CGFloat)dampingRatio initialSpringVelocity:(CGFloat)velocity options:(UIViewAnimationOptions)options animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion;
 @end
 
 @interface UIView (QMUI_Runtime)
@@ -65,7 +71,7 @@ typedef NS_OPTIONS(NSUInteger, QMUIBorderViewPosition) {
  */
 @interface UIView (QMUI_Border)
 
-/// 设置边框类型，支持组合，例如：`borderType = QMUIBorderViewTypeTop|QMUIBorderViewTypeBottom`
+/// 设置边框类型，支持组合，例如：`borderPosition = QMUIBorderViewPositionTop|QMUIBorderViewPositionBottom`
 @property(nonatomic, assign) QMUIBorderViewPosition qmui_borderPosition;
 
 /// 边框的大小，默认为PixelOne
@@ -75,8 +81,9 @@ typedef NS_OPTIONS(NSUInteger, QMUIBorderViewPosition) {
 @property(nonatomic, strong) IBInspectable UIColor *qmui_borderColor;
 
 /// 虚线 : dashPhase默认是0，且当dashPattern设置了才有效
+/// qmui_dashPhase 表示虚线起始的偏移，qmui_dashPattern 可以传一个数组，表示“lineWidth，lineSpacing，lineWidth，lineSpacing...”的顺序，至少传 2 个。
 @property(nonatomic, assign) CGFloat qmui_dashPhase;
-@property(nonatomic, copy) NSArray <NSNumber *> *qmui_dashPattern;
+@property(nonatomic, copy)   NSArray <NSNumber *> *qmui_dashPattern;
 
 /// border的layer
 @property(nonatomic, strong, readonly) CAShapeLayer *qmui_borderLayer;
@@ -134,3 +141,5 @@ typedef NS_OPTIONS(NSUInteger, QMUIBorderViewPosition) {
 - (UIImage *)qmui_snapshotLayerImage;
 - (UIImage *)qmui_snapshotImageAfterScreenUpdates:(BOOL)afterScreenUpdates;
 @end
+
+NS_ASSUME_NONNULL_END

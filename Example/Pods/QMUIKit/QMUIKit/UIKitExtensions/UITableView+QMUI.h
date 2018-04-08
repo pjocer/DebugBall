@@ -6,8 +6,8 @@
 //  Copyright (c) 2015年 QMUI Team. All rights reserved.
 //
 
-#import "QMUICellHeightCache.h"
-#import "QMUITableView.h"
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSInteger, QMUITableViewCellPosition) {
     QMUITableViewCellPositionNone = -1, // 初始化用
@@ -18,6 +18,20 @@ typedef NS_ENUM(NSInteger, QMUITableViewCellPosition) {
     QMUITableViewCellPositionNormal,
 };
 
+/**
+ *  这个分类提供额外的功能包括：
+ *  1. 将给定的 UITableView 格式化为 QMUITableView 风格的样式
+ *  2. 计算给定的某个 view 处于哪个 indexPath 的 cell 上
+ *  3. 计算给定的某个 view 处于哪个 sectionHeader 上
+ *  4. 获取所有可视范围内的 sectionHeader 的 index
+ *  5. 获取正处于 pinned 状态（也即悬停在顶部）的 sectionHeader 的 index
+ *  6. 判断某个给定的 sectionHeader 是否处于 pinned 状态
+ *  7. 判断某个给定的 cell indexPath 是否处于可视范围内
+ *  8. 计算给定的 cell 的 indexPath 所对应的 QMUITableViewCellPosition
+ *  9. 清除当前列表的所有 selection（选中的背景灰色）
+ *  10. 在将 searchBar 作为 tableHeaderView 的情况下，获取列表真实的 contentSize
+ *  11. 在将 searchBar 作为 tableHeaderView 的情况下，判断列表内容是否足够多到可滚动
+ */
 @interface UITableView (QMUI)
 
 /// 将当前tableView按照QMUI统一定义的宏来渲染外观
@@ -31,26 +45,39 @@ typedef NS_ENUM(NSInteger, QMUITableViewCellPosition) {
  *  @param view 要计算的 UIView
  *  @return view 所在的 indexPath，若不存在则返回 nil
  */
-- (NSIndexPath *)qmui_indexPathForRowAtView:(UIView *)view;
+- (nullable NSIndexPath *)qmui_indexPathForRowAtView:(nullable UIView *)view;
 
 /**
  *  计算某个 view 处于当前 tableView 里的哪个 sectionHeaderView 内
  *  @param view 要计算的 UIView
  *  @return view 所在的 sectionHeaderView 的 section，若不存在则返回 -1
  */
-- (NSInteger)qmui_indexForSectionHeaderAtView:(UIView *)view;
+- (NSInteger)qmui_indexForSectionHeaderAtView:(nullable UIView *)view;
+
+/// 获取可视范围内的所有 sectionHeader 的 index
+@property(nonatomic, readonly, nullable) NSArray<NSNumber *> *qmui_indexForVisibleSectionHeaders;
+
+/// 获取正处于 pinned（悬停在顶部）状态的 sectionHeader 的序号
+@property(nonatomic, readonly) NSInteger qmui_indexOfPinnedSectionHeader;
+
+/**
+ *  判断给定的 section 的 header 是否处于 pinned 状态
+ *  @param section 给定的 section 的序号
+ *  @note 当列表往上滚动的过程中，header1 处于将要离开 pinned 状态、header2 即将进入 pinned 状态的这个过程，header1 和 header2 均不处于 pinned 状态
+ */
+- (BOOL)qmui_isHeaderPinnedForSection:(NSInteger)section;
+
+/// 判断当前 indexPath 的 item 是否为可视的 item
+- (BOOL)qmui_cellVisibleAtIndexPath:(nullable NSIndexPath *)indexPath;
 
 /**
  * 根据给定的indexPath，配合dataSource得到对应的cell在当前section中所处的位置
  * @param indexPath cell所在的indexPath
  * @return 给定indexPath对应的cell在当前section中所处的位置
  */
-- (QMUITableViewCellPosition)qmui_positionForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (QMUITableViewCellPosition)qmui_positionForRowAtIndexPath:(nullable NSIndexPath *)indexPath;
 
-/// 判断当前 indexPath 的 item 是否为可视的 item
-- (BOOL)qmui_cellVisibleAtIndexPath:(NSIndexPath *)indexPath;
-
-// 取消选择状态
+/// 取消选择状态
 - (void)qmui_clearsSelection;
 
 /**
@@ -59,7 +86,7 @@ typedef NS_ENUM(NSInteger, QMUITableViewCellPosition) {
  * @param indexPath 要滚动的目标indexPath，请自行保证indexPath是合法的
  * @param animated 是否需要动画
  */
-- (void)qmui_scrollToRowFittingOffsetY:(CGFloat)offsetY atIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated;
+- (void)qmui_scrollToRowFittingOffsetY:(CGFloat)offsetY atIndexPath:(nonnull NSIndexPath *)indexPath animated:(BOOL)animated;
 
 /**
  *  当tableHeaderView为UISearchBar时，tableView为了实现searchbar滚到顶部自动吸附的效果，会强制让self.contentSize.height至少为frame.size.height那么高（这样才能滚动，否则不满一屏就无法滚动了），所以此时如果通过self.contentSize获取tableView的内容大小是不准确的，此时可以使用`qmui_realContentSize`替代。
@@ -72,74 +99,5 @@ typedef NS_ENUM(NSInteger, QMUITableViewCellPosition) {
  *  UITableView的tableHeaderView如果是UISearchBar的话，tableView.contentSize会强制设置为至少比bounds高（从而实现headerView的吸附效果），从而导致qmui_canScroll的判断不准确。所以为UITableView重写了qmui_canScroll方法
  */
 - (BOOL)qmui_canScroll;
-
-@end
-
-
-/// ====================== 动态计算 cell 高度相关 =======================
-
-/**
- *  UITableView 定义了一套动态计算 cell 高度的方式：
- *
- *  其思路是参考开源代码：https://github.com/forkingdog/UITableView-FDTemplateLayoutCell。
- *
- *  1. cell 必须实现 sizeThatFits: 方法，在里面计算自身的高度并返回
- *  2. 初始化一个 QMUITableView，并为其指定一个 QMUITableViewDataSource
- *  3. 实现 qmui_tableView:cellWithIdentifier: 方法，在里面为不同的 identifier 创建不同的 cell 实例
- *  4. 在 tableView:cellForRowAtIndexPath: 里使用 qmui_tableView:cellWithIdentifier: 获取 cell 
- *  5. 在 tableView:heightForRowAtIndexPath: 里使用 UITableView (QMUILayoutCell) 提供的几种方法得到 cell 的高度
- *
- *  这套方式的好处是 tableView 能直接操作 cell 的实例，cell 无需增加额外的专门用于获取 cell 高度的方法。并且这套方式支持基本的高度缓存（可按 key 缓存或按 indexPath 缓存），若使用了缓存，请注意在适当的时机去更新缓存（例如某个 cell 的内容发生变化，可能 cell 的高度也会变化，则需要更新这个 cell 已被缓存起来的高度）。
- *
- *  使用这套方式额外的消耗是每个 identifier 都会生成一个多余的 cell 实例（专用于高度计算），但大部分情况下一个生成一个 cell 实例并不会带来过多的负担，所以一般不用担心这个问题。
- */
-
-@interface UITableView (QMUILayoutCell)
-
-/**
- *  通过 qmui_tableView:cellWithIdentifier: 得到 identifier 对应的 cell 实例，并在 configuration 里对 cell 进行渲染后，得到 cell 的高度。
- *  @param  identifier cell 的 identifier
- *  @param  configuration 用于渲染 cell 的block，一般与 tableView:cellForRowAtIndexPath: 里渲染 cell 的代码一样
- */
-- (CGFloat)qmui_heightForCellWithIdentifier:(NSString *)identifier configuration:(void (^)(__kindof UITableViewCell *cell))configuration;
-
-/**
- *  通过 qmui_tableView:cellWithIdentifier: 得到 identifier 对应的 cell 实例，并在 configuration 里对 cell 进行渲染后，得到 cell 的高度。
- *
- *  以 indexPath 为单位进行缓存，相同的 indexPath 高度将不会重复计算，若需刷新高度，请参考 QMUICellHeightIndexPathCache
- *
- *  @param  identifier cell 的 identifier
- *  @param  configuration 用于渲染 cell 的block，一般与 tableView:cellForRowAtIndexPath: 里渲染 cell 的代码一样
- */
-- (CGFloat)qmui_heightForCellWithIdentifier:(NSString *)identifier cacheByIndexPath:(NSIndexPath *)indexPath configuration:(void (^)(__kindof UITableViewCell *cell))configuration;
-
-/**
- *  通过 qmui_tableView:cellWithIdentifier: 得到 identifier 对应的 cell 实例，并在 configuration 里对 cell 进行渲染后，得到 cell 的高度。
- *
- *  以自定义的 key 为单位进行缓存，相同的 key 高度将不会重复计算，若需刷新高度，请参考 QMUICellHeightKeyCache
- *
- *  @param  identifier cell 的 identifier
- *  @param  configuration 用于渲染 cell 的block，一般与 tableView:cellForRowAtIndexPath: 里渲染 cell 的代码一样
- */
-- (CGFloat)qmui_heightForCellWithIdentifier:(NSString *)identifier cacheByKey:(id<NSCopying>)key configuration:(void (^)(__kindof UITableViewCell *cell))configuration;
-
-@end
-
-@interface UITableView (QMUIKeyedHeightCache)
-
-@property (nonatomic, strong, readonly) QMUICellHeightKeyCache *qmui_keyedHeightCache;
-
-@end
-
-@interface UITableView (QMUICellHeightIndexPathCache)
-
-@property (nonatomic, strong, readonly) QMUICellHeightIndexPathCache *qmui_indexPathHeightCache;
-
-@end
-
-@interface UITableView (QMUIIndexPathHeightCacheInvalidation)
-
-/// 当需要reloadData的时候，又不想使布局失效，可以调用下面这个方法。例如在底部加载更多。
-- (void)qmui_reloadDataWithoutInvalidateIndexPathHeightCache;
 
 @end

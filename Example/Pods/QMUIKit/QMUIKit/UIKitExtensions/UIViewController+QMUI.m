@@ -2,22 +2,28 @@
 //  UIViewController+QMUI.m
 //  qmui
 //
-//  Created by QQMail on 16/1/12.
+//  Created by QMUI Team on 16/1/12.
 //  Copyright © 2016年 QMUI Team. All rights reserved.
 //
 
 #import "UIViewController+QMUI.h"
-#import "QMUINavigationController.h"
 #import "UINavigationController+QMUI.h"
-#import <objc/runtime.h>
 #import "QMUICore.h"
 #import "NSObject+QMUI.h"
+
+NSString *const QMUITabBarStyleChangedNotification = @"QMUITabBarStyleChangedNotification";
+
+@interface UIViewController ()
+
+@property(nonatomic, assign) BOOL qmui_isViewDidAppear;
+@property(nonatomic, strong) UINavigationBar *transitionNavigationBar;// by molice 对应 UIViewController (NavigationBarTransition) 里的 transitionNavigationBar，为了让这个属性在这里可以被访问到，有点 hack，具体请查看 https://github.com/QMUI/QMUI_iOS/issues/268
+@end
 
 @implementation UIViewController (QMUI)
 
 void qmui_loadViewIfNeeded (id current_self, SEL current_cmd) {
     // 主动调用 self.view，从而触发 loadView，以模拟 iOS 9.0 以下的系统 loadViewIfNeeded 行为
-    QMUILog(@"%@", ((UIViewController *)current_self).view);
+    [((UIViewController *)current_self) view];
 }
 
 + (void)load {
@@ -25,17 +31,19 @@ void qmui_loadViewIfNeeded (id current_self, SEL current_cmd) {
     dispatch_once(&onceToken, ^{
         
         // 为 description 增加更丰富的信息
-        ReplaceMethod([UIViewController class], @selector(description), @selector(qmui_description));
+        ExchangeImplementations([UIViewController class], @selector(description), @selector(qmui_description));
         
         // 兼容 iOS 9.0 以下的版本对 loadViewIfNeeded 方法的调用
         if (![[UIViewController class] instancesRespondToSelector:@selector(loadViewIfNeeded)]) {
-            Class metaclass = [self class];
-            BOOL success = class_addMethod(metaclass, @selector(loadViewIfNeeded), (IMP)qmui_loadViewIfNeeded, "v@:");
-            QMUILog(@"%@ %s, success = %@", NSStringFromClass([self class]), __func__, StringFromBOOL(success));
+            Class metaclass = [UIViewController class];
+            class_addMethod(metaclass, @selector(loadViewIfNeeded), (IMP)qmui_loadViewIfNeeded, "v@:");
         }
         
-        // 实现 AutomaticallyRotateDeviceOrientation 开关的功能
-        ReplaceMethod([UIViewController class], @selector(viewWillAppear:), @selector(qmui_viewWillAppear:));
+        // 修复 iOS 11 scrollView 无法自动适配不透明的 tabBar，导致底部 inset 错误的问题
+        // https://github.com/QMUI/QMUI_iOS/issues/218
+        if (@available(iOS 11, *)) {
+            ExchangeImplementations([UIViewController class], @selector(initWithNibName:bundle:), @selector(qmui_initWithNibName:bundle:));
+        }
     });
 }
 
@@ -68,36 +76,38 @@ void qmui_loadViewIfNeeded (id current_self, SEL current_cmd) {
     return [string copy];
 }
 
-- (void)qmui_viewWillAppear:(BOOL)animated {
-    [self qmui_viewWillAppear:animated];
-    if (!AutomaticallyRotateDeviceOrientation) {
-        return;
+- (instancetype)qmui_initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    [self qmui_initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    BOOL isContainerViewController = [self isKindOfClass:[UINavigationController class]] || [self isKindOfClass:[UITabBarController class]] || [self isKindOfClass:[UISplitViewController class]];
+    if (!isContainerViewController) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(adjustsAdditionalSafeAreaInsetsForOpaqueTabBarWithNotification:) name:QMUITabBarStyleChangedNotification object:nil];
     }
-    
-    UIInterfaceOrientation statusBarOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-    UIDeviceOrientation deviceOrientationBeforeChangingByHelper = [QMUIHelper sharedInstance].orientationBeforeChangingByHelper;
-    BOOL shouldConsiderBeforeChanging = deviceOrientationBeforeChangingByHelper != UIDeviceOrientationUnknown;
-    UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
-    
-    // 虽然这两者的 unknow 值是相同的，但在启动 App 时可能只有其中一个是 unknown
-    if (statusBarOrientation == UIInterfaceOrientationUnknown || deviceOrientation == UIDeviceOrientationUnknown) return;
-    
-    // 如果当前设备方向和界面支持的方向不一致，则主动进行旋转
-    UIDeviceOrientation deviceOrientationToRotate = [self interfaceOrientationMask:self.supportedInterfaceOrientations containsDeviceOrientation:deviceOrientation] ? deviceOrientation : [self deviceOrientationWithInterfaceOrientationMask:self.supportedInterfaceOrientations];
-    
-    // 之前没用私有接口修改过，拿就按最标准的方式去旋转
-    if (!shouldConsiderBeforeChanging) {
-        if ([QMUIHelper rotateToDeviceOrientation:deviceOrientationToRotate]) {
-            [QMUIHelper sharedInstance].orientationBeforeChangingByHelper = deviceOrientation;
-        } else {
-            [QMUIHelper sharedInstance].orientationBeforeChangingByHelper = UIDeviceOrientationUnknown;
+    return self;
+}
+
+- (void)adjustsAdditionalSafeAreaInsetsForOpaqueTabBarWithNotification:(NSNotification *)notification {
+    if (@available(iOS 11, *)) {
+        
+        BOOL isCurrentTabBar = self.tabBarController && self.navigationController && self.navigationController.qmui_rootViewController == self && self.navigationController.parentViewController == self.tabBarController && (notification ? notification.object == self.tabBarController.tabBar : YES);
+        if (!isCurrentTabBar) {
+            return;
         }
-        return;
+        
+        UITabBar *tabBar = self.tabBarController.tabBar;
+        
+        // 这串判断条件来源于这个 issue：https://github.com/QMUI/QMUI_iOS/issues/218
+        BOOL isOpaqueBarAndCanExtendedLayout = !tabBar.translucent && self.extendedLayoutIncludesOpaqueBars;
+        if (!isOpaqueBarAndCanExtendedLayout) {
+            return;
+        }
+        
+        BOOL tabBarHidden = tabBar.hidden;
+        
+        // 这里直接用 CGRectGetHeight(tabBar.frame) 来计算理论上不准确，但因为系统有这个 bug（https://github.com/QMUI/QMUI_iOS/issues/217），所以暂时用 CGRectGetHeight(tabBar.frame) 来代替
+        CGFloat correctSafeAreaInsetsBottom = tabBarHidden ? tabBar.safeAreaInsets.bottom : CGRectGetHeight(tabBar.frame);
+        CGFloat additionalSafeAreaInsetsBottom = correctSafeAreaInsetsBottom - tabBar.safeAreaInsets.bottom;
+        self.additionalSafeAreaInsets = UIEdgeInsetsSetBottom(self.additionalSafeAreaInsets, additionalSafeAreaInsetsBottom);
     }
-    
-    // 用私有接口修改过方向，但下一个界面和当前界面方向不相同，则要把修改前记录下来的那个设备方向考虑进来
-    deviceOrientationToRotate = [self interfaceOrientationMask:self.supportedInterfaceOrientations containsDeviceOrientation:deviceOrientationBeforeChangingByHelper] ? deviceOrientationBeforeChangingByHelper : [self deviceOrientationWithInterfaceOrientationMask:self.supportedInterfaceOrientations];
-    [QMUIHelper rotateToDeviceOrientation:deviceOrientationToRotate];
 }
 
 - (UIDeviceOrientation)deviceOrientationWithInterfaceOrientationMask:(UIInterfaceOrientationMask)mask {
@@ -197,16 +207,12 @@ void qmui_loadViewIfNeeded (id current_self, SEL current_cmd) {
         return [((UITabBarController *)self).selectedViewController qmui_visibleViewControllerIfExist];
     }
     
-    if ([self isViewLoaded] && self.view.window) {
+    if ([self qmui_isViewLoadedAndVisible]) {
         return self;
     } else {
-        NSLog(@"qmui_visibleViewControllerIfExist:，找不到可见的viewController。self = %@, self.view.window = %@", self, self.view.window);
+        NSLog(@"qmui_visibleViewControllerIfExist:，找不到可见的viewController。self = %@, self.view = %@, self.view.window = %@", self, [self isViewLoaded] ? self.view : nil, [self isViewLoaded] ? self.view.window : nil);
         return nil;
     }
-}
-
-- (BOOL)qmui_respondQMUINavigationControllerDelegate {
-    return [[self class] conformsToProtocol:@protocol(QMUINavigationControllerDelegate)];
 }
 
 - (BOOL)qmui_isViewLoadedAndVisible {
@@ -217,10 +223,22 @@ void qmui_loadViewIfNeeded (id current_self, SEL current_cmd) {
     if (!self.isViewLoaded) {
         return 0;
     }
-    if (!self.navigationController.navigationBar || self.navigationController.navigationBarHidden) {
+    
+    // 这里为什么要把 transitionNavigationBar 考虑进去，请参考 https://github.com/QMUI/QMUI_iOS/issues/268
+    UINavigationBar *navigationBar = !self.navigationController.navigationBarHidden && self.navigationController.navigationBar ? self.navigationController.navigationBar : ([self respondsToSelector:@selector(transitionNavigationBar)] && self.transitionNavigationBar ? self.transitionNavigationBar : nil);
+    
+    if (!navigationBar) {
         return 0;
     }
-    CGRect navigationBarFrame = CGRectIntersection(self.view.bounds, [self.view convertRect:self.navigationController.navigationBar.frame fromView:self.navigationController.navigationBar.superview]);
+    
+    CGRect navigationBarFrameInView = [self.view convertRect:navigationBar.frame fromView:navigationBar.superview];
+    CGRect navigationBarFrame = CGRectIntersection(self.view.bounds, navigationBarFrameInView);
+    
+    // 两个 rect 如果不存在交集，CGRectIntersection 计算结果可能为非法的 rect，所以这里做个保护
+    if (!CGRectIsValidated(navigationBarFrame)) {
+        return 0;
+    }
+    
     CGFloat result = CGRectGetMaxY(navigationBarFrame);
     return result;
 }
@@ -233,6 +251,12 @@ void qmui_loadViewIfNeeded (id current_self, SEL current_cmd) {
         return 0;
     }
     CGRect toolbarFrame = CGRectIntersection(self.view.bounds, [self.view convertRect:self.navigationController.toolbar.frame fromView:self.navigationController.toolbar.superview]);
+    
+    // 两个 rect 如果不存在交集，CGRectIntersection 计算结果可能为非法的 rect，所以这里做个保护
+    if (!CGRectIsValidated(toolbarFrame)) {
+        return 0;
+    }
+    
     CGFloat result = CGRectGetHeight(self.view.bounds) - CGRectGetMinY(toolbarFrame);
     return result;
 }
@@ -245,15 +269,16 @@ void qmui_loadViewIfNeeded (id current_self, SEL current_cmd) {
         return 0;
     }
     CGRect tabBarFrame = CGRectIntersection(self.view.bounds, [self.view convertRect:self.tabBarController.tabBar.frame fromView:self.tabBarController.tabBar.superview]);
+    
+    // 两个 rect 如果不存在交集，CGRectIntersection 计算结果可能为非法的 rect，所以这里做个保护
+    if (!CGRectIsValidated(tabBarFrame)) {
+        return 0;
+    }
+    
     CGFloat result = CGRectGetHeight(self.view.bounds) - CGRectGetMinY(tabBarFrame);
     return result;
 }
 
-@end
-
-@interface UIViewController ()
-
-@property(nonatomic, assign) BOOL qmui_isViewDidAppear;
 @end
 
 @implementation UIViewController (Data)
@@ -261,7 +286,7 @@ void qmui_loadViewIfNeeded (id current_self, SEL current_cmd) {
 + (void)load {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        ReplaceMethod(self.class, @selector(viewDidAppear:), @selector(qmui_viewDidAppear:));
+        ExchangeImplementations(self.class, @selector(viewDidAppear:), @selector(qmui_viewDidAppear:));
     });
 }
 
@@ -284,12 +309,12 @@ static char kAssociatedObjectKey_isViewDidAppear;
 }
 
 static char kAssociatedObjectKey_didAppearAndLoadDataBlock;
-- (void)setQmui_didAppearAndLoadDataBlock:(void (^)())qmui_didAppearAndLoadDataBlock {
+- (void)setQmui_didAppearAndLoadDataBlock:(void (^)(void))qmui_didAppearAndLoadDataBlock {
     objc_setAssociatedObject(self, &kAssociatedObjectKey_didAppearAndLoadDataBlock, qmui_didAppearAndLoadDataBlock, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
-- (void (^)())qmui_didAppearAndLoadDataBlock {
-    return (void (^)())objc_getAssociatedObject(self, &kAssociatedObjectKey_didAppearAndLoadDataBlock);
+- (void (^)(void))qmui_didAppearAndLoadDataBlock {
+    return (void (^)(void))objc_getAssociatedObject(self, &kAssociatedObjectKey_didAppearAndLoadDataBlock);
 }
 
 static char kAssociatedObjectKey_dataLoaded;
@@ -335,6 +360,129 @@ static char kAssociatedObjectKey_dataLoaded;
         }
     }
     return NO;
+}
+
+@end
+
+@implementation UIViewController (RotateDeviceOrientation)
+
++ (void)load {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        // 实现 AutomaticallyRotateDeviceOrientation 开关的功能
+        ExchangeImplementations([UIViewController class], @selector(viewWillAppear:), @selector(rotate_viewWillAppear:));
+    });
+}
+
+- (void)rotate_viewWillAppear:(BOOL)animated {
+    [self rotate_viewWillAppear:animated];
+    if (!AutomaticallyRotateDeviceOrientation) {
+        return;
+    }
+    
+    // 某些情况下的 UIViewController 不具备决定设备方向的权利，具体请看 https://github.com/QMUI/QMUI_iOS/issues/291
+    if (![self qmui_shouldForceRotateDeviceOrientation]) {
+        BOOL isRootViewController = [self isViewLoaded] && self.view.window.rootViewController == self;
+        BOOL isChildViewController = [self.tabBarController.viewControllers containsObject:self] || [self.navigationController.viewControllers containsObject:self] || [self.splitViewController.viewControllers containsObject:self];
+        BOOL hasRightsOfRotateDeviceOrientaion = isRootViewController || isChildViewController;
+        if (!hasRightsOfRotateDeviceOrientaion) {
+            return;
+        }
+    }
+    
+    
+    UIInterfaceOrientation statusBarOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+    UIDeviceOrientation deviceOrientationBeforeChangingByHelper = [QMUIHelper sharedInstance].orientationBeforeChangingByHelper;
+    BOOL shouldConsiderBeforeChanging = deviceOrientationBeforeChangingByHelper != UIDeviceOrientationUnknown;
+    UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
+    
+    // 虽然这两者的 unknow 值是相同的，但在启动 App 时可能只有其中一个是 unknown
+    if (statusBarOrientation == UIInterfaceOrientationUnknown || deviceOrientation == UIDeviceOrientationUnknown) return;
+    
+    // 如果当前设备方向和界面支持的方向不一致，则主动进行旋转
+    UIDeviceOrientation deviceOrientationToRotate = [self interfaceOrientationMask:self.supportedInterfaceOrientations containsDeviceOrientation:deviceOrientation] ? deviceOrientation : [self deviceOrientationWithInterfaceOrientationMask:self.supportedInterfaceOrientations];
+    
+    // 之前没用私有接口修改过，那就按最标准的方式去旋转
+    if (!shouldConsiderBeforeChanging) {
+        if ([QMUIHelper rotateToDeviceOrientation:deviceOrientationToRotate]) {
+            [QMUIHelper sharedInstance].orientationBeforeChangingByHelper = deviceOrientation;
+        } else {
+            [QMUIHelper sharedInstance].orientationBeforeChangingByHelper = UIDeviceOrientationUnknown;
+        }
+        return;
+    }
+    
+    // 用私有接口修改过方向，但下一个界面和当前界面方向不相同，则要把修改前记录下来的那个设备方向考虑进来
+    deviceOrientationToRotate = [self interfaceOrientationMask:self.supportedInterfaceOrientations containsDeviceOrientation:deviceOrientationBeforeChangingByHelper] ? deviceOrientationBeforeChangingByHelper : [self deviceOrientationWithInterfaceOrientationMask:self.supportedInterfaceOrientations];
+    [QMUIHelper rotateToDeviceOrientation:deviceOrientationToRotate];
+}
+
+- (BOOL)qmui_shouldForceRotateDeviceOrientation {
+    return NO;
+}
+
+@end
+
+@implementation QMUIHelper (ViewController)
+
++ (nullable UIViewController *)visibleViewController {
+    UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
+    UIViewController *visibleViewController = [rootViewController qmui_visibleViewControllerIfExist];
+    return visibleViewController;
+}
+
+@end
+
+// 为了 UIViewController 适配 iOS 11 下出现不透明的 tabBar 时底部 inset 错误的问题而创建的 Category
+// https://github.com/QMUI/QMUI_iOS/issues/218
+@interface UITabBar (NavigationController)
+
+@end
+
+@implementation UITabBar (NavigationController)
+
++ (void)load {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        if (@available(iOS 11, *)) {
+            ExchangeImplementations([self class], @selector(setHidden:), @selector(nav_setHidden:));
+            ExchangeImplementations([self class], @selector(setBackgroundImage:), @selector(nav_setBackgroundImage:));
+            ExchangeImplementations([self class], @selector(setTranslucent:), @selector(nav_setTranslucent:));
+            ExchangeImplementations([self class], @selector(setFrame:), @selector(nav_setFrame:));
+        }
+    });
+}
+
+- (void)nav_setHidden:(BOOL)hidden {
+    BOOL shouldNotify = self.hidden != hidden;
+    [self nav_setHidden:hidden];
+    if (shouldNotify) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:QMUITabBarStyleChangedNotification object:self];
+    }
+}
+
+- (void)nav_setBackgroundImage:(UIImage *)backgroundImage {
+    BOOL shouldNotify = ![self.backgroundImage isEqual:backgroundImage];
+    [self nav_setBackgroundImage:backgroundImage];
+    if (shouldNotify) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:QMUITabBarStyleChangedNotification object:self];
+    }
+}
+
+- (void)nav_setTranslucent:(BOOL)translucent {
+    BOOL shouldNotify = self.translucent != translucent;
+    [self nav_setTranslucent:translucent];
+    if (shouldNotify) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:QMUITabBarStyleChangedNotification object:self];
+    }
+}
+
+- (void)nav_setFrame:(CGRect)frame {
+    BOOL shouldNotify = CGRectGetMinY(self.frame) != CGRectGetMinY(frame);
+    [self nav_setFrame:frame];
+    if (shouldNotify) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:QMUITabBarStyleChangedNotification object:self];
+    }
 }
 
 @end

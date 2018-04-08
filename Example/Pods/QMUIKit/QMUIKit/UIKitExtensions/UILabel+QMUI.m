@@ -8,16 +8,16 @@
 
 #import "UILabel+QMUI.h"
 #import "QMUICore.h"
-#import "QMUILabel.h"
 #import "NSParagraphStyle+QMUI.h"
+#import "NSObject+QMUI.h"
 
 @implementation UILabel (QMUI)
 
 + (void)load {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        ReplaceMethod([self class], @selector(setText:), @selector(qmui_setText:));
-        ReplaceMethod([self class], @selector(setAttributedText:), @selector(qmui_setAttributedText:));
+        ExchangeImplementations([self class], @selector(setText:), @selector(qmui_setText:));
+        ExchangeImplementations([self class], @selector(setAttributedText:), @selector(qmui_setAttributedText:));
     });
 }
 
@@ -151,11 +151,12 @@ static char kAssociatedObjectKey_lineHeight;
     return [objc_getAssociatedObject(self, &kAssociatedObjectKey_lineHeight) floatValue];
 }
 
-- (instancetype)initWithFont:(UIFont *)font textColor:(UIColor *)textColor {
-    if (self = [super init]) {
-        self.font = font;
-        self.textColor = textColor;
-    }
+- (instancetype)qmui_initWithFont:(UIFont *)font textColor:(UIColor *)textColor {
+    BeginIgnoreClangWarning(-Wunused-value)
+    [self init];
+    EndIgnoreClangWarning
+    self.font = font;
+    self.textColor = textColor;
     return self;
 }
 
@@ -165,8 +166,10 @@ static char kAssociatedObjectKey_lineHeight;
     self.backgroundColor = label.backgroundColor;
     self.lineBreakMode = label.lineBreakMode;
     self.textAlignment = label.textAlignment;
-    if ([self respondsToSelector:@selector(contentEdgeInsets)] && [label respondsToSelector:@selector(contentEdgeInsets)]) {
-        ((QMUILabel *)self).contentEdgeInsets = ((QMUILabel *)label).contentEdgeInsets;
+    if ([self respondsToSelector:@selector(setContentEdgeInsets:)] && [label respondsToSelector:@selector(contentEdgeInsets)]) {
+        UIEdgeInsets contentEdgeInsets;
+        [label qmui_performSelector:@selector(contentEdgeInsets) withReturnValue:&contentEdgeInsets];
+        [self qmui_performSelector:@selector(setContentEdgeInsets:) withArguments:&contentEdgeInsets, nil];
     }
 }
 
@@ -177,11 +180,9 @@ static char kAssociatedObjectKey_lineHeight;
 }
 
 - (void)qmui_avoidBlendedLayersIfShowingChineseWithBackgroundColor:(UIColor *)color {
-    self.opaque = YES;// 本来默认就是YES，这里还是明确写一下，表意清晰
+    self.opaque = YES;// 本来默认就是YES，这里还是明确写一下
     self.backgroundColor = color;
-    if (IOS_VERSION >= 8.0) {
-        self.clipsToBounds = YES;// 只clip不适用cornerRadius就不会触发offscreen render
-    }
+    self.clipsToBounds = YES;// 只 clip 不使用 cornerRadius就不会触发offscreen render
 }
 
 @end

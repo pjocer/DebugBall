@@ -14,7 +14,7 @@
 + (void)load {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        ReplaceMethod([self class], @selector(description), @selector(qmui_description));
+        ExchangeImplementations([self class], @selector(description), @selector(qmui_description));
     });
 }
 
@@ -27,7 +27,7 @@
         return YES;
     }
     
-    if (self.contentOffset.y == -self.contentInset.top) {
+    if (self.contentOffset.y == -self.qmui_contentInset.top) {
         return YES;
     }
     
@@ -39,11 +39,19 @@
         return YES;
     }
     
-    if (self.contentOffset.y == self.contentSize.height + self.contentInset.bottom - CGRectGetHeight(self.bounds)) {
+    if (self.contentOffset.y == self.contentSize.height + self.qmui_contentInset.bottom - CGRectGetHeight(self.bounds)) {
         return YES;
     }
     
     return NO;
+}
+
+- (UIEdgeInsets)qmui_contentInset {
+    if (@available(iOS 11, *)) {
+        return self.adjustedContentInset;
+    } else {
+        return self.contentInset;
+    }
 }
 
 - (BOOL)qmui_canScroll {
@@ -51,24 +59,14 @@
     if (CGSizeIsEmpty(self.bounds.size)) {
         return NO;
     }
-    BOOL canVerticalScroll = self.contentSize.height + UIEdgeInsetsGetVerticalValue(self.contentInset) > CGRectGetHeight(self.bounds);
-    BOOL canHorizontalScoll = self.contentSize.width + UIEdgeInsetsGetHorizontalValue(self.contentInset) > CGRectGetWidth(self.bounds);
+    BOOL canVerticalScroll = self.contentSize.height + UIEdgeInsetsGetVerticalValue(self.qmui_contentInset) > CGRectGetHeight(self.bounds);
+    BOOL canHorizontalScoll = self.contentSize.width + UIEdgeInsetsGetHorizontalValue(self.qmui_contentInset) > CGRectGetWidth(self.bounds);
     return canVerticalScroll || canHorizontalScoll;
 }
 
 - (void)qmui_scrollToTopForce:(BOOL)force animated:(BOOL)animated {
     if (force || (!force && [self qmui_canScroll])) {
-#ifdef IOS11_SDK_ALLOWED
-BeginIgnoreAvailabilityWarning
-        if (![self respondsToSelector:@selector(contentInsetAdjustmentBehavior)] || self.contentInsetAdjustmentBehavior == UIScrollViewContentInsetAdjustmentNever) {
-            [self setContentOffset:CGPointMake(-self.contentInset.left, -self.contentInset.top) animated:animated];
-        } else {
-            [self setContentOffset:CGPointMake(-self.adjustedContentInset.left, -self.adjustedContentInset.top) animated:animated];
-        }
-EndIgnoreAvailabilityWarning
-#else
-        [self setContentOffset:CGPointMake(-self.contentInset.left, -self.contentInset.top) animated:animated];
-#endif
+        [self setContentOffset:CGPointMake(-self.qmui_contentInset.left, -self.qmui_contentInset.top) animated:animated];
     }
 }
 
@@ -82,7 +80,7 @@ EndIgnoreAvailabilityWarning
 
 - (void)qmui_scrollToBottomAnimated:(BOOL)animated {
     if ([self qmui_canScroll]) {
-        [self setContentOffset:CGPointMake(self.contentOffset.x, self.contentSize.height + self.contentInset.bottom - CGRectGetHeight(self.bounds)) animated:animated];
+        [self setContentOffset:CGPointMake(self.contentOffset.x, self.contentSize.height + self.qmui_contentInset.bottom - CGRectGetHeight(self.bounds)) animated:animated];
     }
 }
 

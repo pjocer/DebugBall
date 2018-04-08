@@ -320,14 +320,12 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-DebugBall_Tests/Pods-DebugBall_Tests-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/DebugBall/DebugBall.bundle",
-				"${PODS_ROOT}/QMUIKit/QMUIKit/UIResources/QMUIResources.bundle",
-				"${PODS_ROOT}/QMUIKit/QMUIKit/UIResources/QMUI_QQEmotion.bundle",
+				"${PODS_ROOT}/QMUIKit/QMUIKit/QMUIResources/QMUIResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DebugBall.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QMUIResources.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QMUI_QQEmotion.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -418,14 +416,12 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-DebugBall_Example/Pods-DebugBall_Example-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/DebugBall/DebugBall.bundle",
-				"${PODS_ROOT}/QMUIKit/QMUIKit/UIResources/QMUIResources.bundle",
-				"${PODS_ROOT}/QMUIKit/QMUIKit/UIResources/QMUI_QQEmotion.bundle",
+				"${PODS_ROOT}/QMUIKit/QMUIKit/QMUIResources/QMUIResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DebugBall.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QMUIResources.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QMUI_QQEmotion.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
