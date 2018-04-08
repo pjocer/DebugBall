@@ -176,7 +176,7 @@
         QMUIDialogSelectionViewController *d = (QMUIDialogSelectionViewController *)aDialogViewController;
         WEAK_SELF
         if (d.selectedItemIndex == QMUIDialogSelectionViewControllerSelectedItemIndexNone) {
-            [QMUITips showError:@"Select at least one domain please" inView:d.modalPresentedViewController.view hideAfterDelay:1.2];
+            [QMUITips showError:@"Select at least one domain please" inView:d.qmui_modalPresentationViewController.view hideAfterDelay:1.2];
             return;
         } else if (d.selectedItemIndex == d.items.count-1) {
             [d hideWithAnimated:YES completion:^(BOOL finished) {

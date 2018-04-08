@@ -14,6 +14,7 @@
 #import "DBToastAnimator.h"
 #import "UncaughtExceptionHandler.h"
 #import "SignalHandler.h"
+#import <QMUIKit/QMUICommonDefines.h>
 
 NSNotificationName const kAPIHostDidChangedNotification     = @"kAPIHostDidChangedNotification";
 NSNotificationName const kH5APIHostDidChangedNotification   = @"kH5APIHostDidChangedNotification";
@@ -395,7 +396,7 @@ static void (^__crash_snifferring)(NSException *) = nil;
 + (void)load {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        ReplaceMethod(self, @selector(addSubview:), @selector(swizzle_addSubview:));
+        ExchangeImplementations(self, @selector(addSubview:), @selector(swizzle_addSubview:));
     });
 }
 - (void)swizzle_addSubview:(UIView *)view {
