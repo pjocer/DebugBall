@@ -1,5 +1,5 @@
 PODS:
-  - DebugBall (1.0.1):
+  - DebugBall (1.0.3):
     - QMUIKit (~> 1.7.6)
   - QMUIKit (1.7.6)
 
@@ -12,7 +12,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  DebugBall: 44cec83169e596d2200e8a021b8d2ae33852a70f
+  DebugBall: 0a574d7f73b4b33375260fe6bd8d6ef5a3dc2211
   QMUIKit: f3eac3811073962da4dbcf6173aeef8f34e91c1c
 
 PODFILE CHECKSUM: 0fc82d60d85d1b4d8a8668e93c56a9ca2bd493d1
