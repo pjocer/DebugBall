@@ -303,6 +303,7 @@
     cell.detailTextLabel.font = UIFontMake(13);
     return cell;
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView.qmui_staticCellDataSource didSelectRowAtIndexPath:indexPath];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
