@@ -279,16 +279,17 @@ static void (^__crash_snifferring)(NSException *) = nil;
 + (void)registerCrashReport:(NSException *)exception {
 #ifdef DEBUG
     NSMutableArray *exceptions = [UserDefaultsObjectForKey(CRASH_EXCEPTION_SOURCE_KEY)?:@[] mutableCopy];
-    NSDictionary *exceptionInfo = @{@"name":exception.name,
-                                  @"callStackSymbols":exception.callStackSymbols,
-                                  @"reason":exception.reason,
-                                  @"user_info":exception.userInfo
-                                  };
+    NSMutableDictionary *exceptionInfo = [NSMutableDictionary dictionaryWithCapacity:4];
+    exceptionInfo[@"name"] = exception.name;
+    exceptionInfo[@"callStackSymbols"] = exception.callStackSymbols;
+    exceptionInfo[@"reason"] = exception.reason;
+    exceptionInfo[@"user_info"] = exception.userInfo;
     [exceptions insertObject:exceptionInfo atIndex:0];
     if (exceptions.count > 50) {
         [exceptions removeLastObject];
     }
     UserDefaultsSetObjectForKey(exceptions, CRASH_EXCEPTION_SOURCE_KEY);
+    NSArray *s = UserDefaultsObjectForKey(CRASH_EXCEPTION_SOURCE_KEY);
     if (__crash_snifferring) __crash_snifferring(exceptionInfo);
 #endif
 }
