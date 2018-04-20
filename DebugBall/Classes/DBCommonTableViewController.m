@@ -33,6 +33,8 @@
     _tableView = [[QMUITableView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-NavigationBarHeight-StatusBarHeight) style:self.style];
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    _tableView.sectionHeaderHeight = 0.1f;
+    _tableView.sectionFooterHeight = 0.1f;
     [self.view addSubview:_tableView];
 }
 

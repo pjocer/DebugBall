@@ -58,7 +58,7 @@ FOUNDATION_EXTERN NSString * const kAPIHostDidChangedOldValue;
 /** Intialize the data to display */
 typedef void(^FetchCompeletion)(NSDictionary <NSString *, NSDictionary <NSString *, NSString *> *> *info);
 typedef void(^NetworkSnifferCompeletion)(NSArray <NSDictionary <NSString *, NSString *> *>* sources);
-typedef void(^CrashAssertsCompeletion)(NSArray <NSException *>* sources);
+typedef void(^CrashAssertsCompeletion)(NSArray <NSDictionary *>* sources);
 
 @interface DebugManager (DataRegistry)
 

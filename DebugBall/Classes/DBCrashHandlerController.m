@@ -23,7 +23,7 @@ static NSString *kIdentifier = @"crashInfoCell";
     self.navigationItem.rightBarButtonItem = item;
     self.dataSource = [NSMutableArray array];
     __weak typeof(self)wSelf = self;
-    [DebugManager fetchDeviceCrashAssert:^(NSArray<NSException *> *sources) {
+    [DebugManager fetchDeviceCrashAssert:^(NSArray<NSDictionary *> *sources) {
         __strong typeof(wSelf)self = wSelf;
         [self.dataSource addObjectsFromArray:sources];
         [self.tableView reloadData];

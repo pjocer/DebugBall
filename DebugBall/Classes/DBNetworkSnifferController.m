@@ -19,9 +19,12 @@ static NSString *kIdentifier = @"networkInfoCell";
 @implementation DBNetworkSnifferController
 
 - (void)initDataSource {
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStylePlain target:self action:@selector(clearHistoricalRecords)];
-    [item setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont boldSystemFontOfSize:16]} forState:UIControlStateNormal];
-    self.navigationItem.rightBarButtonItem = item;
+    UIBarButtonItem *clear = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStylePlain target:self action:@selector(clearHistoricalRecords)];
+    [clear setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont boldSystemFontOfSize:16]} forState:UIControlStateNormal];
+    UIBarButtonItem *shrink = [[UIBarButtonItem alloc] initWithTitle:@"Shrink" style:UIBarButtonItemStylePlain target:self action:@selector(shrinkDebugWindow)];
+    [shrink setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont boldSystemFontOfSize:16]} forState:UIControlStateNormal];
+    self.navigationItem.rightBarButtonItems = @[clear, shrink];
+    
     self.dataSource = [NSMutableArray array];
     __weak typeof(self)wSelf = self;
     [DebugManager fetchDeviceNetworkSnifferInfo:^(NSArray<NSDictionary<NSString *,NSString *> *> *sources) {
@@ -41,7 +44,9 @@ static NSString *kIdentifier = @"networkInfoCell";
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
     }];
 }
-
+- (void)shrinkDebugWindow {
+    self.navigationController;
+}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [DebugManager showTipsWithType:TipsDisplayTypeInfo text:self.dataSource[indexPath.row][@"Type"] detailText:self.dataSource[indexPath.row][@"URL"] inView:self.view];

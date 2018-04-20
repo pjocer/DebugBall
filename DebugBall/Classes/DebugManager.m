@@ -289,7 +289,6 @@ static void (^__crash_snifferring)(NSException *) = nil;
         [exceptions removeLastObject];
     }
     UserDefaultsSetObjectForKey(exceptions, CRASH_EXCEPTION_SOURCE_KEY);
-    NSArray *s = UserDefaultsObjectForKey(CRASH_EXCEPTION_SOURCE_KEY);
     if (__crash_snifferring) __crash_snifferring(exceptionInfo);
 #endif
 }
