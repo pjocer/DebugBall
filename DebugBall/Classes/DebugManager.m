@@ -99,7 +99,7 @@ static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *
         menu.tableView.estimatedSectionFooterHeight = 0;
         menu.title = @"Project Configuration";
         menu.hidesBottomBarWhenPushed = YES;
-        menu.navigationItem.leftBarButtonItem = [QMUINavigationButton closeBarButtonItemWithTarget:self action:@selector(handleCloseButtonEvent:)];
+        menu.navigationItem.leftBarButtonItem = [UIBarButtonItem qmui_closeItemWithTarget:self action:@selector(handleCloseButtonEvent:)];
         menu.navigationItem.leftBarButtonItem.tintColor = UIColorWhite;
     });
     return menu;
