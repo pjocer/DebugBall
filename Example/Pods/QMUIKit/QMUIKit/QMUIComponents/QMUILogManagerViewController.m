@@ -17,6 +17,7 @@
 #import "UITableView+QMUI.h"
 #import "QMUITableViewCell.h"
 #import "QMUISearchController.h"
+#import "UIBarItem+QMUI.h"
 
 @interface QMUILogManagerViewController ()
 
@@ -42,8 +43,8 @@
     [self checkEmptyView];
 }
 
-- (void)setNavigationItemsIsInEditMode:(BOOL)isInEditMode animated:(BOOL)animated {
-    [super setNavigationItemsIsInEditMode:isInEditMode animated:animated];
+- (void)setupNavigationItems {
+    [super setupNavigationItems];
     if (self.allNames.count) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(handleMenuItemEvent)];
     } else {
@@ -118,7 +119,7 @@
     } else {
         [self hideEmptyView];
     }
-    [self setNavigationItemsIsInEditMode:NO animated:NO];
+    [self setupNavigationItems];
 }
 
 - (NSArray<NSString *> *)sortedLogNameArray {
@@ -171,7 +172,7 @@
                            [self reloadData];
                            [menuView hideWithAnimated:YES];
                        }]];
-    [menuView layoutWithTargetView:[self.navigationItem.rightBarButtonItem valueForKey:@"view"]];
+    [menuView layoutWithTargetView:self.navigationItem.rightBarButtonItem.qmui_view];
     [menuView showWithAnimated:YES];
 }
 

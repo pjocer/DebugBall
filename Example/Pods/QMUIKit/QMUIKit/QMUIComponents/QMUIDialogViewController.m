@@ -201,9 +201,9 @@ static QMUIDialogViewController *dialogViewControllerAppearance;
 }
 
 BeginIgnoreClangWarning(-Wobjc-missing-super-calls)
-- (void)setNavigationItemsIsInEditMode:(BOOL)isInEditMode animated:(BOOL)animated {
+- (void)setupNavigationItems {
     // 不继承父类的实现，从而避免把 self.titleView 放到 navigationItem 上
-//    [super setNavigationItemsIsInEditMode:isInEditMode animated:animated];
+//    [super setupNavigationItems];
 }
 EndIgnoreClangWarning
 
@@ -351,7 +351,7 @@ EndIgnoreClangWarning
 
 - (QMUIButton *)generateButtonWithText:(NSString *)buttonText {
     QMUIButton *button = [[QMUIButton alloc] init];
-    button.titleLabel.font = UIFontBoldMake((IS_35INCH_SCREEN || IS_40INCH_SCREEN) ? 14 : 15);
+    button.titleLabel.font = UIFontBoldMake((IS_320WIDTH_SCREEN) ? 14 : 15);
     button.adjustsTitleTintColorAutomatically = YES;
     button.backgroundColor = self.buttonBackgroundColor;
     button.highlightedBackgroundColor = self.buttonHighlightedBackgroundColor;
@@ -369,9 +369,8 @@ EndIgnoreClangWarning
 
 - (void)handleSubmitButtonEvent:(QMUIButton *)submitButton {
     if (self.submitButtonBlock) {
-        // 把自己传过去，方便在block里调用self时不会导致内存泄露
-        __weak QMUIDialogViewController *weakSelf = self;
-        self.submitButtonBlock(weakSelf);
+        // 把自己传过去，通过参数来引用 self，避免在 block 里直接引用 dialog 导致内存泄漏
+        self.submitButtonBlock(self);
     }
 }
 

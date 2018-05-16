@@ -21,6 +21,15 @@
     return self.qmui_poppingByInteractivePopGestureRecognizer || self.qmui_willAppearByInteractivePopGestureRecognizer;
 }
 
+static char kAssociatedObjectKey_navigationControllerPopGestureRecognizerChanging;
+- (void)setQmui_navigationControllerPopGestureRecognizerChanging:(BOOL)qmui_navigationControllerPopGestureRecognizerChanging {
+    objc_setAssociatedObject(self, &kAssociatedObjectKey_navigationControllerPopGestureRecognizerChanging, @(qmui_navigationControllerPopGestureRecognizerChanging), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (BOOL)qmui_navigationControllerPopGestureRecognizerChanging {
+    return [((NSNumber *)objc_getAssociatedObject(self, &kAssociatedObjectKey_navigationControllerPopGestureRecognizerChanging)) boolValue];
+}
+
 static char kAssociatedObjectKey_poppingByInteractivePopGestureRecognizer;
 - (void)setQmui_poppingByInteractivePopGestureRecognizer:(BOOL)qmui_poppingByInteractivePopGestureRecognizer {
     objc_setAssociatedObject(self, &kAssociatedObjectKey_poppingByInteractivePopGestureRecognizer, @(qmui_poppingByInteractivePopGestureRecognizer), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -331,12 +340,13 @@ static char kAssociatedObjectKey_qmuiNavIsViewWillAppear;
     UIViewController *currentViewController = self.topViewController;
     if (currentViewController) {
         if (!NeedsBackBarButtonItemTitle) {
-            currentViewController.navigationItem.backBarButtonItem = [QMUINavigationButton barButtonItemWithType:QMUINavigationButtonTypeNormal title:@"" position:QMUINavigationButtonPositionLeft target:nil action:NULL];
+            // 会自动从 UIBarButtonItem.title 取值作为下一个界面的返回按钮的文字
+            currentViewController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:NULL];
         } else {
             UIViewController<QMUINavigationControllerAppearanceDelegate> *vc = (UIViewController<QMUINavigationControllerAppearanceDelegate> *)viewController;
             if ([vc respondsToSelector:@selector(backBarButtonItemTitleWithPreviousViewController:)]) {
                 NSString *title = [vc backBarButtonItemTitleWithPreviousViewController:currentViewController];
-                currentViewController.navigationItem.backBarButtonItem = [QMUINavigationButton barButtonItemWithType:QMUINavigationButtonTypeNormal title:title position:QMUINavigationButtonPositionLeft target:nil action:NULL];
+                currentViewController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:nil action:NULL];
             }
         }
     }
@@ -368,6 +378,20 @@ static char kAssociatedObjectKey_qmuiNavIsViewWillAppear;
     UIViewController *viewControllerWillDisappear = self.viewControllerPopping;
     UIViewController *viewControllerWillAppear = self.topViewController;
     
+    viewControllerWillDisappear.qmui_poppingByInteractivePopGestureRecognizer = YES;
+    viewControllerWillDisappear.qmui_willAppearByInteractivePopGestureRecognizer = NO;
+    
+    viewControllerWillDisappear.qmui_poppingByInteractivePopGestureRecognizer = NO;
+    viewControllerWillAppear.qmui_willAppearByInteractivePopGestureRecognizer = YES;
+    
+    if (state == UIGestureRecognizerStateChanged) {
+        viewControllerWillDisappear.qmui_navigationControllerPopGestureRecognizerChanging = YES;
+        viewControllerWillAppear.qmui_navigationControllerPopGestureRecognizerChanging = YES;
+    } else {
+        viewControllerWillDisappear.qmui_navigationControllerPopGestureRecognizerChanging = NO;
+        viewControllerWillAppear.qmui_navigationControllerPopGestureRecognizerChanging = NO;
+    }
+    
     if (state == UIGestureRecognizerStateEnded) {
         if (CGRectGetMinX(self.topViewController.view.superview.frame) < 0) {
             // by molice:只是碰巧发现如果是手势返回取消时，不管在哪个位置取消，self.topViewController.view.superview.frame.orgin.x必定是-124，所以用这个<0的条件来判断
@@ -378,12 +402,6 @@ static char kAssociatedObjectKey_qmuiNavIsViewWillAppear;
             QMUILog(NSStringFromClass(self.class), @"执行手势返回");
         }
     }
-    
-    viewControllerWillDisappear.qmui_poppingByInteractivePopGestureRecognizer = YES;
-    viewControllerWillDisappear.qmui_willAppearByInteractivePopGestureRecognizer = NO;
-    
-    viewControllerWillDisappear.qmui_poppingByInteractivePopGestureRecognizer = NO;
-    viewControllerWillAppear.qmui_willAppearByInteractivePopGestureRecognizer = YES;
     
     if ([viewControllerWillDisappear respondsToSelector:@selector(navigationController:poppingByInteractiveGestureRecognizer:viewControllerWillDisappear:viewControllerWillAppear:)]) {
         [((UIViewController<QMUINavigationControllerTransitionDelegate> *)viewControllerWillDisappear) navigationController:self poppingByInteractiveGestureRecognizer:gestureRecognizer viewControllerWillDisappear:viewControllerWillDisappear viewControllerWillAppear:viewControllerWillAppear];
@@ -414,6 +432,16 @@ static char kAssociatedObjectKey_qmuiNavIsViewWillAppear;
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
     return [self.topViewController qmui_hasOverrideUIKitMethod:_cmd] ? [self.topViewController supportedInterfaceOrientations] : SupportedOrientationMask;
+}
+
+#pragma mark - HomeIndicator
+
+- (UIViewController *)childViewControllerForHomeIndicatorAutoHidden {
+    return self.topViewController;
+}
+
+- (BOOL)prefersHomeIndicatorAutoHidden {
+    return NO;
 }
 
 @end
