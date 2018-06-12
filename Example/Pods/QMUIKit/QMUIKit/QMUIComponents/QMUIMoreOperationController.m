@@ -96,19 +96,19 @@ static QMUIMoreOperationController *moreOperationViewControllerAppearance;
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        [self didInitialized];
+        [self didInitialize];
     }
     return self;
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super initWithCoder:aDecoder]) {
-        [self didInitialized];
+        [self didInitialize];
     }
     return self;
 }
 
-- (void)didInitialized {
+- (void)didInitialize {
     if (moreOperationViewControllerAppearance) {
         self.contentBackgroundColor = [QMUIMoreOperationController appearance].contentBackgroundColor;
         self.contentEdgeMargin = [QMUIMoreOperationController appearance].contentEdgeMargin;
@@ -222,7 +222,7 @@ static QMUIMoreOperationController *moreOperationViewControllerAppearance;
             columnCount = [self suitableColumnCountWithCount:columnCount];
         }
         
-        CGFloat finalItemMarginHorizontal = (scrollViewVisibleWidth - exampleItemWidth * columnCount) / columnCount;
+        CGFloat finalItemMarginHorizontal = flat((scrollViewVisibleWidth - exampleItemWidth * columnCount) / columnCount);
         
         __block CGFloat maximumItemHeight = 0;
         __block CGFloat itemViewMinX = scrollViewSafeAreaInsets.left;
@@ -612,7 +612,7 @@ static QMUIMoreOperationController *moreOperationViewControllerAppearance;
 
 #pragma mark - <QMUIModalPresentationContentViewControllerProtocol>
 
-- (CGSize)preferredContentSizeInModalPresentationViewController:(QMUIModalPresentationViewController *)controller limitSize:(CGSize)limitSize {
+- (CGSize)preferredContentSizeInModalPresentationViewController:(QMUIModalPresentationViewController *)controller keyboardHeight:(CGFloat)keyboardHeight limitSize:(CGSize)limitSize {
     __block CGFloat contentHeight = (self.cancelButton.hidden ? 0 : self.cancelButtonHeight + self.cancelButtonMarginTop);
     [self.mutableScrollViews enumerateObjectsUsingBlock:^(UIScrollView * _Nonnull scrollView, NSUInteger idx, BOOL * _Nonnull stop) {
         NSArray<QMUIMoreOperationItemView *> *itemSection = self.mutableItems[idx];
@@ -647,6 +647,12 @@ static QMUIMoreOperationController *moreOperationViewControllerAppearance;
     if ([self.delegate respondsToSelector:@selector(didDismissMoreOperationController:cancelled:)]) {
         [self.delegate didDismissMoreOperationController:self cancelled:self.hideByCancel];
     }
+}
+
+#pragma mark - <QMUIModalPresentationComponentProtocol>
+
+- (void)hideModalPresentationComponent {
+    [self hideToBottom];
 }
 
 @end

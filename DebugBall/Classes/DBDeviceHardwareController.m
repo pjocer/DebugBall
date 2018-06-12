@@ -59,7 +59,7 @@
 
 - (void)displayPopupView:(QMUIStaticTableViewCellData *)data {
     WEAK_SELF
-    self.popupView.items = @[[QMUIPopupMenuItem itemWithImage:nil title:@"Copy The Value" handler:^{
+    self.popupView.items = @[[QMUIPopupMenuItem itemWithImage:nil title:@"Copy The Value" handler:^(QMUIPopupMenuView *aMenuView, QMUIPopupMenuItem *aItem) {
         STRONG_SELF
         [self.popupView hideWithAnimated:YES];
         [[UIPasteboard generalPasteboard] setString:data.detailText];

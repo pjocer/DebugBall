@@ -33,7 +33,7 @@ static QMUIDialogViewController *dialogViewControllerAppearance;
         if (!dialogViewControllerAppearance) {
             dialogViewControllerAppearance = [[QMUIDialogViewController alloc] init];
             dialogViewControllerAppearance.cornerRadius = 6;
-            dialogViewControllerAppearance.dialogViewMargins = UIEdgeInsetsMake(20, 20, 20, 20); // 在实例的 didInitialized 里会适配 iPhone X 的 safeAreaInsets
+            dialogViewControllerAppearance.dialogViewMargins = UIEdgeInsetsMake(20, 20, 20, 20); // 在实例的 didInitialize 里会适配 iPhone X 的 safeAreaInsets
             dialogViewControllerAppearance.maximumContentViewWidth = [QMUIHelper screenSizeFor55Inch].width - UIEdgeInsetsGetHorizontalValue(dialogViewControllerAppearance.dialogViewMargins);
             dialogViewControllerAppearance.backgroundColor = UIColorClear;
             dialogViewControllerAppearance.titleTintColor = UIColorBlack;
@@ -69,8 +69,8 @@ static QMUIDialogViewController *dialogViewControllerAppearance;
 
 @implementation QMUIDialogViewController
 
-- (void)didInitialized {
-    [super didInitialized];
+- (void)didInitialize {
+    [super didInitialize];
     if (dialogViewControllerAppearance) {
         self.cornerRadius = [QMUIDialogViewController appearance].cornerRadius;
         self.dialogViewMargins = UIEdgeInsetsConcat([QMUIDialogViewController appearance].dialogViewMargins, IPhoneXSafeAreaInsets);
@@ -401,7 +401,7 @@ EndIgnoreClangWarning
 
 #pragma mark - <QMUIModalPresentationContentViewControllerProtocol>
 
-- (CGSize)preferredContentSizeInModalPresentationViewController:(QMUIModalPresentationViewController *)controller limitSize:(CGSize)limitSize {
+- (CGSize)preferredContentSizeInModalPresentationViewController:(QMUIModalPresentationViewController *)controller keyboardHeight:(CGFloat)keyboardHeight limitSize:(CGSize)limitSize {
     if (!self.hasCustomContentView) {
         return limitSize;
     }
@@ -418,6 +418,12 @@ EndIgnoreClangWarning
     return finalSize;
 }
 
+#pragma mark - <QMUIModalPresentationComponentProtocol>
+
+- (void)hideModalPresentationComponent {
+    [self hideWithAnimated:NO completion:nil];
+}
+
 @end
 
 const NSInteger QMUIDialogSelectionViewControllerSelectedItemIndexNone = -1;
@@ -429,8 +435,8 @@ const NSInteger QMUIDialogSelectionViewControllerSelectedItemIndexNone = -1;
 
 @implementation QMUIDialogSelectionViewController
 
-- (void)didInitialized {
-    [super didInitialized];
+- (void)didInitialize {
+    [super didInitialize];
     
     self.selectedItemIndex = QMUIDialogSelectionViewControllerSelectedItemIndexNone;
     self.selectedItemIndexes = [[NSMutableSet alloc] init];
@@ -469,12 +475,20 @@ const NSInteger QMUIDialogSelectionViewControllerSelectedItemIndexNone = -1;
     }
 }
 
+- (void)setItems:(NSArray<NSString *> *)items {
+    _items = [items copy];
+    [self.tableView reloadData];
+    if (self.qmui_modalPresentationViewController.visible) {
+        [self.qmui_modalPresentationViewController updateLayout];
+    }
+}
+
 - (void)setSelectedItemIndex:(NSInteger)selectedItemIndex {
     _selectedItemIndex = selectedItemIndex;
     [self.selectedItemIndexes removeAllObjects];
 }
 
-- (void)setselectedItemIndexes:(NSMutableSet<NSNumber *> *)selectedItemIndexes {
+- (void)setSelectedItemIndexes:(NSMutableSet<NSNumber *> *)selectedItemIndexes {
     _selectedItemIndexes = selectedItemIndexes;
     self.selectedItemIndex = QMUIDialogSelectionViewControllerSelectedItemIndexNone;
 }
@@ -492,7 +506,7 @@ const NSInteger QMUIDialogSelectionViewControllerSelectedItemIndexNone = -1;
     static NSString *identifier = @"cell";
     QMUITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
-        cell = [[QMUITableViewCell alloc] initForTableView:self.tableView withStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
+        cell = [[QMUITableViewCell alloc] initForTableView:tableView withStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
     }
     cell.textLabel.text = self.items[indexPath.row];
     
@@ -587,7 +601,7 @@ const NSInteger QMUIDialogSelectionViewControllerSelectedItemIndexNone = -1;
 
 #pragma mark - <QMUIModalPresentationContentViewControllerProtocol>
 
-- (CGSize)preferredContentSizeInModalPresentationViewController:(QMUIModalPresentationViewController *)controller limitSize:(CGSize)limitSize {
+- (CGSize)preferredContentSizeInModalPresentationViewController:(QMUIModalPresentationViewController *)controller keyboardHeight:(CGFloat)keyboardHeight limitSize:(CGSize)limitSize {
     CGFloat contentViewVerticalMargin = UIEdgeInsetsGetVerticalValue(self.contentViewMargins);
     CGFloat footerHeight = !self.footerView.hidden ? CGRectGetHeight(self.footerView.frame) : 0;
     CGFloat tableViewLimitHeight = limitSize.height - CGRectGetHeight(self.headerView.frame) - footerHeight - contentViewVerticalMargin;
@@ -608,8 +622,8 @@ const NSInteger QMUIDialogSelectionViewControllerSelectedItemIndexNone = -1;
 
 @implementation QMUIDialogTextFieldViewController
 
-- (void)didInitialized {
-    [super didInitialized];
+- (void)didInitialize {
+    [super didInitialize];
     self.shouldManageTextFieldsReturnEventAutomatically = YES;
     self.enablesSubmitButtonAutomatically = YES;
     BeginIgnoreAvailabilityWarning
@@ -731,7 +745,7 @@ const NSInteger QMUIDialogSelectionViewControllerSelectedItemIndexNone = -1;
 
 #pragma mark - <QMUIModalPresentationContentViewControllerProtocol>
 
-- (CGSize)preferredContentSizeInModalPresentationViewController:(QMUIModalPresentationViewController *)controller limitSize:(CGSize)limitSize {
+- (CGSize)preferredContentSizeInModalPresentationViewController:(QMUIModalPresentationViewController *)controller keyboardHeight:(CGFloat)keyboardHeight limitSize:(CGSize)limitSize {
     CGFloat textFieldHeight = self.textFieldLabel.hidden ? 56.0 : 25.0; // 25.0 考虑了行高导致的 offsetoffset
     CGFloat textFieldTitleHeight = 29.0;
     
