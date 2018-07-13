@@ -32,12 +32,10 @@ static NSString * kCurrentH5DomainKey       = @"kCurrentH5DomainKey";
 static NSString * kHasInstalledDebugBall    = @"kHasInstalledDebugBall";
 
 @interface DebugManager ()
-#ifdef DEBUG
 @property (nonatomic, strong) DBActionMenuController *menu;
 @property (nonatomic, strong) UINavigationController *nav;
 @property (nonatomic, strong) NSMutableDictionary <NSString *, NSMutableArray<__kindof UIView *> *> *cachedRenderingViews;
 @property (nonatomic, copy) dispatch_queue_t dataRegistryQueue;
-#endif
 @end
 
 @implementation DebugManager
