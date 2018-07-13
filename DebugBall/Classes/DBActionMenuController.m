@@ -101,10 +101,22 @@
         d.height = TableViewCellNormalHeight + 6;
         d.text = @"Test Custom H5-WebView";
         d;
+    }),
+                                                                                                                            ({
+        QMUIStaticTableViewCellData *d = [[QMUIStaticTableViewCellData alloc] init];
+        d.identifier = 7;
+        d.style = UITableViewCellStyleSubtitle;
+        d.accessoryType = QMUIStaticTableViewCellAccessoryTypeDisclosureIndicator;
+        d.didSelectTarget = self;
+        d.didSelectAction = @selector(displayShortcutActions);
+        d.height = TableViewCellNormalHeight + 6;
+        d.text = @"Shortcut";
+        d.detailText = @"Display custom shortcut actions";
+        d;
     })],
                                                                                                                           @[({
         QMUIStaticTableViewCellData *d = [[QMUIStaticTableViewCellData alloc] init];
-        d.identifier = 7;
+        d.identifier = 8;
         d.style = UITableViewCellStyleDefault;
         d.accessoryType = QMUIStaticTableViewCellAccessoryTypeSwitch;
         d.accessoryValueObject = @([DebugManager isDebugBallAutoHidden]);
@@ -116,7 +128,7 @@
     }),
                                                                                                                             ({
         QMUIStaticTableViewCellData *d = [[QMUIStaticTableViewCellData alloc] init];
-        d.identifier = 8;
+        d.identifier = 9;
         d.style = UITableViewCellStyleDefault;
         d.accessoryType = QMUIStaticTableViewCellAccessoryTypeSwitch;
         d.accessoryValueObject = @([DebugManager isDebugBallAutoHidden]);
@@ -270,6 +282,38 @@
         [nd hide];
     }];
     [newAddDialog show];
+}
+
+- (void)displayShortcutActions {
+    QMUIDialogSelectionViewController *dialogViewController = [[QMUIDialogSelectionViewController alloc] init];
+    dialogViewController.title = @"Shortcuts(You must ever have logged in)";
+    dialogViewController.items = @[@"Log in using the account you'd ever logged in",
+                                   @"Log out",
+                                   @"Invalidate current access token",
+                                   @"Log in using the account you'd ever logged in and invalidate the `Access Token` immediately"];
+    dialogViewController.cellForItemBlock = ^(QMUIDialogSelectionViewController *aDialogViewController, QMUITableViewCell *cell, NSUInteger itemIndex) {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.textLabel.textColor = UIColorMake(93, 100, 110);
+        cell.textLabel.font = UIFontMake(15);
+        cell.textLabel.numberOfLines = 0;
+    };
+    dialogViewController.heightForItemBlock = ^CGFloat(QMUIDialogSelectionViewController *aDialogViewController, NSUInteger itemIndex) {
+        return UITableViewAutomaticDimension;
+    };
+    dialogViewController.didSelectItemBlock = ^(QMUIDialogSelectionViewController *aDialogViewController, NSUInteger itemIndex) {
+        if (itemIndex == 0) {
+            if (self.loginAction)
+                self.loginAction(UserDefaultsObjectForKey(DBACCOUNT_EMAIL_KEY), UserDefaultsObjectForKey(DBACCOUNT_PASSWORD_KEY));
+        } else if (itemIndex == 1) {
+            if (self.logoutAction) self.logoutAction();
+        } else if (itemIndex == 2) {
+            if (self.invalidateTokenAction) self.invalidateTokenAction();
+        } else if (itemIndex == 3) {
+            if (self.invalidateTokenAfterLoginAction) self.invalidateTokenAfterLoginAction(UserDefaultsObjectForKey(DBACCOUNT_EMAIL_KEY), UserDefaultsObjectForKey(DBACCOUNT_PASSWORD_KEY));
+        }
+        [aDialogViewController hide];
+    };
+    [dialogViewController show];
 }
 
 - (void)enableDebugBallAutoHidden:(UISwitch *)view {

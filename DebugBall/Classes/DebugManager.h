@@ -64,11 +64,15 @@ typedef void(^FetchCompeletion)(NSDictionary <NSString *, NSDictionary <NSString
 typedef void(^NetworkSnifferCompeletion)(NSArray <NSDictionary <NSString *, NSString *> *>* sources);
 typedef void(^CrashAssertsCompeletion)(NSArray <NSDictionary *>* sources);
 
+#define DBACCOUNT_EMAIL_KEY @"ACCOUNT_EMAIL_KEY"
+#define DBACCOUNT_PASSWORD_KEY @"ACCOUNT_PASSWORD_KEY"
+
 @interface DebugManager (DataRegistry)
 
 + (void)registerPushToken:(NSString *)token;
 
 + (void)registerUserDataWithUserID:(NSString *)userID userName:(NSString *)userName userToken:(NSString *)userToken;
++ (void)registerAccountInfo:(NSString *)email password:(NSString *)password;
 /** Will post kAPIHostDidChangedNotification and kH5APIHostDidChangedNotification after compeletion block */
 + (void)registerDefaultAPIHosts:(NSArray <Domain *>*)domains andH5APIHosts:(NSArray <Domain *>*)h5Domains;
 
@@ -117,5 +121,9 @@ typedef NS_ENUM(NSInteger, TipsDisplayType) {
 @interface DebugManager (CustomAction)
 
 + (void)setCustomWebViewAction:(void(^)(id data))action;
++ (void)setLoginAction:(void(^)(NSString *email, NSString *password))action;
++ (void)setLogoutAction:(dispatch_block_t)action;
++ (void)setInvalidateTokenAction:(dispatch_block_t)action;
++ (void)setInvalidateTokenAfterLoginAction:(void(^)(NSString *email, NSString *password))action;
 
 @end

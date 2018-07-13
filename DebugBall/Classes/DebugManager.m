@@ -257,6 +257,13 @@ static void (^__crash_snifferring)(NSException *) = nil;
 #endif
 }
 
++ (void)registerAccountInfo:(NSString *)email password:(NSString *)password {
+#ifdef DEBUG
+    if (email) UserDefaultsSetObjectForKey(email, DBACCOUNT_EMAIL_KEY);
+    if (password) UserDefaultsSetObjectForKey(password, DBACCOUNT_PASSWORD_KEY);
+#endif
+}
+
 + (void)registerNetworkRequest:(NSURLRequest *)request type:(APIDomainType)type {
 #ifdef DEBUG
     NSMutableArray *requestInfos = [UserDefaultsObjectForKey(DEVICE_NETWORK_SOURCE_KEY)?:@[] mutableCopy];
@@ -422,6 +429,19 @@ static void (^__crash_snifferring)(NSException *) = nil;
 @implementation DebugManager (CustomAction)
 + (void)setCustomWebViewAction:(void(^)(id data))action {
     DebugSharedManager.menu.webViewAction = action;
+}
+
++ (void)setLoginAction:(void(^)(NSString *email, NSString *password))action {
+    DebugSharedManager.menu.loginAction = action;
+}
++ (void)setLogoutAction:(dispatch_block_t)action {
+    DebugSharedManager.menu.logoutAction = action;
+}
++ (void)setInvalidateTokenAction:(dispatch_block_t)action {
+    DebugSharedManager.menu.invalidateTokenAction = action;
+}
++ (void)setInvalidateTokenAfterLoginAction:(void(^)(NSString *email, NSString *password))action {
+    DebugSharedManager.menu.invalidateTokenAfterLoginAction = action;
 }
 @end
 
