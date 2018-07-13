@@ -29,7 +29,11 @@ FOUNDATION_EXTERN NSNotificationName const kDebugBallAutoHidden;
 FOUNDATION_EXTERN NSString * const kAPIHostDidChangedNewValue;
 FOUNDATION_EXTERN NSString * const kAPIHostDidChangedOldValue;
 
+#define DebugSharedManager [DebugManager sharedManager]
+
 @interface DebugManager : NSObject
+
++ (instancetype)sharedManager;
 
 + (void)presentDebugActionMenuController;
 

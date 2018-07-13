@@ -33,21 +33,32 @@ static NSString * kHasInstalledDebugBall    = @"kHasInstalledDebugBall";
 
 @interface DebugManager ()
 #ifdef DEBUG
-@property (class, nonatomic, strong, readonly) DBActionMenuController *__menu;
-@property (class, nonatomic, strong, readonly) UINavigationController *__nav;
-@property (class, nonatomic, strong, readonly) NSMutableDictionary <NSString *, NSMutableArray<__kindof UIView *> *> *__cachedRenderingViews;
-@property (class, nonatomic, copy, readonly) dispatch_queue_t __dataRegistryQueue;
+@property (nonatomic, strong) DBActionMenuController *menu;
+@property (nonatomic, strong) UINavigationController *nav;
+@property (nonatomic, strong) NSMutableDictionary <NSString *, NSMutableArray<__kindof UIView *> *> *cachedRenderingViews;
+@property (nonatomic, copy) dispatch_queue_t dataRegistryQueue;
 #endif
 @end
 
 @implementation DebugManager
+
++ (instancetype)sharedManager {
+    static dispatch_once_t onceToken;
+    static DebugManager *manager = nil;
+    dispatch_once(&onceToken, ^{
+        manager = [DebugManager new];
+    });
+    return manager;
+}
 
 static BOOL __show = NO;
 static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *> *> * __data = nil;
 
 + (void)presentDebugActionMenuController {
     if (!__show) {
-        [[QMUIHelper visibleViewController] presentViewController:self.__nav animated:YES completion:^{
+        UIViewController *vc = DebugSharedManager.nav;
+        UIViewController *root = UIApplication.sharedApplication.keyWindow.rootViewController;
+        [root presentViewController:vc animated:YES completion:^{
             __show = YES;
         }];
     } else {
@@ -63,64 +74,49 @@ static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *
         __data = nil;
     }
     [[QMUIHelper visibleViewController] setNeedsStatusBarAppearanceUpdate];
-    [self.__nav dismissViewControllerAnimated:YES completion:^{
+    [DebugSharedManager.nav dismissViewControllerAnimated:YES completion:^{
         __show = NO;
     }];
 }
 
-+ (void)handleCloseButtonEvent:(UIBarButtonItem *)item {
-    [self dismissDebugActionMenuController];
+- (void)handleCloseButtonEvent:(UIBarButtonItem *)item {
+    [DebugManager dismissDebugActionMenuController];
 }
-
-+ (UINavigationController *)__nav {
-    static dispatch_once_t onceToken;
-    static UINavigationController *nav = nil;
-    dispatch_once(&onceToken, ^{
-        nav = [[UINavigationController alloc] initWithRootViewController:self.__menu];
-        nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        UINavigationBar *bar = nav.navigationBar;
+- (UINavigationController *)nav {
+    if (!_nav) {
+        _nav = [[UINavigationController alloc] initWithRootViewController:self.menu];
+        _nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        UINavigationBar *bar = _nav.navigationBar;
         [bar.backItem.backBarButtonItem setTintColor:UIColorWhite];
         bar.titleTextAttributes = @{NSForegroundColorAttributeName:UIColorWhite};
         UIImage *backgroundImage = [DebugBallImageWithNamed(@"navigationbar_background") resizableImageWithCapInsets:UIEdgeInsetsMake(0, 2, 0, 2)];
         [bar setBackgroundImage:backgroundImage forBarMetrics:UIBarMetricsDefault];
         bar.shadowImage = [UIImage new];
         bar.barStyle = UIBarStyleBlack;
-    });
-    return nav;
+    }
+    return _nav;
 }
-
-+ (DBActionMenuController *)__menu {
-    static dispatch_once_t onceToken;
-    static DBActionMenuController *menu = nil;
-    dispatch_once(&onceToken, ^{
-        menu = [[DBActionMenuController alloc] initWithStyle:UITableViewStyleGrouped];
-        menu.tableView.estimatedRowHeight = 0;
-        menu.tableView.estimatedSectionHeaderHeight = 0;
-        menu.tableView.estimatedSectionFooterHeight = 0;
-        menu.title = @"Project Configuration";
-        menu.hidesBottomBarWhenPushed = YES;
-        menu.navigationItem.leftBarButtonItem = [UIBarButtonItem qmui_closeItemWithTarget:self action:@selector(handleCloseButtonEvent:)];
-        menu.navigationItem.leftBarButtonItem.tintColor = UIColorWhite;
-    });
-    return menu;
+- (DBActionMenuController *)menu {
+    if (!_menu) {
+        _menu = [[DBActionMenuController alloc] initWithStyle:UITableViewStyleGrouped];
+        _menu.title = @"Project Configuration";
+        _menu.hidesBottomBarWhenPushed = YES;
+        _menu.navigationItem.leftBarButtonItem = [UIBarButtonItem qmui_closeItemWithTarget:self action:@selector(handleCloseButtonEvent:)];
+        _menu.navigationItem.leftBarButtonItem.tintColor = UIColorWhite;
+    }
+    return _menu;
 }
-
-+ (NSMutableDictionary<NSString *,NSMutableArray<UIView *> *> *)__cachedRenderingViews {
-    static dispatch_once_t onceToken;
-    static NSMutableDictionary<NSString *,NSMutableArray<UIView *> *> *instance = nil;
-    dispatch_once(&onceToken, ^{
-        instance = [NSMutableDictionary dictionary];
-    });
-    return instance;
+- (NSMutableDictionary<NSString *,NSMutableArray<UIView *> *> *)cachedRenderingViews {
+    if (!_cachedRenderingViews) {
+        _cachedRenderingViews = [NSMutableDictionary dictionary];
+    }
+    return _cachedRenderingViews;
 }
-
-+ (dispatch_queue_t)__dataRegistryQueue {
-    static dispatch_once_t onceToken;
-    static dispatch_queue_t t = nil;
-    dispatch_once(&onceToken, ^{
-        t = dispatch_queue_create("dataRegistryQueue", DISPATCH_QUEUE_CONCURRENT);
-    });
-    return t;
+- (dispatch_queue_t)dataRegistryQueue {
+    if (!_dataRegistryQueue) {
+        _dataRegistryQueue = dispatch_queue_create("dataRegistryQueue", DISPATCH_QUEUE_CONCURRENT);
+    }
+    return _dataRegistryQueue;
 }
 
 + (BOOL)addNewDomain:(Domain *)domain domainType:(APIDomainType)type{
@@ -199,7 +195,7 @@ static void (^__crash_snifferring)(NSException *) = nil;
 @implementation DebugManager (DataRegistry)
 
 + (void)asyncFetchDeviceHardwareInfo {
-    dispatch_barrier_async(self.__dataRegistryQueue, ^{
+    dispatch_barrier_async(DebugSharedManager.dataRegistryQueue, ^{
         NSMutableDictionary *dataSource = [UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY)?:@{} mutableCopy];
         NSMutableDictionary *identiders = [NSMutableDictionary dictionary];
         identiders[@"IDFA"] = [[UIDevice currentDevice] getIDFA]?:@"Unable To Get";
@@ -236,7 +232,7 @@ static void (^__crash_snifferring)(NSException *) = nil;
 + (void)registerPushToken:(NSString *)token {
 #ifdef DEBUG
     if (token) {
-        dispatch_barrier_async(self.__dataRegistryQueue, ^{
+        dispatch_barrier_async(DebugSharedManager.dataRegistryQueue, ^{
             NSMutableDictionary *source = [UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY)?:@{} mutableCopy];
             NSMutableDictionary *identifers = [source[DEVICE_IDENTIFIERS_KEY]?:@{} mutableCopy];
             identifers[@"Push Token"] = token;
@@ -249,7 +245,7 @@ static void (^__crash_snifferring)(NSException *) = nil;
 
 + (void)registerUserDataWithUserID:(NSString *)userID userName:(NSString *)userName userToken:(NSString *)userToken {
 #ifdef DEBUG
-    dispatch_barrier_async(self.__dataRegistryQueue, ^{
+    dispatch_barrier_async(DebugSharedManager.dataRegistryQueue, ^{
         NSMutableDictionary *source = [UserDefaultsObjectForKey(DEVICE_HARDWARE_SOURCE_KEY)?:@{} mutableCopy];
         NSMutableDictionary *user_info = [NSMutableDictionary dictionary];
         user_info[@"User Token"] = userToken?:@"Not Set";
@@ -354,7 +350,7 @@ static void (^__crash_snifferring)(NSException *) = nil;
     [[NSNotificationCenter defaultCenter] addObserverForName:kDisplayBorderEnabled object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
         STRONG_SELF
         @autoreleasepool {
-            [self.__cachedRenderingViews enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSMutableArray<__kindof UIView *> * _Nonnull objs, BOOL * _Nonnull stop) {
+            [DebugSharedManager.cachedRenderingViews enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSMutableArray<__kindof UIView *> * _Nonnull objs, BOOL * _Nonnull stop) {
                 [objs enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         displayBorder(obj, [note.object boolValue], YES);
@@ -387,22 +383,6 @@ static void (^__crash_snifferring)(NSException *) = nil;
 #endif
 }
 
-@end
-
-@interface UIWindow (Bri)
-@end
-@implementation UIWindow (Bri)
-#ifdef DEBUG
-+ (void)load {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        ExchangeImplementations(self, @selector(addSubview:), @selector(swizzle_addSubview:));
-    });
-}
-- (void)swizzle_addSubview:(UIView *)view {
-    [self insertSubview:view belowSubview:DebugView.debugView];
-}
-#endif
 @end
 
 @implementation DebugManager (Helper)
@@ -441,7 +421,7 @@ static void (^__crash_snifferring)(NSException *) = nil;
 
 @implementation DebugManager (CustomAction)
 + (void)setCustomWebViewAction:(void(^)(id data))action {
-    self.__menu.webViewAction = action;
+    DebugSharedManager.menu.webViewAction = action;
 }
 @end
 
