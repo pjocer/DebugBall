@@ -55,8 +55,7 @@ static NSMutableDictionary<NSNotificationName,NSDictionary<NSString *,NSString *
 + (void)presentDebugActionMenuController {
     if (!__show) {
         UIViewController *vc = DebugSharedManager.nav;
-        UIViewController *root = UIApplication.sharedApplication.keyWindow.rootViewController;
-        [root presentViewController:vc animated:YES completion:^{
+        [[QMUIHelper visibleViewController] presentViewController:vc animated:YES completion:^{
             __show = YES;
         }];
     } else {
