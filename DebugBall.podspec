@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'DebugBall'
   s.version          = '1.1.3'
-  s.summary          = '一个轻量级的Debug调试工具，一键设置API Host/H5 API Host,以及其它的一些Debug UI调试工具'
+  s.summary          = '一个轻量级的Debug调试工具'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -17,9 +17,7 @@ Pod::Spec.new do |s|
 #   * Write the description between the DESC delimiters below.
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
-  s.description      = <<-DESC
-TODO: Add long description of the pod here.
-                       DESC
+  s.description      = '一个轻量级的Debug调试工具，一键设置API Host/H5 API Host,以及其它的一些Debug UI调试工具'
 
   s.homepage         = 'https://github.com/pjocer/DebugBall'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
